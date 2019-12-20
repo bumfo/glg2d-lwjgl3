@@ -3,12 +3,10 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glg2d.GLGraphics2D;
 import org.lwjgl.glg2d.Lwjgl3GL20;
-import org.lwjgl.glg2d.VertexBuffer;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.system.MemoryStack;
 
-import java.nio.FloatBuffer;
+import java.awt.BasicStroke;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
@@ -37,23 +35,11 @@ import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
-import static org.lwjgl.glg2d.bridge.GL20.GL_ARRAY_BUFFER;
-import static org.lwjgl.glg2d.bridge.GL20.GL_FLOAT;
-import static org.lwjgl.glg2d.bridge.GL20.GL_STATIC_DRAW;
-import static org.lwjgl.glg2d.bridge.GL20.GL_TRIANGLES;
-import static org.lwjgl.glg2d.bridge.GL20.GL_VERTEX_ARRAY;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL11.glEnableClientState;
-import static org.lwjgl.opengl.GL11.glVertexPointer;
 import static org.lwjgl.opengl.GL11.glViewport;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glBufferData;
-import static org.lwjgl.opengl.GL15.glGenBuffers;
-import static org.lwjgl.system.MemoryStack.stackMallocFloat;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -177,7 +163,9 @@ public class HelloWorld {
       // glDrawArrays(GL_TRIANGLES, 0, 3);
 
       g.active();
-      g.fillRect(100, 100, 50, 50);
+      g.setStroke(new BasicStroke(3));
+      g.drawRect(100, 100, 50, 50);
+      // g.fillRect(100, 100, 50, 50);
 
       glfwSwapBuffers(window); // swap the color buffers
 

@@ -11,6 +11,7 @@ import org.lwjgl.system.MemoryStack;
 
 import java.awt.BasicStroke;
 import java.awt.Stroke;
+import java.awt.geom.Ellipse2D;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
@@ -161,7 +162,6 @@ public class HelloWorld {
     while (!glfwWindowShouldClose(window)) {
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-      glViewport(0, 0, WIDTH, HEIGHT);
 
 
       // try (MemoryStack ignore = stackPush()) {
@@ -188,14 +188,18 @@ public class HelloWorld {
       logicalWidth = tmpBuffer.get(0);
       logicalHeight = tmpBuffer2.get(0);
 
+      glViewport(0, 0, backBufferWidth, backBufferHeight);
+
       GL20.glMatrixMode(GL20.GL_PROJECTION);
       GL20.glLoadIdentity();
-      GL20.glOrtho(0, 1f * WIDTH * logicalWidth / backBufferWidth, 0, 1f * HEIGHT * logicalHeight / backBufferHeight, -1, 1);
+      GL20.glOrtho(0, logicalWidth, 0, logicalHeight, -1, 1);
 
 
       g.setStroke(stroke);
       g.drawRect(100, 100, 50, 50);
       // g.fillRect(100, 100, 50, 50);
+
+      g.draw(new Ellipse2D.Double(200, 200, 500, 500));
 
       glfwSwapBuffers(window); // swap the color buffers
 

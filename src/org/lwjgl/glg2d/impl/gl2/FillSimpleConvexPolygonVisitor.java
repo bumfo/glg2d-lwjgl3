@@ -31,7 +31,7 @@ import java.awt.BasicStroke;
 public class FillSimpleConvexPolygonVisitor extends SimplePathVisitor {
   protected GL2 gl;
 
-  protected VertexBuffer vBuffer = VertexBuffer.getSharedBuffer();
+  protected  VertexBuffer vBuffer = VertexBuffer.getSharedBuffer();
 
   @Override
   public void setGLContext(GL context) {

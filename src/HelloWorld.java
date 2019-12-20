@@ -3,7 +3,9 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glg2d.GLGraphics2D;
 import org.lwjgl.glg2d.Lwjgl3GL20;
+import org.lwjgl.glg2d.VertexBuffer;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.IntBuffer;
@@ -49,11 +51,12 @@ public class HelloWorld {
   // The window handle
   private long window;
   private GLGraphics2D g;
+  private Lwjgl3GL20 gl2;
 
   public void run() {
     System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 
-    Lwjgl3GL20 gl2 = new Lwjgl3GL20();
+    gl2 = new Lwjgl3GL20();
 
     g = new GLGraphics2D(gl2, WIDTH, HEIGHT);
 
@@ -138,9 +141,9 @@ public class HelloWorld {
     // Run the rendering loop until the user has attempted to close
     // the window or has pressed the ESCAPE key.
     while (!glfwWindowShouldClose(window)) {
-      glViewport(0, 0, WIDTH, HEIGHT);
-
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+
+      glViewport(0, 0, WIDTH, HEIGHT);
 
 
       // try (MemoryStack ignore = stackPush()) {
@@ -158,6 +161,14 @@ public class HelloWorld {
       // glVertexPointer(2, GL_FLOAT, 0, 0L);
       //
       // glDrawArrays(GL_TRIANGLES, 0, 3);
+
+
+      VertexBuffer vBuffer = VertexBuffer.getSharedBuffer();
+      vBuffer.clear();
+      vBuffer.addVertex(-0.5f, -0.5f);
+      vBuffer.addVertex(+0.5f, -0.5f);
+      vBuffer.addVertex(+0.0f, +0.5f);
+      vBuffer.drawBuffer(gl2, GL20.GL_POLYGON);
 
 
       g.fillRect(100, 100, 50, 50);

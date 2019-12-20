@@ -335,6 +335,49 @@ public interface GL20 {
 	int GL_TEXTURE_MAX_ANISOTROPY_EXT = 0x84FE;
 	int GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT = 0x84FF;
 
+	/** vertex_array */
+	public static final int
+			GL_VERTEX_ARRAY                = 0x8074,
+			GL_NORMAL_ARRAY                = 0x8075,
+			GL_COLOR_ARRAY                 = 0x8076,
+			GL_INDEX_ARRAY                 = 0x8077,
+			GL_TEXTURE_COORD_ARRAY         = 0x8078,
+			GL_EDGE_FLAG_ARRAY             = 0x8079,
+			GL_VERTEX_ARRAY_SIZE           = 0x807A,
+			GL_VERTEX_ARRAY_TYPE           = 0x807B,
+			GL_VERTEX_ARRAY_STRIDE         = 0x807C,
+			GL_NORMAL_ARRAY_TYPE           = 0x807E,
+			GL_NORMAL_ARRAY_STRIDE         = 0x807F,
+			GL_COLOR_ARRAY_SIZE            = 0x8081,
+			GL_COLOR_ARRAY_TYPE            = 0x8082,
+			GL_COLOR_ARRAY_STRIDE          = 0x8083,
+			GL_INDEX_ARRAY_TYPE            = 0x8085,
+			GL_INDEX_ARRAY_STRIDE          = 0x8086,
+			GL_TEXTURE_COORD_ARRAY_SIZE    = 0x8088,
+			GL_TEXTURE_COORD_ARRAY_TYPE    = 0x8089,
+			GL_TEXTURE_COORD_ARRAY_STRIDE  = 0x808A,
+			GL_EDGE_FLAG_ARRAY_STRIDE      = 0x808C,
+			GL_VERTEX_ARRAY_POINTER        = 0x808E,
+			GL_NORMAL_ARRAY_POINTER        = 0x808F,
+			GL_COLOR_ARRAY_POINTER         = 0x8090,
+			GL_INDEX_ARRAY_POINTER         = 0x8091,
+			GL_TEXTURE_COORD_ARRAY_POINTER = 0x8092,
+			GL_EDGE_FLAG_ARRAY_POINTER     = 0x8093,
+			GL_V2F                         = 0x2A20,
+			GL_V3F                         = 0x2A21,
+			GL_C4UB_V2F                    = 0x2A22,
+			GL_C4UB_V3F                    = 0x2A23,
+			GL_C3F_V3F                     = 0x2A24,
+			GL_N3F_V3F                     = 0x2A25,
+			GL_C4F_N3F_V3F                 = 0x2A26,
+			GL_T2F_V3F                     = 0x2A27,
+			GL_T4F_V4F                     = 0x2A28,
+			GL_T2F_C4UB_V3F                = 0x2A29,
+			GL_T2F_C3F_V3F                 = 0x2A2A,
+			GL_T2F_N3F_V3F                 = 0x2A2B,
+			GL_T2F_C4F_N3F_V3F             = 0x2A2C,
+			GL_T4F_C4F_N3F_V4F             = 0x2A2D;
+
 	void glActiveTexture(int texture);
 
 	void glBindTexture(int target, int texture);

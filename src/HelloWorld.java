@@ -1,9 +1,12 @@
+import org.lwjgl.BufferUtils;
 import org.lwjgl.Version;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glg2d.GLGraphics2D;
 import org.lwjgl.glg2d.Lwjgl3GL20;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.system.MemoryStack;
 
 import java.awt.BasicStroke;
@@ -51,14 +54,22 @@ public class HelloWorld {
   // The window handle
   private long window;
   private GLGraphics2D g;
-  private Lwjgl3GL20 gl2;
+  private Lwjgl3GL20 gl;
+
+  private int logicalWidth;
+  private int logicalHeight;
+
+
+  private final IntBuffer tmpBuffer = BufferUtils.createIntBuffer(1);
+  private final IntBuffer tmpBuffer2 = BufferUtils.createIntBuffer(1);
+
 
   private void run() {
     System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 
-    gl2 = new Lwjgl3GL20();
+    gl = new Lwjgl3GL20();
 
-    g = new GLGraphics2D(gl2, WIDTH, HEIGHT);
+    g = new GLGraphics2D(gl, WIDTH, HEIGHT);
 
     g.setDefaultState();
 
@@ -80,8 +91,9 @@ public class HelloWorld {
     GLFWErrorCallback.createPrint(System.err).set();
 
     // Initialize GLFW. Most GLFW functions will not work before doing this.
-    if (!glfwInit())
+    if (!glfwInit()) {
       throw new IllegalStateException("Unable to initialize GLFW");
+    }
 
     // Configure GLFW
     glfwDefaultWindowHints(); // optional, the current window hints are already the default
@@ -90,13 +102,15 @@ public class HelloWorld {
 
     // Create the window
     window = glfwCreateWindow(WIDTH, HEIGHT, "Hello World!", NULL, NULL);
-    if (window == NULL)
+    if (window == NULL) {
       throw new RuntimeException("Failed to create the GLFW window");
+    }
 
     // Setup a key callback. It will be called every time a key is pressed, repeated or released.
     glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-      if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+      if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
         glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
+      }
     });
 
     // Get the thread stack and push a new frame
@@ -135,6 +149,8 @@ public class HelloWorld {
     // bindings available for use.
     GL.createCapabilities();
 
+    g.active();
+
     // Set the clear color
     glClearColor(0.0f, 1.0f, 1.0f, 0.0f);
 
@@ -164,7 +180,19 @@ public class HelloWorld {
       //
       // glDrawArrays(GL_TRIANGLES, 0, 3);
 
-      g.active();
+      GLFW.glfwGetFramebufferSize(window, tmpBuffer, tmpBuffer2);
+      int backBufferWidth = tmpBuffer.get(0);
+      int backBufferHeight = tmpBuffer2.get(0);
+
+      GLFW.glfwGetWindowSize(window, tmpBuffer, tmpBuffer2);
+      logicalWidth = tmpBuffer.get(0);
+      logicalHeight = tmpBuffer2.get(0);
+
+      GL20.glMatrixMode(GL20.GL_PROJECTION);
+      GL20.glLoadIdentity();
+      GL20.glOrtho(0, 1f * WIDTH * logicalWidth / backBufferWidth, 0, 1f * HEIGHT * logicalHeight / backBufferHeight, -1, 1);
+
+
       g.setStroke(stroke);
       g.drawRect(100, 100, 50, 50);
       // g.fillRect(100, 100, 50, 50);

@@ -17,7 +17,6 @@ package org.lwjgl.glg2d;
 
 import org.lwjgl.glg2d.bridge.GL;
 import org.lwjgl.glg2d.impl.gl2.GL2ShapeDrawer;
-import org.lwjgl.glg2d.impl.gl2.GL2TransformHelper;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -81,7 +80,7 @@ public class GLGraphics2D extends Graphics2D {
   protected GLG2DShapeHelper shapeHelper;
   // protected GLG2DImageHelper imageHelper;
   // protected GLG2DTextHelper stringHelper;
-  protected GLG2DTransformHelper matrixHelper;
+  // protected GLG2DTransformHelper matrixHelper;
   // protected GLG2DColorHelper colorHelper;
 
   /**
@@ -110,14 +109,14 @@ public class GLGraphics2D extends Graphics2D {
   protected void createDrawingHelpers() {
     // imageHelper = createImageHelper();
     // stringHelper = createTextHelper();
-    matrixHelper = createTransformHelper();
+    // matrixHelper = createTransformHelper();
     // colorHelper = createColorHelper();
     shapeHelper = createShapeHelper();
 
     // addG2DDrawingHelper(imageHelper);
     // addG2DDrawingHelper(stringHelper);
     addG2DDrawingHelper(shapeHelper);
-    addG2DDrawingHelper(matrixHelper);
+    // addG2DDrawingHelper(matrixHelper);
     // addG2DDrawingHelper(colorHelper);
   }
 
@@ -139,9 +138,9 @@ public class GLGraphics2D extends Graphics2D {
   //   return new GL2ImageDrawer();
   // }
 
-  protected GLG2DTransformHelper createTransformHelper() {
-    return new GL2TransformHelper();
-  }
+  // protected GLG2DTransformHelper createTransformHelper() {
+  //   return new GL2TransformHelper();
+  // }
 
   // protected GLG2DColorHelper createColorHelper() {
   //   return new GL2ColorHelper();
@@ -173,11 +172,11 @@ public class GLGraphics2D extends Graphics2D {
   // public GLG2DTextHelper getStringHelper() {
   // //   return stringHelper;
   // throw new UnsupportedOperationException};
-
-  public GLG2DTransformHelper getMatrixHelper() {
-    return matrixHelper;
-  }
-
+  //
+  // public GLG2DTransformHelper getMatrixHelper() {
+  //   return matrixHelper;
+  // }
+  //
   // public GLG2DColorHelper getColorHelper() {
   // //   return colorHelper;
   // throw new UnsupportedOperationException};
@@ -331,47 +330,56 @@ public class GLGraphics2D extends Graphics2D {
 
   @Override
   public void translate(int x, int y) {
-    matrixHelper.translate(x, y);
+    // matrixHelper.translate(x, y);
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public void translate(double x, double y) {
-    matrixHelper.translate(x, y);
+    // matrixHelper.translate(x, y);
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public void rotate(double theta) {
-    matrixHelper.rotate(theta);
+    // matrixHelper.rotate(theta);
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public void rotate(double theta, double x, double y) {
-    matrixHelper.rotate(theta, x, y);
+    // matrixHelper.rotate(theta, x, y);
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public void scale(double sx, double sy) {
-    matrixHelper.scale(sx, sy);
+    // matrixHelper.scale(sx, sy);
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public void shear(double shx, double shy) {
-    matrixHelper.shear(shx, shy);
+    // matrixHelper.shear(shx, shy);
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public void transform(AffineTransform Tx) {
-    matrixHelper.transform(Tx);
+    // matrixHelper.transform(Tx);
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public void setTransform(AffineTransform transform) {
-    matrixHelper.setTransform(transform);
+    // matrixHelper.setTransform(transform);
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public AffineTransform getTransform() {
-    return matrixHelper.getTransform();
+    // return matrixHelper.getTransform();
+    throw new UnsupportedOperationException();
   }
 
   @Override

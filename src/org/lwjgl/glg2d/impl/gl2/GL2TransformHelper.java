@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jogamp.glg2d.impl.gl2;
+package org.lwjgl.glg2d.impl.gl2;
+
+
+import org.lwjgl.glg2d.GLGraphics2D;
+import org.lwjgl.glg2d.bridge.GL;
+import org.lwjgl.glg2d.bridge.GL2;
+import org.lwjgl.glg2d.impl.AbstractMatrixHelper;
+import org.lwjgl.opengl.GL20;
 
 import java.awt.geom.AffineTransform;
 
-import com.jogamp.opengl.GL;
-import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
-
-import org.jogamp.glg2d.GLGraphics2D;
-import org.jogamp.glg2d.impl.AbstractMatrixHelper;
-
-public class GL2Transformhelper extends AbstractMatrixHelper {
+public class GL2TransformHelper extends AbstractMatrixHelper {
   protected GL2 gl;
 
   private float[] matrixBuf = new float[16];
@@ -32,7 +32,7 @@ public class GL2Transformhelper extends AbstractMatrixHelper {
   @Override
   public void setG2D(GLGraphics2D g2d) {
     super.setG2D(g2d);
-    gl = g2d.getGLContext().getGL().getGL2();
+    gl = g2d.getGL().getGL2();
 
     setupGLView();
     flushTransformToOpenGL();
@@ -40,19 +40,20 @@ public class GL2Transformhelper extends AbstractMatrixHelper {
 
   protected void setupGLView() {
     int[] viewportDimensions = new int[4];
-    gl.glGetIntegerv(GL.GL_VIEWPORT, viewportDimensions, 0);
+    // gl.glGetIntegerv(GL.GL_VIEWPORT, viewportDimensions, 0);
+    GL20.glGetIntegerv(GL.GL_VIEWPORT, viewportDimensions);
     int width = viewportDimensions[2];
     int height = viewportDimensions[3];
 
     // setup projection
-    gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
-    gl.glLoadIdentity();
-    gl.glOrtho(0, width, 0, height, -1, 1);
+    GL20.glMatrixMode(GL20.GL_PROJECTION);
+    GL20.glLoadIdentity();
+    GL20.glOrtho(0, width, 0, height, -1, 1);
 
     // the MODELVIEW matrix will get adjusted later
 
-    gl.glMatrixMode(GL.GL_TEXTURE);
-    gl.glLoadIdentity();
+    GL20.glMatrixMode(GL.GL_TEXTURE);
+    GL20.glLoadIdentity();
   }
 
   /**
@@ -62,8 +63,9 @@ public class GL2Transformhelper extends AbstractMatrixHelper {
   protected void flushTransformToOpenGL() {
     float[] matrix = getGLMatrix(stack.peek());
 
-    gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
-    gl.glLoadMatrixf(matrix, 0);
+    GL20.glMatrixMode(GL20.GL_MODELVIEW);
+    // GL20.glLoadMatrixf(matrix, 0);
+    GL20.glLoadMatrixf(matrix);
   }
 
   /**

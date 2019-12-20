@@ -58,7 +58,7 @@ import org.jogamp.glg2d.impl.gl2.GL2ColorHelper;
 import org.jogamp.glg2d.impl.gl2.GL2ImageDrawer;
 import org.jogamp.glg2d.impl.gl2.GL2ShapeDrawer;
 import org.jogamp.glg2d.impl.gl2.GL2StringDrawer;
-import org.jogamp.glg2d.impl.gl2.GL2Transformhelper;
+import org.jogamp.glg2d.impl.gl2.GL2TransformHelper;
 
 /**
  * Implements the standard {@code Graphics2D} functionality, but instead draws
@@ -148,7 +148,7 @@ public class GLGraphics2D extends Graphics2D implements Cloneable {
   }
 
   protected GLG2DTransformHelper createTransformHelper() {
-    return new GL2Transformhelper();
+    return new GL2TransformHelper();
   }
 
   protected GLG2DColorHelper createColorHelper() {

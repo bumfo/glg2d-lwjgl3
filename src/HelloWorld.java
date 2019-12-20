@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
 import java.awt.BasicStroke;
+import java.awt.Stroke;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
@@ -45,14 +46,14 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class HelloWorld {
 
-  public static final int WIDTH = 800;
-  public static final int HEIGHT = 600;
+  private static final int WIDTH = 800;
+  private static final int HEIGHT = 600;
   // The window handle
   private long window;
   private GLGraphics2D g;
   private Lwjgl3GL20 gl2;
 
-  public void run() {
+  private void run() {
     System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 
     gl2 = new Lwjgl3GL20();
@@ -137,6 +138,7 @@ public class HelloWorld {
     // Set the clear color
     glClearColor(0.0f, 1.0f, 1.0f, 0.0f);
 
+    Stroke stroke = new BasicStroke(3);
 
     // Run the rendering loop until the user has attempted to close
     // the window or has pressed the ESCAPE key.
@@ -163,7 +165,7 @@ public class HelloWorld {
       // glDrawArrays(GL_TRIANGLES, 0, 3);
 
       g.active();
-      g.setStroke(new BasicStroke(3));
+      g.setStroke(stroke);
       g.drawRect(100, 100, 50, 50);
       // g.fillRect(100, 100, 50, 50);
 

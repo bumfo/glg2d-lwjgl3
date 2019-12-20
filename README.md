@@ -11,23 +11,11 @@ fast.
 Find more information on https://bumfo.github.com/glg2d-lwjgl3/
 
 Use cases:
- * use as a drop-in replacement for a JPanel and all Swing children will be
-    accelerated
- * draw Swing components in an GLCanvas in your existing application
+ * Port Java2D drawings to OpenGL application
 
-This library is licensed under the Apache 2.0 license and JOGL is licensed and
+This library is licensed under the Apache 2.0 license and LWJGL3 is licensed and
 distributed separately.
 
-How to build
+## How to build
 
-This project uses maven, run mvn package to build the jar in the ./target/ dir
-or add the following to your pom.xml
-<dependency>
- <groupId>org.jogamp.glg2d</groupId>
- <artifactId>glg2d-lwjgl3</artifactId>
- <version>${glg2d_lwjgl3.version}</version>
-</dependency>
-
-Make sure you also add the GLG2D repository at
-https://bumfo.github.com/glg2d-lwjgl3/maven2/
-
+(Todo)

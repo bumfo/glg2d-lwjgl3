@@ -2,13 +2,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jogamp.glg2d</groupId>
-  <artifactId>glg2d</artifactId>
-  <version>0.5-SNAPSHOT</version>
+  <artifactId>glg2d-lwjgl3</artifactId>
+  <version>0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>GLG2D</name>
+  <name>GLG2D-lwjgl3</name>
   <description>Java2D to OpenGL bridge</description>
-  <inceptionYear>2010</inceptionYear>
-  <url>http://brandonborkholder.github.com/glg2d/</url>
+  <inceptionYear>2019</inceptionYear>
+  <url>https://github.com/bumfo/glg2d-lwjgl3</url>
   <licenses>
     <license>
       <name>Apache 2</name>
@@ -29,10 +29,10 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:git:https://github.com/brandonborkholder/glg2d.git</connection>
-    <developerConnection>scm:git:[fetch=]https://github.com/brandonborkholder/glg2d.git[push=]git@github.com:brandonborkholder/glg2d.git</developerConnection>
+    <connection>scm:git:https://github.com/bumfo/glg2d-lwjgl3.git</connection>
+    <developerConnection>scm:git:[fetch=]https://github.com/bumfo/glg2d-lwjgl3.git[push=]git@github.com:bumfo/glg2d-lwjgl3.git</developerConnection>
     <tag>HEAD</tag>
-    <url>https://github.com/brandonborkholder/glg2d</url>
+    <url>https://github.com/bumfo/glg2d-lwjgl3</url>
   </scm>
   <properties>
     <jogl.version>2.3.2</jogl.version>
@@ -64,8 +64,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
 

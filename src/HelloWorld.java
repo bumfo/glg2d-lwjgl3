@@ -102,6 +102,9 @@ public class HelloWorld {
 
     // Configure GLFW
     glfwDefaultWindowHints(); // optional, the current window hints are already the default
+
+    // glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
+
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
     glfwWindowHint(GLFW_SAMPLES, 4); // AA
@@ -165,6 +168,20 @@ public class HelloWorld {
     float dx = 0f;
     float angle = 0f;
 
+    GLFW.glfwGetFramebufferSize(window, tmpBuffer, tmpBuffer2);
+    int backBufferWidth = tmpBuffer.get(0);
+    int backBufferHeight = tmpBuffer2.get(0);
+
+    GLFW.glfwGetWindowSize(window, tmpBuffer, tmpBuffer2);
+    logicalWidth = tmpBuffer.get(0);
+    logicalHeight = tmpBuffer2.get(0);
+
+    glViewport(0, 0, backBufferWidth, backBufferHeight);
+
+    GL20.glMatrixMode(GL20.GL_PROJECTION);
+    GL20.glLoadIdentity();
+    GL20.glOrtho(0, logicalWidth, 0, logicalHeight, -1, 1);
+
     // Run the rendering loop until the user has attempted to close
     // the window or has pressed the ESCAPE key.
     while (!glfwWindowShouldClose(window)) {
@@ -187,19 +204,6 @@ public class HelloWorld {
       //
       // glDrawArrays(GL_TRIANGLES, 0, 3);
 
-      GLFW.glfwGetFramebufferSize(window, tmpBuffer, tmpBuffer2);
-      int backBufferWidth = tmpBuffer.get(0);
-      int backBufferHeight = tmpBuffer2.get(0);
-
-      GLFW.glfwGetWindowSize(window, tmpBuffer, tmpBuffer2);
-      logicalWidth = tmpBuffer.get(0);
-      logicalHeight = tmpBuffer2.get(0);
-
-      glViewport(0, 0, backBufferWidth, backBufferHeight);
-
-      GL20.glMatrixMode(GL20.GL_PROJECTION);
-      GL20.glLoadIdentity();
-      GL20.glOrtho(0, logicalWidth, 0, logicalHeight, -1, 1);
 
       Rectangle2D r = new Rectangle2D.Double(-25, -25, 50, 50);
       Path2D.Double path = new Path2D.Double();

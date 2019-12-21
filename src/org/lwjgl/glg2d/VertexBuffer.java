@@ -27,12 +27,12 @@ import java.nio.FloatBuffer;
  * constructor uses a global buffer since drawing in OpenGL is not
  * multi-threaded.
  */
-public class VertexBuffer {
-  protected static VertexBuffer shared = new VertexBuffer(1024);
+public final class VertexBuffer {
+  private static final ThreadLocal<VertexBuffer> shared = new ThreadLocal<>();
 
   protected FloatBuffer buffer;
 
-  protected int deviceBufferId;
+  private int deviceBufferId;
 
   /**
    * Creates a buffer that uses the shared global buffer. This is faster than
@@ -43,11 +43,16 @@ public class VertexBuffer {
    * {@code #VertexBuffer(int)}.
    */
   public static VertexBuffer getSharedBuffer() {
-    shared.clear();
-    return shared;
+    VertexBuffer vBuffer = shared.get();
+    if (vBuffer == null) {
+      shared.set(vBuffer = new VertexBuffer(1024));
+    }
+
+    vBuffer.clear();
+    return vBuffer;
   }
 
-  protected VertexBuffer(FloatBuffer buffer) {
+  private VertexBuffer(FloatBuffer buffer) {
     this.buffer = buffer;
   }
 
@@ -102,7 +107,14 @@ public class VertexBuffer {
   protected void ensureCapacity(int numNewFloats) {
     if (buffer.capacity() <= buffer.position() + numNewFloats) {
       FloatBuffer larger = Buffers.newDirectFloatBuffer(Math.max(buffer.position() * 2, buffer.position() + numNewFloats));
-      deviceBufferId = -deviceBufferId;
+
+      if (deviceBufferId != 0) {
+        GL20.glDeleteBuffers(deviceBufferId);
+        deviceBufferId = 0;
+      }
+      // deviceBufferId = -deviceBufferId;
+      // deviceBufferId = GL20.glGenBuffers();
+
       int position = buffer.position();
       buffer.rewind();
       larger.put(buffer);
@@ -137,16 +149,25 @@ public class VertexBuffer {
     int count = buffer.position();
     buffer.rewind();
 
+    if (deviceBufferId == 0) {
+      deviceBufferId = GL20.glGenBuffers();
+    }
+
     // int vbo = GL20.glGenBuffers();
     // GL20.glBindBuffer(GL20.GL_ARRAY_BUFFER, vbo);
-    // GL20.glBufferData(GL20.GL_ARRAY_BUFFER, buffer, GL20.GL_STATIC_DRAW);
-    // GL20.glVertexPointer(2, GL20.GL_FLOAT, 0, 0);
+    GL20.glBindBuffer(GL20.GL_ARRAY_BUFFER, deviceBufferId);
+    GL20.glBufferData(GL20.GL_ARRAY_BUFFER, buffer, GL20.GL_DYNAMIC_DRAW);
 
-    GL20.glVertexPointer(2, GL20.GL_FLOAT, 0, buffer);
+    GL20.glEnableVertexAttribArray(0);
+    GL20.glVertexPointer(2, GL20.GL_FLOAT, 0, 0);
+
+    // GL20.glVertexPointer(2, GL20.GL_FLOAT, 0, buffer);
 
     GL20.glEnableClientState(GL20.GL_VERTEX_ARRAY);
     GL20.glDrawArrays(mode, 0, count / 2);
     GL20.glDisableClientState(GL20.GL_VERTEX_ARRAY);
+
+    GL20.glBindBuffer(GL20.GL_ARRAY_BUFFER, 0);
 
     buffer.position(count);
   }

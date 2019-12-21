@@ -11,7 +11,10 @@ import org.lwjgl.system.MemoryStack;
 
 import java.awt.BasicStroke;
 import java.awt.Stroke;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
@@ -19,6 +22,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
+import static org.lwjgl.glfw.GLFW.GLFW_SAMPLES;
 import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
 import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
@@ -100,6 +104,7 @@ public class HelloWorld {
     glfwDefaultWindowHints(); // optional, the current window hints are already the default
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
+    glfwWindowHint(GLFW_SAMPLES, 4); // AA
 
     // Create the window
     window = glfwCreateWindow(WIDTH, HEIGHT, "Hello World!", NULL, NULL);
@@ -153,15 +158,17 @@ public class HelloWorld {
     g.active();
 
     // Set the clear color
-    glClearColor(0.0f, 1.0f, 1.0f, 0.0f);
+    glClearColor(0.0f, 0f, 0f, 0.0f);
 
     Stroke stroke = new BasicStroke(3);
+
+    float dx = 0f;
+    float angle = 0f;
 
     // Run the rendering loop until the user has attempted to close
     // the window or has pressed the ESCAPE key.
     while (!glfwWindowShouldClose(window)) {
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
-
 
 
       // try (MemoryStack ignore = stackPush()) {
@@ -194,9 +201,21 @@ public class HelloWorld {
       GL20.glLoadIdentity();
       GL20.glOrtho(0, logicalWidth, 0, logicalHeight, -1, 1);
 
+      Rectangle2D r = new Rectangle2D.Double(-25, -25, 50, 50);
+      Path2D.Double path = new Path2D.Double();
+      path.append(r, false);
+
+      AffineTransform t = new AffineTransform();
+      t.translate(100, 100);
+      t.rotate(angle);
+      angle += 1f / 60f;
+      path.transform(t);
+      g.draw(path);
 
       g.setStroke(stroke);
-      g.drawRect(100, 100, 50, 50);
+      // g.drawRect(100 + (int) dx, 100, 50, 50);
+      g.draw(new Rectangle2D.Double(75 + dx, 75, 50, 50));
+      dx += 1f / 60f * 8;
       // g.fillRect(100, 100, 50, 50);
 
       g.draw(new Ellipse2D.Double(200, 200, 500, 500));

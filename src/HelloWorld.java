@@ -165,8 +165,8 @@ public class HelloWorld {
 
     Stroke stroke = new BasicStroke(3);
 
-    float dx = 0f;
-    float angle = 0f;
+    double dx = 0.;
+    double angle = 0.;
 
     GLFW.glfwGetFramebufferSize(window, tmpBuffer, tmpBuffer2);
     int backBufferWidth = tmpBuffer.get(0);
@@ -205,16 +205,8 @@ public class HelloWorld {
       // glDrawArrays(GL_TRIANGLES, 0, 3);
 
 
-      Rectangle2D r = new Rectangle2D.Double(-25, -25, 50, 50);
-      Path2D.Double path = new Path2D.Double();
-      path.append(r, false);
-
-      AffineTransform t = new AffineTransform();
-      t.translate(100, 100);
-      t.rotate(angle);
+      drawRotatedRectangle(angle, 100, 100, 50, 50);
       angle += 1f / 60f;
-      path.transform(t);
-      g.draw(path);
 
       g.setStroke(stroke);
       // g.drawRect(100 + (int) dx, 100, 50, 50);
@@ -224,12 +216,26 @@ public class HelloWorld {
 
       g.draw(new Ellipse2D.Double(200, 200, 500, 500));
 
+      drawRotatedRectangle(angle * 2., 100 + dx, 100, 200, 200);
+
       glfwSwapBuffers(window); // swap the color buffers
 
       // Poll for window events. The key callback above will only be
       // invoked during this call.
       glfwPollEvents();
     }
+  }
+
+  private void drawRotatedRectangle(double angle, double x, double y, double w, double h) {
+    Rectangle2D r = new Rectangle2D.Double(-.5 * w, -.5 * h, w, h);
+    Path2D.Double path = new Path2D.Double();
+    path.append(r, false);
+
+    AffineTransform t = new AffineTransform();
+    t.translate(x, y);
+    t.rotate(angle);
+    path.transform(t);
+    g.draw(path);
   }
 
   public static void main(String[] args) {

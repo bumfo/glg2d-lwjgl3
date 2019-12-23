@@ -9,7 +9,7 @@ import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
-import com.jogamp.opengl.util.FPSAnimator;
+import com.jogamp.opengl.util.Animator;
 
 import java.awt.Color;
 
@@ -25,7 +25,9 @@ public class Main {
     glWindow.setSize(800, 600);
     glWindow.setVisible(true);
 
-    final FPSAnimator animator = new FPSAnimator(glWindow, 60, true);
+    // final FPSAnimator animator = new FPSAnimator(glWindow, 60, true);
+    final Animator animator = new Animator(glWindow);
+    // animator.setRunAsFastAsPossible(true);
 
     glWindow.addWindowListener(new WindowAdapter() {
       public void windowDestroyNotify(WindowEvent e) {

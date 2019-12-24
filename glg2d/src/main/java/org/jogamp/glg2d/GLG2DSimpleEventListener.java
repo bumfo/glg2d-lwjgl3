@@ -15,8 +15,10 @@
  */
 package org.jogamp.glg2d;
 
+import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
+
 import javax.swing.JComponent;
 
 /**
@@ -101,6 +103,9 @@ public class GLG2DSimpleEventListener implements GLEventListener {
 
   @Override
   public void init(GLAutoDrawable drawable) {
+    GL gl = drawable.getGL();
+    gl.setSwapInterval(1);
+
     g2d = createGraphics2D(drawable);
   }
 

@@ -34,20 +34,15 @@ public class GL2TransformHelper extends AbstractMatrixHelper {
     super.setG2D(g2d);
     gl = g2d.getGLContext().getGL().getGL2();
 
-    setupGLView();
+    setupGLView(g2d.getLogicalWidth(), g2d.getLogicalHeight());
     flushTransformToOpenGL();
   }
 
-  protected void setupGLView() {
-    int[] viewportDimensions = new int[4];
-    gl.glGetIntegerv(GL.GL_VIEWPORT, viewportDimensions, 0);
-    int width = viewportDimensions[2];
-    int height = viewportDimensions[3];
-
+  protected void setupGLView(int logicalWidth, int logicalHeight) {
     // setup projection
     gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
     gl.glLoadIdentity();
-    gl.glOrtho(0, width, 0, height, -1, 1);
+    gl.glOrtho(0, logicalWidth, 0, logicalHeight, -1, 1);
 
     // the MODELVIEW matrix will get adjusted later
 
@@ -79,7 +74,7 @@ public class GL2TransformHelper extends AbstractMatrixHelper {
     matrixBuf[5] = -(float) transform.getScaleY();
     matrixBuf[10] = 1;
     matrixBuf[12] = (float) transform.getTranslateX();
-    matrixBuf[13] = g2d.getCanvasHeight() - (float) transform.getTranslateY();
+    matrixBuf[13] = g2d.getLogicalHeight() - (float) transform.getTranslateY();
     matrixBuf[15] = 1;
 
     return matrixBuf;

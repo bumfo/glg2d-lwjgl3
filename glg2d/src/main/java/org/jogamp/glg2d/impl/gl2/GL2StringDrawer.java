@@ -65,7 +65,7 @@ public class GL2StringDrawer extends AbstractTextDrawer {
     TextRenderer renderer = getRenderer(getFont());
 
     begin(renderer);
-    renderer.draw3D(string, x, g2d.getCanvasHeight() - y, 0, 1);
+    renderer.draw3D(string, x, g2d.getSurfaceHeight() - y, 0, 1);
     end(renderer);
   }
 
@@ -97,7 +97,7 @@ public class GL2StringDrawer extends AbstractTextDrawer {
     gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
     gl.glPushMatrix();
     gl.glScalef(1, -1, 1);
-    gl.glTranslatef(0, -g2d.getCanvasHeight(), 0);
+    gl.glTranslatef(0, -g2d.getSurfaceHeight(), 0);
 
     renderer.begin3DRendering();
   }

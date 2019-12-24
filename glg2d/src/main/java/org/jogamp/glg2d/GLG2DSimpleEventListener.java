@@ -18,6 +18,8 @@ package org.jogamp.glg2d;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
+import com.jogamp.opengl.awt.GLCanvas;
+import jogamp.nativewindow.SurfaceScaleUtils;
 
 import javax.swing.JComponent;
 
@@ -31,6 +33,16 @@ import javax.swing.JComponent;
  * </p>
  */
 public class GLG2DSimpleEventListener implements GLEventListener {
+  private final float[] scale = new float[2];
+
+  private int logicWidth;
+  private int logicHeight;
+
+  private int pixelX;
+  private int pixelY;
+  private int pixelWidth;
+  private int pixelHeight;
+
   /**
    * The cached object.
    */
@@ -62,11 +74,17 @@ public class GLG2DSimpleEventListener implements GLEventListener {
    */
   protected void prePaint(GLAutoDrawable drawable) {
     setupViewport(drawable);
-    g2d.prePaint(drawable.getContext());
+    g2d.prePaint(drawable.getContext(), logicWidth, logicHeight);
 
     // clip to only the component we're painting
-    g2d.translate(comp.getX(), comp.getY());
-    g2d.clipRect(0, 0, comp.getWidth(), comp.getHeight());
+
+    int surfaceX = SurfaceScaleUtils.scale(comp.getX(), scale[0]);
+    int surfaceY = SurfaceScaleUtils.scale(comp.getY(), scale[1]);
+    int surfaceWidth = SurfaceScaleUtils.scale(comp.getWidth(), scale[0]);
+    int surfaceHeight = SurfaceScaleUtils.scale(comp.getHeight(), scale[1]);
+
+    g2d.translate(surfaceX, surfaceY);
+    g2d.clipRect(0, 0, surfaceWidth, surfaceHeight);
   }
 
   /**
@@ -111,6 +129,18 @@ public class GLG2DSimpleEventListener implements GLEventListener {
 
   @Override
   public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+    GLCanvas canvas = (GLCanvas) drawable;
+
+    canvas.getCurrentSurfaceScale(scale);
+
+    pixelX = x;
+    pixelY = y;
+
+    logicWidth = canvas.getWidth();
+    logicHeight = canvas.getHeight();
+
+    pixelWidth = width;
+    pixelHeight = height;
   }
 
   /**

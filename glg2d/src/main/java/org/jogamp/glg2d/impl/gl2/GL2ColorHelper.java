@@ -108,7 +108,7 @@ public class GL2ColorHelper extends AbstractColorHelper {
     gl.glRasterPos2i(x2, y2);
 
     int x1 = x;
-    int y1 = g2d.getCanvasHeight() - (y + height);
+    int y1 = g2d.getSurfaceHeight() - (y + height);
     gl.glCopyPixels(x1, y1, width, height, GL2GL3.GL_COLOR);
   }
 }

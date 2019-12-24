@@ -82,10 +82,12 @@ public class GLGraphics2D extends Graphics2D implements Cloneable {
    */
   private boolean isDisposed;
 
+  private int logicalWidth;
+  private int logicalHeight;
   /**
    * Keeps the current viewport height for things like painting text.
    */
-  private int canvasHeight;
+  private int surfaceHeight;
 
   /**
    * All the drawing helpers or listeners to drawing events.
@@ -203,8 +205,10 @@ public class GLGraphics2D extends Graphics2D implements Cloneable {
    * Sets up the graphics object in preparation for drawing. Initialization such
    * as getting the viewport
    */
-  public void prePaint(GLContext context) {
-    canvasHeight = GLG2DUtils.getViewportHeight(context.getGL());
+  public void prePaint(GLContext context, int logicWidth, int logicHeight) {
+    this.logicalWidth = logicWidth;
+    this.logicalHeight = logicHeight;
+    surfaceHeight = GLG2DUtils.getViewportHeight(context.getGL());
     setCanvas(context);
     setDefaultState();
   }
@@ -228,8 +232,16 @@ public class GLGraphics2D extends Graphics2D implements Cloneable {
     return glContext;
   }
 
-  public int getCanvasHeight() {
-    return canvasHeight;
+  public int getLogicalWidth() {
+    return logicalWidth;
+  }
+
+  public int getLogicalHeight() {
+    return logicalHeight;
+  }
+
+  public int getSurfaceHeight() {
+    return surfaceHeight;
   }
 
   public void glDispose() {
@@ -545,7 +557,7 @@ public class GLGraphics2D extends Graphics2D implements Cloneable {
   protected void scissor(boolean enable) {
     GL gl = getGLContext().getGL();
     if (enable) {
-      gl.glScissor(clip.x, canvasHeight - clip.y - clip.height, Math.max(clip.width, 0), Math.max(clip.height, 0));
+      gl.glScissor(clip.x, surfaceHeight - clip.y - clip.height, Math.max(clip.width, 0), Math.max(clip.height, 0));
       gl.glEnable(GL.GL_SCISSOR_TEST);
     } else {
       clip = null;

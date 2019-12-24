@@ -74,17 +74,20 @@ public class GLG2DSimpleEventListener implements GLEventListener {
    */
   protected void prePaint(GLAutoDrawable drawable) {
     setupViewport(drawable);
-    g2d.prePaint(drawable.getContext(), logicWidth, logicHeight);
+    g2d.prePaint(drawable.getContext(), logicWidth, logicHeight, scale[0], scale[1]);
 
     // clip to only the component we're painting
 
-    int surfaceX = SurfaceScaleUtils.scale(comp.getX(), scale[0]);
-    int surfaceY = SurfaceScaleUtils.scale(comp.getY(), scale[1]);
-    int surfaceWidth = SurfaceScaleUtils.scale(comp.getWidth(), scale[0]);
-    int surfaceHeight = SurfaceScaleUtils.scale(comp.getHeight(), scale[1]);
+    // int surfaceX = SurfaceScaleUtils.scale(comp.getX(), scale[0]);
+    // int surfaceY = SurfaceScaleUtils.scale(comp.getY(), scale[1]);
+    // int surfaceWidth = SurfaceScaleUtils.scale(comp.getWidth(), scale[0]);
+    // int surfaceHeight = SurfaceScaleUtils.scale(comp.getHeight(), scale[1]);
 
-    g2d.translate(surfaceX, surfaceY);
-    g2d.clipRect(0, 0, surfaceWidth, surfaceHeight);
+    // g2d.translate(comp.getX(), comp.getY());
+    // g2d.clipRect(0, 0, comp.getWidth(), comp.getHeight());
+
+    // g2d.translate(surfaceX, surfaceY);
+    // g2d.clipRect(0, 0, surfaceWidth, surfaceHeight);
   }
 
   /**

@@ -15,6 +15,17 @@
  */
 package org.jogamp.glg2d;
 
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GLContext;
+import com.jogamp.opengl.GLDrawable;
+import jogamp.nativewindow.SurfaceScaleUtils;
+import org.jogamp.glg2d.impl.GLGraphicsConfiguration;
+import org.jogamp.glg2d.impl.gl2.GL2ColorHelper;
+import org.jogamp.glg2d.impl.gl2.GL2ImageDrawer;
+import org.jogamp.glg2d.impl.gl2.GL2ShapeDrawer;
+import org.jogamp.glg2d.impl.gl2.GL2StringDrawer;
+import org.jogamp.glg2d.impl.gl2.GL2TransformHelper;
+
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -49,17 +60,6 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.jogamp.opengl.GL;
-import com.jogamp.opengl.GLContext;
-import com.jogamp.opengl.GLDrawable;
-
-import org.jogamp.glg2d.impl.GLGraphicsConfiguration;
-import org.jogamp.glg2d.impl.gl2.GL2ColorHelper;
-import org.jogamp.glg2d.impl.gl2.GL2ImageDrawer;
-import org.jogamp.glg2d.impl.gl2.GL2ShapeDrawer;
-import org.jogamp.glg2d.impl.gl2.GL2StringDrawer;
-import org.jogamp.glg2d.impl.gl2.GL2TransformHelper;
-
 /**
  * Implements the standard {@code Graphics2D} functionality, but instead draws
  * to an OpenGL canvas.
@@ -88,6 +88,8 @@ public class GLGraphics2D extends Graphics2D implements Cloneable {
    * Keeps the current viewport height for things like painting text.
    */
   private int surfaceHeight;
+  private float scaleX;
+  private float scaleY;
 
   /**
    * All the drawing helpers or listeners to drawing events.
@@ -119,7 +121,7 @@ public class GLGraphics2D extends Graphics2D implements Cloneable {
   protected RenderingHints hints;
 
   public GLGraphics2D() {
-    hints = new RenderingHints(Collections.<Key, Object> emptyMap());
+    hints = new RenderingHints(Collections.<Key, Object>emptyMap());
     createDrawingHelpers();
   }
 
@@ -205,10 +207,12 @@ public class GLGraphics2D extends Graphics2D implements Cloneable {
    * Sets up the graphics object in preparation for drawing. Initialization such
    * as getting the viewport
    */
-  public void prePaint(GLContext context, int logicWidth, int logicHeight) {
+  public void prePaint(GLContext context, int logicWidth, int logicHeight, float scaleX, float scaleY) {
     this.logicalWidth = logicWidth;
     this.logicalHeight = logicHeight;
     surfaceHeight = GLG2DUtils.getViewportHeight(context.getGL());
+    this.scaleX = scaleX;
+    this.scaleY = scaleY;
     setCanvas(context);
     setDefaultState();
   }
@@ -348,7 +352,7 @@ public class GLGraphics2D extends Graphics2D implements Cloneable {
   }
 
   protected void resetRenderingHints() {
-    hints = new RenderingHints(Collections.<Key, Object> emptyMap());
+    hints = new RenderingHints(Collections.<Key, Object>emptyMap());
 
     for (G2DDrawingHelper helper : helpers) {
       helper.resetHints();
@@ -557,7 +561,11 @@ public class GLGraphics2D extends Graphics2D implements Cloneable {
   protected void scissor(boolean enable) {
     GL gl = getGLContext().getGL();
     if (enable) {
-      gl.glScissor(clip.x, surfaceHeight - clip.y - clip.height, Math.max(clip.width, 0), Math.max(clip.height, 0));
+      int clipX = SurfaceScaleUtils.scale(clip.x, scaleX);
+      int clipY = SurfaceScaleUtils.scale(clip.y, scaleY);
+      int clipWidth = SurfaceScaleUtils.scale(clip.width, scaleX);
+      int clipHeight = SurfaceScaleUtils.scale(clip.height, scaleY);
+      gl.glScissor(clipX, surfaceHeight - clipY - clipHeight, Math.max(clipWidth, 0), Math.max(clipHeight, 0));
       gl.glEnable(GL.GL_SCISSOR_TEST);
     } else {
       clip = null;
@@ -685,7 +693,7 @@ public class GLGraphics2D extends Graphics2D implements Cloneable {
 
   @Override
   public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, Color bgcolor,
-      ImageObserver observer) {
+                           ImageObserver observer) {
     return imageHelper.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, bgcolor, observer);
   }
 

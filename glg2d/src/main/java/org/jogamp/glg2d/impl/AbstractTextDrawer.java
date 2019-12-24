@@ -55,9 +55,9 @@ public abstract class AbstractTextDrawer implements GLG2DTextHelper {
 
   @Override
   public void setHint(Key key, Object value) {
-    if (key == RenderingHints.KEY_TEXT_ANTIALIASING) {
-      stack.peek().antiAlias = value == RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
-    }
+    // if (key == RenderingHints.KEY_TEXT_ANTIALIASING) {
+    //   stack.peek().antiAlias = value == RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
+    // }
   }
 
   @Override
@@ -116,7 +116,7 @@ public abstract class AbstractTextDrawer implements GLG2DTextHelper {
 
   protected static class FontState implements Cloneable {
     public Font font;
-    public boolean antiAlias;
+    public boolean antiAlias = true;
 
     @Override
     public FontState clone() {

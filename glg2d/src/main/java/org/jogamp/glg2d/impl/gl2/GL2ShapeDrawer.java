@@ -60,13 +60,13 @@ public class GL2ShapeDrawer extends AbstractShapeHelper {
   public void setHint(Key key, Object value) {
     super.setHint(key, value);
 
-    if (key == RenderingHints.KEY_ANTIALIASING) {
-      if (value == RenderingHints.VALUE_ANTIALIAS_ON) {
-        gl.glEnable(GL.GL_MULTISAMPLE);
-      } else {
-        gl.glDisable(GL.GL_MULTISAMPLE);
-      }
-    }
+    // if (key == RenderingHints.KEY_ANTIALIASING) {
+    //   if (value == RenderingHints.VALUE_ANTIALIAS_ON) {
+    //     gl.glEnable(GL.GL_MULTISAMPLE);
+    //   } else {
+    //     gl.glDisable(GL.GL_MULTISAMPLE);
+    //   }
+    // }
   }
 
   @Override

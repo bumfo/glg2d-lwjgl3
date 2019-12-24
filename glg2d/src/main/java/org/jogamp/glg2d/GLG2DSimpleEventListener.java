@@ -19,7 +19,6 @@ import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.awt.GLCanvas;
-import jogamp.nativewindow.SurfaceScaleUtils;
 
 import javax.swing.JComponent;
 
@@ -37,11 +36,6 @@ public class GLG2DSimpleEventListener implements GLEventListener {
 
   private int logicWidth;
   private int logicHeight;
-
-  private int pixelX;
-  private int pixelY;
-  private int pixelWidth;
-  private int pixelHeight;
 
   /**
    * The cached object.
@@ -132,18 +126,16 @@ public class GLG2DSimpleEventListener implements GLEventListener {
 
   @Override
   public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-    GLCanvas canvas = (GLCanvas) drawable;
+    if (drawable instanceof GLCanvas) {
+      GLCanvas canvas = (GLCanvas) drawable;
 
-    canvas.getCurrentSurfaceScale(scale);
+      canvas.getCurrentSurfaceScale(scale);
 
-    pixelX = x;
-    pixelY = y;
-
-    logicWidth = canvas.getWidth();
-    logicHeight = canvas.getHeight();
-
-    pixelWidth = width;
-    pixelHeight = height;
+      logicWidth = canvas.getWidth();
+      logicHeight = canvas.getHeight();
+    } else {
+      System.err.println(drawable + " not recognized. ");
+    }
   }
 
   /**

@@ -31,9 +31,6 @@ public final class BridgeTest {
     Animator animator = new Animator(glWindow);
 
     glWindow.addGLEventListener(new GLEventListener() {
-      private int height;
-      private int width;
-
       private double theta = 0.0f;  // rotational angle
 
       @Override
@@ -74,9 +71,6 @@ public final class BridgeTest {
 
       @Override
       public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-        System.out.println("reshape " + x + ", " + y + "; " + width + ", " + height);
-        this.width = width;
-        this.height = height;
       }
     });
 

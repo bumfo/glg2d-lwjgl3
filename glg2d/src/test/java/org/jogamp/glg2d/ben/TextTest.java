@@ -9,16 +9,21 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.Animator;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Window;
 import java.lang.reflect.Method;
 
-public final class BridgeTest {
+public final class TextTest {
   private void run() {
-    JFrame frame = new JFrame("Hello Bridge");
+    JFrame frame = new JFrame("Hello Text");
+
+    TextRenderer textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 16), true, false);
+    TextRenderer textRenderer2 = new TextRenderer(new Font("Arial", Font.PLAIN, 32), true, false);
 
     try {
       Class<?> util = Class.forName("com.apple.eawt.FullScreenUtilities");
@@ -59,31 +64,47 @@ public final class BridgeTest {
         System.out.println("dispose");
       }
 
+
       @Override
       public void display(GLAutoDrawable drawable) {
         // System.out.println("display");
         GL2 gl = drawable.getGL().getGL2();   // get the OpenGL graphics context
 
+        // gl.glClearColor(0, 1, 1, 0);
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);    // clear background
-        gl.glLoadIdentity();                   // reset the model-view matrix
+
 
         // Rendering code - draw a triangle
         float sine = (float) Math.sin(theta);
         float cosine = (float) Math.cos(theta);
         gl.glBegin(GL.GL_TRIANGLES);
         gl.glColor3f(1, 0, 0);
-        gl.glVertex2d(-cosine, -cosine);
+        gl.glVertex2d(100. + 10. * -cosine, 100. + 10. * -cosine);
         gl.glColor3f(0, 1, 0);
-        gl.glVertex2d(0, cosine);
+        gl.glVertex2d(100., 100. + 10. * cosine);
         gl.glColor3f(0, 0, 1);
-        gl.glVertex2d(sine, -sine);
+        gl.glVertex2d(100. + 10. * sine, 100. + 10. * -sine);
         gl.glEnd();
+
+
+        textRenderer.begin3DRendering();
+        textRenderer.draw3D("Hello World", 100, 100 + 10 * cosine, 0, 1);
+        textRenderer.end3DRendering();
+
+        textRenderer2.begin3DRendering();
+        textRenderer2.draw3D("Hello World", 100 + 100 * sine, 100 + 10 * cosine, 0, .5f);
+        textRenderer2.end3DRendering();
 
         theta += 0.01;
       }
 
       @Override
       public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+        GL2 gl = drawable.getGL().getGL2();   // get the OpenGL graphics context
+
+        gl.glMatrixMode(gl.GL_PROJECTION);
+        gl.glLoadIdentity();
+        gl.glOrtho(0, 800, 0, 600, -1, 1);
       }
     });
 
@@ -95,6 +116,6 @@ public final class BridgeTest {
   }
 
   public static void main(String[] args) {
-    new BridgeTest().run();
+    new TextTest().run();
   }
 }

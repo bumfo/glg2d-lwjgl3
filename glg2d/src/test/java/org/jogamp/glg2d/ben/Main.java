@@ -23,7 +23,7 @@ public class Main {
 
     GLWindow glWindow = GLWindow.create(caps);
     glWindow.setSize(800, 600);
-    glWindow.setVisible(true);
+    // glWindow.setVisible(true);
 
     // final FPSAnimator animator = new FPSAnimator(glWindow, 60, true);
     final Animator animator = new Animator(glWindow);

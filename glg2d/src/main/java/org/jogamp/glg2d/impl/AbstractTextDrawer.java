@@ -31,6 +31,8 @@ import java.util.Deque;
 import static java.lang.Math.ceil;
 
 public abstract class AbstractTextDrawer implements GLG2DTextHelper {
+  public static final Font DEFAULT_FONT = new Font("Arial", Font.PLAIN, 10);
+
   protected GLGraphics2D g2d;
 
   protected Deque<FontState> stack = new ArrayDeque<FontState>();
@@ -75,7 +77,7 @@ public abstract class AbstractTextDrawer implements GLG2DTextHelper {
 
   @Override
   public void setFont(Font font) {
-    if (font == null) font = getDefaultFont();
+    if (font == null) font = DEFAULT_FONT;
     peek().font = font;
   }
 
@@ -130,7 +132,7 @@ public abstract class AbstractTextDrawer implements GLG2DTextHelper {
   }
 
   protected static class FontState implements Cloneable {
-    public Font font = getDefaultFont();
+    public Font font = DEFAULT_FONT;
     public boolean antiAlias = true;
     public float surfaceScale = 1f;
 
@@ -142,9 +144,5 @@ public abstract class AbstractTextDrawer implements GLG2DTextHelper {
         throw new AssertionError(e);
       }
     }
-  }
-
-  public static Font getDefaultFont() {
-    return new Font("Arial", Font.PLAIN, 10);
   }
 }

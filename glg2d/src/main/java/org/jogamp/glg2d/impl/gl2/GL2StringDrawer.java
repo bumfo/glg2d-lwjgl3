@@ -62,15 +62,20 @@ public class GL2StringDrawer extends AbstractTextDrawer {
 
   @Override
   public void drawString(String string, int x, int y) {
-    TextRenderer renderer = getRenderer(getFont());
+    Font font = getFont();
+    float surfaceScale = peek().surfaceScale;
+    if (surfaceScale != 1f) {
+      font = font.deriveFont(font.getSize() * surfaceScale);
+    }
+    TextRenderer renderer = getRenderer(font);
 
     begin(renderer);
-    renderer.draw3D(string, x, g2d.getSurfaceHeight() - y, 0, 1);
+    renderer.draw3D(string, x, g2d.getSurfaceHeight() - y, 0, 1f / surfaceScale);
     end(renderer);
   }
 
   protected TextRenderer getRenderer(Font font) {
-    return cache.getRenderer(font, stack.peek().antiAlias);
+    return cache.getRenderer(font, peek().antiAlias);
   }
 
   /**

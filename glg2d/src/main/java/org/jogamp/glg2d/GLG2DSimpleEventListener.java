@@ -134,7 +134,7 @@ public class GLG2DSimpleEventListener implements GLEventListener {
       logicWidth = canvas.getWidth();
       logicHeight = canvas.getHeight();
     } else {
-      System.err.println(drawable + " not recognized. ");
+      System.err.println(drawable.getClass().getName() + " not recognized. ");
     }
   }
 

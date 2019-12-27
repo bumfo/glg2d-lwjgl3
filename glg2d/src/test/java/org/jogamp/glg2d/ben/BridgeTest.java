@@ -11,6 +11,12 @@ import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.Animator;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import java.awt.Color;
 import java.awt.Window;
@@ -18,6 +24,9 @@ import java.lang.reflect.Method;
 
 public final class BridgeTest {
   private void run() {
+    System.setProperty("apple.laf.useScreenMenuBar", "true");
+
+
     JFrame frame = new JFrame("Hello Bridge");
 
     try {
@@ -35,6 +44,17 @@ public final class BridgeTest {
     glWindow.setSize(width, height);
 
     NewtCanvasAWT canvas = new NewtCanvasAWT(glWindow);
+
+    JMenuBar menuBar = new JMenuBar();
+    JMenu fileMenu = new JMenu("File");
+    menuBar.add(fileMenu);
+
+    fileMenu.add(new JMenuItem("Open"));
+    fileMenu.add(new JSeparator());
+    fileMenu.add(new JMenuItem("Close"));
+
+    frame.setJMenuBar(menuBar);
+
     frame.add(canvas);
 
     frame.pack();

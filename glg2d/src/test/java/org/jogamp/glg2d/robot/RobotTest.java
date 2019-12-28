@@ -30,33 +30,14 @@ public final class RobotTest extends JFrame {
 
     JPanel panel = new JPanel() {
       @Override
-      public void paint(Graphics g) {
-        super.paint(g);
-        // g.drawRect(100, 100, 50, 50);
-        Graphics2D g2 = (Graphics2D) g;
-        // g2.draw(new Rectangle2D.Double(100. + 50. * Math.sin(Math.PI * t / 60.), 100., 50., 50.));
-
-        // AffineTransform at = new AffineTransform();
-        //
-        // int sx = 125;
-        // int sy = 88;
-        // int w = 197;
-        // int h = 214;
+      public void paint(Graphics g0) {
+        super.paint(g0);
+        Graphics2D g = (Graphics2D) g0;
 
         AffineTransform at = AffineTransform.getTranslateInstance(.5 * FIELD_WIDTH, .5 * FIELD_HEIGHT);
         at.rotate(Math.PI * t / 60.);
         body.setTransform(at);
-        body.paint(g2);
-
-        // at.translate(.5 * FIELD_WIDTH, .5 * FIELD_HEIGHT);
-        // at.scale(0.18, 0.18);
-        // at.rotate(Math.PI * t / 60.);
-        // at.translate(-.5 * w, -.5 * h);
-        //
-        // AffineTransform saved = g2.getTransform();
-        // g2.transform(at);
-        // g2.drawImage(robotImg, 0, 0, w, h, sx, sy, sx + w, sy + h, null);
-        // g2.setTransform(saved);
+        body.paint(g);
 
         t += 1.;
       }

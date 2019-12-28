@@ -26,7 +26,15 @@ public final class RobotTest extends JFrame {
 
     BufferedImage robotImg = getImage("robot.png");
 
-    RenderImageRegion body = new RenderImageRegion(robotImg, 125, 88, 197, 214, .18);
+    ImageAtlas atlas;
+    try {
+      atlas = ImageAtlas.parse("robot.atlas");
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    ImageAtlas.Region region = atlas.findRegion("body-large");
+    RenderImageRegion body = region.toImageRegion(robotImg, .18);
 
     JPanel panel = new JPanel() {
       @Override

@@ -1,5 +1,6 @@
 package org.jogamp.glg2d.robot;
 
+import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,7 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public final class ImageAtlas {
-  private static final class Region {
+  public static final class Region {
     int sx;
     int sy;
     int w;
@@ -22,6 +23,10 @@ public final class ImageAtlas {
           ", w=" + w +
           ", h=" + h +
           '}';
+    }
+
+    public RenderImageRegion toImageRegion(Image img, double scale) {
+      return new RenderImageRegion(img, sx, sy, w, h, scale);
     }
   }
 

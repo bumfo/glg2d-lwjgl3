@@ -4,25 +4,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public final class ImageAtlas {
   private static final class Region {
-    final String name;
     int sx;
     int sy;
     int w;
     int h;
 
-    private Region(String name) {
-      this.name = name;
-    }
-
     @Override
     public String toString() {
       return "Region{" +
-          "name='" + name + '\'' +
-          ", sx=" + sx +
+          "sx=" + sx +
           ", sy=" + sy +
           ", w=" + w +
           ", h=" + h +
@@ -30,7 +25,23 @@ public final class ImageAtlas {
     }
   }
 
-  public static void parse(String filename) throws IOException {
+  private final Map<String, Region> map;
+
+  private ImageAtlas(Map<String, Region> map) {
+    this.map = map;
+  }
+
+  public Region findRegion(String name) {
+    return map.get(name);
+  }
+
+  @Override
+  public String toString() {
+    return "ImageAtlas" + map;
+  }
+
+  @SuppressWarnings({"resource", "TryFinallyCanBeTryWithResources", "IOResourceOpenedButNotSafelyClosed"})
+  public static ImageAtlas parse(String filename) throws IOException {
     InputStream stream = ImageAtlas.class.getClassLoader().getResourceAsStream(filename);
     if (stream == null) {
       throw new IOException("Invalid filename: " + filename);
@@ -38,7 +49,8 @@ public final class ImageAtlas {
     try {
       BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
       try {
-        ArrayDeque<Region> stack = new ArrayDeque<>();
+        Map<String, Region> map = new LinkedHashMap<>();
+        Region last = null;
         int[] pair = new int[2];
 
         int skip = 5;
@@ -60,7 +72,7 @@ public final class ImageAtlas {
 
                 // System.out.println("property: " + key + ": " + value);
 
-                Region region = stack.peekLast();
+                Region region = last;
                 if (region == null) throw new IllegalStateException();
 
                 switch (key) {
@@ -81,12 +93,12 @@ public final class ImageAtlas {
             } else {
               // System.out.println("region: " + line);
 
-              stack.add(new Region(line.trim()));
+              map.put(line.trim(), last = new Region());
             }
           }
         }
 
-        System.out.println(stack);
+        return new ImageAtlas(map);
       } finally {
         reader.close();
       }
@@ -106,6 +118,8 @@ public final class ImageAtlas {
   }
 
   public static void main(String[] args) throws IOException {
-    parse("robot.atlas");
+    ImageAtlas atlas = parse("robot.atlas");
+
+    System.out.println(atlas);
   }
 }

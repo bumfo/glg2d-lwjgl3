@@ -10,10 +10,10 @@ import java.util.Map;
 
 public final class ImageAtlas {
   public static final class Region {
-    int sx;
-    int sy;
-    int w;
-    int h;
+    private int sx;
+    private int sy;
+    private int w;
+    private int h;
 
     @Override
     public String toString() {

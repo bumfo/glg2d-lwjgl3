@@ -16,14 +16,14 @@
 package org.jogamp.glg2d.impl.gl2;
 
 
-import java.awt.BasicStroke;
-import java.nio.FloatBuffer;
-
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
-
 import org.jogamp.glg2d.VertexBuffer;
 import org.jogamp.glg2d.impl.SimplePathVisitor;
+
+import java.awt.BasicStroke;
+import java.nio.FloatBuffer;
+import java.util.Arrays;
 
 /**
  * Draws a line using the native GL implementation of a line. This is only
@@ -34,6 +34,7 @@ import org.jogamp.glg2d.impl.SimplePathVisitor;
  */
 public class FastLineVisitor extends SimplePathVisitor {
   protected float[] testMatrix = new float[16];
+  protected float[] testColor = new float[4];
 
   protected VertexBuffer buffer = VertexBuffer.getSharedBuffer();
 
@@ -52,7 +53,7 @@ public class FastLineVisitor extends SimplePathVisitor {
   public void setStroke(BasicStroke stroke) {
     gl.glLineWidth(glLineWidth);
     gl.glPointSize(glLineWidth);
-    
+
     /*
      * Not perfect copy of the BasicStroke implementation, but it does get
      * decently close. The pattern is pretty much the same. I think it's pretty
@@ -99,7 +100,7 @@ public class FastLineVisitor extends SimplePathVisitor {
    * takes into account whether or not the transform will blow the line width
    * out of scale and it obvious that we aren't drawing correct corners and line
    * endings.
-   * 
+   *
    * <p>
    * Note: This must be called before {@link #setStroke(BasicStroke)}. If this
    * returns {@code false} then this renderer should not be used.
@@ -112,7 +113,11 @@ public class FastLineVisitor extends SimplePathVisitor {
       return false;
     }
 
+    gl.glGetFloatv(GL2.GL_CURRENT_COLOR, testColor, 0);
+    if (testColor[3] < 1f) return false;
+
     gl.glGetFloatv(GL2.GL_MODELVIEW_MATRIX, testMatrix, 0);
+
 
     float scaleX = Math.abs(testMatrix[0]);
     float scaleY = Math.abs(testMatrix[5]);
@@ -123,9 +128,12 @@ public class FastLineVisitor extends SimplePathVisitor {
     }
 
     float strokeWidth = stroke.getLineWidth();
-
-    // gl line width is in pixels, convert to pixel width
-    glLineWidth = strokeWidth * scaleX * surfaceScale;
+    if (strokeWidth == 0f) { // 0 means minimal supported
+      glLineWidth = 1f;
+    } else {
+      // gl line width is in pixels, convert to pixel width
+      glLineWidth = strokeWidth * scaleX * surfaceScale;
+    }
 
     // we'll only try if it's a thin line
     return glLineWidth <= 2;
@@ -162,7 +170,7 @@ public class FastLineVisitor extends SimplePathVisitor {
       buf.position(p);
       buffer.drawBuffer(gl, GL2.GL_POINTS);
     }
-    
+
     buffer.clear();
   }
 

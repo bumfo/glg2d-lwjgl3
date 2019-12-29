@@ -29,7 +29,7 @@ import org.jogamp.glg2d.impl.SimplePathVisitor;
  * Draws a line using the native GL implementation of a line. This is only
  * appropriate if the width of the line is less than a certain number of pixels
  * (not coordinate units) so that the user cannot see that the join and
- * endpoints are different. See {@link #isValid(BasicStroke)} for a set of
+ * endpoints are different. See {@link #isValid(BasicStroke, float)} for a set of
  * useful criteria.
  */
 public class FastLineVisitor extends SimplePathVisitor {
@@ -105,7 +105,7 @@ public class FastLineVisitor extends SimplePathVisitor {
    * returns {@code false} then this renderer should not be used.
    * </p>
    */
-  public boolean isValid(BasicStroke stroke) {
+  public boolean isValid(BasicStroke stroke, float surfaceScale) {
     // if the dash length is odd, I don't know how to handle that yet
     float[] dash = stroke.getDashArray();
     if (dash != null && (dash.length & 1) == 1) {
@@ -125,7 +125,7 @@ public class FastLineVisitor extends SimplePathVisitor {
     float strokeWidth = stroke.getLineWidth();
 
     // gl line width is in pixels, convert to pixel width
-    glLineWidth = strokeWidth * scaleX;
+    glLineWidth = strokeWidth * scaleX * surfaceScale;
 
     // we'll only try if it's a thin line
     return glLineWidth <= 2;

@@ -16,6 +16,10 @@
 package org.jogamp.glg2d.impl;
 
 
+import org.jogamp.glg2d.GLG2DShapeHelper;
+import org.jogamp.glg2d.GLGraphics2D;
+import org.jogamp.glg2d.PathVisitor;
+
 import java.awt.BasicStroke;
 import java.awt.RenderingHints;
 import java.awt.RenderingHints.Key;
@@ -31,10 +35,6 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import org.jogamp.glg2d.GLG2DShapeHelper;
-import org.jogamp.glg2d.GLGraphics2D;
-import org.jogamp.glg2d.PathVisitor;
-
 public abstract class AbstractShapeHelper implements GLG2DShapeHelper {
   /**
    * We know this is single-threaded, so we can use these as archetypes.
@@ -44,22 +44,28 @@ public abstract class AbstractShapeHelper implements GLG2DShapeHelper {
   protected static final Arc2D.Float ARC = new Arc2D.Float();
   protected static final Rectangle2D.Float RECT = new Rectangle2D.Float();
   protected static final Line2D.Float LINE = new Line2D.Float();
+  public static final BasicStroke DEFAULT_STROKE = new BasicStroke();
 
-  protected Deque<Stroke> strokeStack = new ArrayDeque<Stroke>();
+  protected Deque<StrokeState> strokeStack = new ArrayDeque<StrokeState>();
 
   public AbstractShapeHelper() {
-    strokeStack.push(new BasicStroke());
   }
 
   @Override
   public void setG2D(GLGraphics2D g2d) {
     strokeStack.clear();
-    strokeStack.push(new BasicStroke());
+    strokeStack.push(new StrokeState());
+
+    initStrokeState(g2d);
+  }
+
+  private void initStrokeState(GLGraphics2D g2d) {
+    peek().surfaceScale = 1f * g2d.getSurfaceHeight() / g2d.getLogicalHeight();
   }
 
   @Override
   public void push(GLGraphics2D newG2d) {
-    strokeStack.push(newG2d.getStroke());
+    strokeStack.push(peek().clone());
   }
 
   @Override
@@ -84,13 +90,18 @@ public abstract class AbstractShapeHelper implements GLG2DShapeHelper {
 
   @Override
   public void setStroke(Stroke stroke) {
-    strokeStack.pop();
-    strokeStack.push(stroke);
+    peek().stroke = stroke;
+  }
+
+  protected StrokeState peek() {
+    StrokeState state = strokeStack.peek();
+    assert state != null;
+    return state;
   }
 
   @Override
   public Stroke getStroke() {
-    return strokeStack.peek();
+    return peek().stroke;
   }
 
   @Override
@@ -172,7 +183,8 @@ public abstract class AbstractShapeHelper implements GLG2DShapeHelper {
     if (shape instanceof Rectangle2D ||
         shape instanceof Ellipse2D ||
         shape instanceof Arc2D ||
-        shape instanceof RoundRectangle2D) {
+        shape instanceof RoundRectangle2D)
+    {
       fill(shape, true);
     } else {
       fill(shape, false);
@@ -180,7 +192,7 @@ public abstract class AbstractShapeHelper implements GLG2DShapeHelper {
   }
 
   protected abstract void fill(Shape shape, boolean isDefinitelySimpleConvex);
-  
+
   protected void traceShape(Shape shape, PathVisitor visitor) {
     visitShape(shape, visitor);
   }
@@ -194,46 +206,60 @@ public abstract class AbstractShapeHelper implements GLG2DShapeHelper {
     for (; !iterator.isDone(); iterator.next()) {
       int type = iterator.currentSegment(coords);
       switch (type) {
-      case PathIterator.SEG_MOVETO:
-        visitor.moveTo(coords);
-        break;
+        case PathIterator.SEG_MOVETO:
+          visitor.moveTo(coords);
+          break;
 
-      case PathIterator.SEG_LINETO:
-        visitor.lineTo(coords);
-        break;
+        case PathIterator.SEG_LINETO:
+          visitor.lineTo(coords);
+          break;
 
-      case PathIterator.SEG_QUADTO:
-        visitor.quadTo(previousVertex, coords);
-        break;
+        case PathIterator.SEG_QUADTO:
+          visitor.quadTo(previousVertex, coords);
+          break;
 
-      case PathIterator.SEG_CUBICTO:
-        visitor.cubicTo(previousVertex, coords);
-        break;
+        case PathIterator.SEG_CUBICTO:
+          visitor.cubicTo(previousVertex, coords);
+          break;
 
-      case PathIterator.SEG_CLOSE:
-        visitor.closeLine();
-        break;
+        case PathIterator.SEG_CLOSE:
+          visitor.closeLine();
+          break;
       }
 
       switch (type) {
-      case PathIterator.SEG_LINETO:
-      case PathIterator.SEG_MOVETO:
-        previousVertex[0] = coords[0];
-        previousVertex[1] = coords[1];
-        break;
+        case PathIterator.SEG_LINETO:
+        case PathIterator.SEG_MOVETO:
+          previousVertex[0] = coords[0];
+          previousVertex[1] = coords[1];
+          break;
 
-      case PathIterator.SEG_QUADTO:
-        previousVertex[0] = coords[2];
-        previousVertex[1] = coords[3];
-        break;
+        case PathIterator.SEG_QUADTO:
+          previousVertex[0] = coords[2];
+          previousVertex[1] = coords[3];
+          break;
 
-      case PathIterator.SEG_CUBICTO:
-        previousVertex[0] = coords[4];
-        previousVertex[1] = coords[5];
-        break;
+        case PathIterator.SEG_CUBICTO:
+          previousVertex[0] = coords[4];
+          previousVertex[1] = coords[5];
+          break;
       }
     }
 
     visitor.endPoly();
+  }
+
+  protected static final class StrokeState implements Cloneable {
+    public Stroke stroke = DEFAULT_STROKE;
+    public float surfaceScale = 1f;
+
+    @Override
+    public StrokeState clone() {
+      try {
+        return (StrokeState) super.clone();
+      } catch (CloneNotSupportedException e) {
+        throw new AssertionError(e);
+      }
+    }
   }
 }

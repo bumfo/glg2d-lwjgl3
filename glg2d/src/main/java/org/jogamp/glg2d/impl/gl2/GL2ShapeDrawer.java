@@ -74,7 +74,7 @@ public class GL2ShapeDrawer extends AbstractShapeHelper {
     Stroke stroke = getStroke();
     if (stroke instanceof BasicStroke) {
       BasicStroke basicStroke = (BasicStroke) stroke;
-      if (fastLineVisitor.isValid(basicStroke)) {
+      if (fastLineVisitor.isValid(basicStroke, peek().surfaceScale)) {
         fastLineVisitor.setStroke(basicStroke);
         traceShape(shape, fastLineVisitor);
         return;

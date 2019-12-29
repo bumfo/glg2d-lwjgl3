@@ -23,7 +23,6 @@ import org.jogamp.glg2d.impl.SimplePathVisitor;
 
 import java.awt.BasicStroke;
 import java.nio.FloatBuffer;
-import java.util.Arrays;
 
 /**
  * Draws a line using the native GL implementation of a line. This is only

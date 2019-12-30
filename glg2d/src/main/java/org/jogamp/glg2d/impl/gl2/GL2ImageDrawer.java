@@ -63,6 +63,8 @@ public class GL2ImageDrawer extends AbstractImageHelper {
     }
 
     g2d.getColorHelper().setColorRespectComposite(bgcolor == null ? Color.white : bgcolor);
+
+    gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
   }
 
   @Override

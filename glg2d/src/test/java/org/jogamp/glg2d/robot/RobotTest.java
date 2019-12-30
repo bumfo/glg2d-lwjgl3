@@ -33,8 +33,9 @@ public final class RobotTest extends JFrame {
       throw new RuntimeException(e);
     }
 
-    ImageAtlas.Region region = atlas.findRegion("body-large");
-    RenderImageRegion body = region.toImageRegion(robotImg, .18);
+    RenderImageRegion body = atlas.findRegion("body-large").toImageRegion(robotImg, .18);
+    RenderImageRegion gun = atlas.findRegion("turret9").toImageRegion(robotImg, .18);
+    RenderImageRegion radar = atlas.findRegion("radar11").toImageRegion(robotImg, .18);
 
     JPanel panel = new JPanel() {
       @Override
@@ -46,6 +47,12 @@ public final class RobotTest extends JFrame {
         at.rotate(Math.PI * t / 60.);
         body.setTransform(at);
         body.paint(g);
+
+        gun.setTransform(at);
+        gun.paint(g);
+
+        radar.setTransform(at);
+        radar.paint(g);
 
         t += 1.;
       }

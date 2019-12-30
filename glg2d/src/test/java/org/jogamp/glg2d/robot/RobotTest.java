@@ -11,14 +11,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
 public final class RobotTest extends JFrame {
-  private static final int FIELD_WIDTH = 800;
-  private static final int FIELD_HEIGHT = 600;
   private double t = 0.;
 
   private RobotTest() {
@@ -33,9 +33,11 @@ public final class RobotTest extends JFrame {
       throw new RuntimeException(e);
     }
 
-    RenderImageRegion body = atlas.findRegion("body-large").toImageRegion(robotImg, .18);
-    RenderImageRegion gun = atlas.findRegion("turret9").toImageRegion(robotImg, .18);
-    RenderImageRegion radar = atlas.findRegion("radar11").toImageRegion(robotImg, .18);
+    double texScale = .18;
+
+    RenderImageRegion body = atlas.findRegion("body-large").toImageRegion(robotImg, texScale);
+    RenderImageRegion gun = atlas.findRegion("turret9").toImageRegion(robotImg, texScale);
+    RenderImageRegion radar = atlas.findRegion("radar11").toImageRegion(robotImg, texScale);
 
     JPanel panel = new JPanel() {
       @Override
@@ -43,8 +45,12 @@ public final class RobotTest extends JFrame {
         super.paint(g0);
         Graphics2D g = (Graphics2D) g0;
 
-        AffineTransform at = AffineTransform.getTranslateInstance(.5 * FIELD_WIDTH, .5 * FIELD_HEIGHT);
+        AffineTransform at = AffineTransform.getTranslateInstance(.5 * getWidth(), .5 * getHeight());
         at.rotate(Math.PI * t / 60.);
+
+        double s = 1. + 9. * (1. + Math.sin(t / 60));
+        at.scale(s, s);
+
         body.setTransform(at);
         body.paint(g);
 
@@ -59,7 +65,7 @@ public final class RobotTest extends JFrame {
     };
     panel.setBackground(Color.BLACK);
 
-    panel.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
+    panel.setPreferredSize(new Dimension(800, 600));
     GLG2DCanvas canvas = new GLG2DCanvas(panel);
     canvas.setGLDrawing(true);
 
@@ -72,6 +78,19 @@ public final class RobotTest extends JFrame {
     Animator animator = new Animator();
     animator.add(canvas.getGLDrawable());
     animator.start();
+
+    addKeyListener(new KeyAdapter() {
+      @Override
+      public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+          if (animator.isPaused()) {
+            animator.resume();
+          } else {
+            animator.pause();
+          }
+        }
+      }
+    });
   }
 
   /**

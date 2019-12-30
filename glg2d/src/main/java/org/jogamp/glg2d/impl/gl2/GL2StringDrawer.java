@@ -26,7 +26,6 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.text.AttributedCharacterIterator;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -67,23 +66,31 @@ public class GL2StringDrawer extends AbstractTextDrawer {
   @Override
   public void drawString(String string, float x, float y) {
     Font font = getFont();
-    float surfaceScale = peek().surfaceScale;
-    if (surfaceScale != 1f) {
-      font = font.deriveFont(font.getSize() * surfaceScale);
+    float toPixScale = peek().surfaceScale;
+
+    boolean alignPixel = peek().alignPixel;
+    if (alignPixel) {
+      GL2 gl = g2d.getGLContext().getGL().getGL2();
+      gl.glGetFloatv(GL2.GL_MODELVIEW_MATRIX, testMatrix, 0);
+      FloatUtil.invertMatrix(testMatrix, testMatrix2);
+
+      float scaleX = Math.abs(testMatrix[0]);
+      float scaleY = Math.abs(testMatrix[5]);
+
+      toPixScale *= Math.max(scaleX, scaleY);
+    }
+
+    if (toPixScale != 1f) {
+      font = font.deriveFont(font.getSize() * toPixScale);
     }
     TextRenderer renderer = getRenderer(font);
 
     begin(renderer);
 
-
     float drawX = x;
     float drawY = g2d.getSurfaceHeight() - y;
 
-    if (peek().alignPixel) {
-      GL2 gl = g2d.getGLContext().getGL().getGL2();
-      gl.glGetFloatv(GL2.GL_MODELVIEW_MATRIX, testMatrix, 0);
-      FloatUtil.invertMatrix(testMatrix, testMatrix2);
-
+    if (alignPixel) {
       tmpV0[0] = drawX;
       tmpV0[1] = drawY;
       tmpV0[2] = 0f;
@@ -111,7 +118,7 @@ public class GL2StringDrawer extends AbstractTextDrawer {
       drawY = tmpV0[1];
     }
 
-    renderer.draw3D(string, drawX, drawY, 0, 1f / surfaceScale);
+    renderer.draw3D(string, drawX, drawY, 0, 1f / toPixScale);
     end(renderer);
   }
 

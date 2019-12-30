@@ -68,11 +68,11 @@ public class GL2StringDrawer extends AbstractTextDrawer {
     Font font = getFont();
     float toPixScale = peek().surfaceScale;
 
-    boolean alignPixel = peek().alignPixel;
+    final boolean alignPixel = peek().alignPixel;
+    GL2 gl = null;
     if (alignPixel) {
-      GL2 gl = g2d.getGLContext().getGL().getGL2();
+      gl = g2d.getGLContext().getGL().getGL2();
       gl.glGetFloatv(GL2.GL_MODELVIEW_MATRIX, testMatrix, 0);
-      FloatUtil.invertMatrix(testMatrix, testMatrix2);
 
       float scaleX = Math.abs(testMatrix[0]);
       float scaleY = Math.abs(testMatrix[5]);
@@ -91,28 +91,10 @@ public class GL2StringDrawer extends AbstractTextDrawer {
     float drawY = g2d.getSurfaceHeight() - y;
 
     if (alignPixel) {
-      tmpV0[0] = drawX;
-      tmpV0[1] = drawY;
-      tmpV0[2] = 0f;
-      tmpV0[3] = 1f;
+      gl.glGetFloatv(GL2.GL_MODELVIEW_MATRIX, testMatrix, 0);
+      FloatUtil.invertMatrix(testMatrix, testMatrix2);
 
-      // String v0 = Arrays.toString(tmpV0);
-
-      FloatUtil.multMatrixVec(testMatrix, tmpV0, tmpV1);
-
-      // String v1 = Arrays.toString(tmpV1);
-
-      tmpV1[0] = Math.round(tmpV1[0]);
-      tmpV1[1] = Math.round(tmpV1[1]);
-
-      FloatUtil.multMatrixVec(testMatrix2, tmpV1, tmpV0);
-
-      // System.out.println(v0 + "; " +
-      //     v1 + "; " +
-      //     Arrays.toString(tmpV1) + "; " +
-      //     Arrays.toString(tmpV0));
-      //
-      // System.out.println(FloatUtil.matrixToString(null, "", "%f", testMatrix, 0, 4, 4, true));
+      alignPixel(drawX, drawY);
 
       drawX = tmpV0[0];
       drawY = tmpV0[1];
@@ -120,6 +102,33 @@ public class GL2StringDrawer extends AbstractTextDrawer {
 
     renderer.draw3D(string, drawX, drawY, 0, 1f / toPixScale);
     end(renderer);
+  }
+
+  private void alignPixel(float drawX, float drawY) {
+    tmpV0[0] = drawX;
+    tmpV0[1] = drawY;
+    tmpV0[2] = 0f;
+    tmpV0[3] = 1f;
+
+    // String v0 = Arrays.toString(tmpV0);
+
+    FloatUtil.multMatrixVec(testMatrix, tmpV0, tmpV1);
+
+    // String v1 = Arrays.toString(tmpV1);
+
+    tmpV1[0] = Math.round(tmpV1[0]);
+    tmpV1[1] = Math.round(tmpV1[1]);
+
+    // System.out.println(")"+Arrays.toString(tmpV1));
+
+    FloatUtil.multMatrixVec(testMatrix2, tmpV1, tmpV0);
+
+    // System.out.println(v0 + "; " +
+    //     v1 + "; " +
+    //     Arrays.toString(tmpV1) + "; " +
+    //     Arrays.toString(tmpV0));
+
+    // System.out.println(FloatUtil.matrixToString(null, "", "%f", testMatrix, 0, 4, 4, true));
   }
 
   protected TextRenderer getRenderer(Font font) {

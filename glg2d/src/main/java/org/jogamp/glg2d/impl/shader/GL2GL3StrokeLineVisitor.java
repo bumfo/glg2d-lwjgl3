@@ -61,7 +61,7 @@ public class GL2GL3StrokeLineVisitor extends SimplePathVisitor implements Shader
   }
 
   @Override
-  public void setStroke(BasicStroke stroke) {
+  public void setStroke(BasicStroke stroke, float surfaceScale) {
     this.stroke = stroke;
   }
 

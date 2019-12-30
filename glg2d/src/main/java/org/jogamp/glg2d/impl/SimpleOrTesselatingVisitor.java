@@ -105,7 +105,7 @@ public class SimpleOrTesselatingVisitor extends SimplePathVisitor {
   }
 
   @Override
-  public void setStroke(BasicStroke stroke) {
+  public void setStroke(BasicStroke stroke, float surfaceScale) {
     // this is only used to fill, no need to consider stroke
   }
 

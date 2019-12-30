@@ -6,9 +6,12 @@ import org.jogamp.glg2d.GLG2DCanvas;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 
 public final class CanvasTest extends JFrame {
@@ -21,6 +24,11 @@ public final class CanvasTest extends JFrame {
         super.paint(g);
         // g.drawRect(100, 100, 50, 50);
         Graphics2D g2 = (Graphics2D) g;
+
+        g2.setStroke(new BasicStroke(0f));
+        // g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+
+        g2.setColor(new Color(1f, 0f, 1f, .9f));
         g2.draw(new Rectangle2D.Double(100. + 50. * Math.sin(Math.PI * t / 60.), 100., 50., 50.));
 
         t += 1.;

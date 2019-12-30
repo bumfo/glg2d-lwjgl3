@@ -1,0 +1,27 @@
+
+robot.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+body-large
+  rotate: false
+  xy: 125, 88
+  size: 197, 214
+  orig: 197, 214
+  offset: 0, 0
+  index: -1
+radar11
+  rotate: false
+  xy: 324, 206
+  size: 151, 96
+  orig: 151, 96
+  offset: 0, 0
+  index: -1
+turret9
+  rotate: false
+  xy: 2, 2
+  size: 121, 300
+  orig: 121, 300
+  offset: 0, 0
+  index: -1

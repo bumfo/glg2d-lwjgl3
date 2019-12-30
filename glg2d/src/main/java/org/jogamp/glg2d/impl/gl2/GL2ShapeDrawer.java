@@ -17,7 +17,6 @@ package org.jogamp.glg2d.impl.gl2;
 
 
 import java.awt.BasicStroke;
-import java.awt.RenderingHints;
 import java.awt.RenderingHints.Key;
 import java.awt.Shape;
 import java.awt.Stroke;
@@ -74,12 +73,13 @@ public class GL2ShapeDrawer extends AbstractShapeHelper {
     Stroke stroke = getStroke();
     if (stroke instanceof BasicStroke) {
       BasicStroke basicStroke = (BasicStroke) stroke;
-      if (fastLineVisitor.isValid(basicStroke)) {
-        fastLineVisitor.setStroke(basicStroke);
+      float surfaceScale = peek().surfaceScale;
+      if (fastLineVisitor.isValid(basicStroke, surfaceScale)) {
+        fastLineVisitor.setStroke(basicStroke, surfaceScale);
         traceShape(shape, fastLineVisitor);
         return;
       } else if (basicStroke.getDashArray() == null) {
-        simpleStrokeVisitor.setStroke(basicStroke);
+        simpleStrokeVisitor.setStroke(basicStroke, surfaceScale);
         traceShape(shape, simpleStrokeVisitor);
         return;
       }

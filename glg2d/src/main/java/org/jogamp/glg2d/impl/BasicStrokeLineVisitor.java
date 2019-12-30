@@ -53,9 +53,11 @@ public abstract class BasicStrokeLineVisitor extends SimplePathVisitor {
   protected FloatBuffer tmpBuffer = Buffers.newDirectFloatBuffer(1024);
 
   @Override
-  public void setStroke(BasicStroke stroke) {
+  public void setStroke(BasicStroke stroke, float surfaceScale) {
     lineJoin = stroke.getLineJoin();
-    lineOffset = stroke.getLineWidth() / 2;
+    float lineWidth = stroke.getLineWidth();
+    if (lineWidth == 0f) lineWidth = 1f / surfaceScale;
+    lineOffset = lineWidth / 2;
     endCap = stroke.getEndCap();
     miterLimit = stroke.getMiterLimit();
 

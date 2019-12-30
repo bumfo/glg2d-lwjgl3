@@ -54,8 +54,6 @@ public abstract class AbstractTextDrawer implements GLG2DTextHelper {
   @Override
   public void push(GLGraphics2D newG2d) {
     stack.push(peek().clone());
-
-    initFontState(g2d);
   }
 
   @Override

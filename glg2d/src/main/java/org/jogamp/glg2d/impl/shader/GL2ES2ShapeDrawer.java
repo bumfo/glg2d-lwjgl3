@@ -61,7 +61,8 @@ public class GL2ES2ShapeDrawer extends AbstractShapeHelper {
   public void draw(Shape shape) {
     Stroke stroke = getStroke();
     if (stroke instanceof BasicStroke) {
-      lineVisitor.setStroke((BasicStroke) stroke);
+      float surfaceScale = peek().surfaceScale;
+      lineVisitor.setStroke((BasicStroke) stroke, surfaceScale);
       traceShape(shape, lineVisitor);
     } else {
       fill(stroke.createStrokedShape(shape), false);

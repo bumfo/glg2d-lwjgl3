@@ -51,7 +51,7 @@ public abstract class AbstractTesselatorVisitor extends SimplePathVisitor {
   }
 
   @Override
-  public void setStroke(BasicStroke stroke) {
+  public void setStroke(BasicStroke stroke, float surfaceScale) {
     // nop
   }
 

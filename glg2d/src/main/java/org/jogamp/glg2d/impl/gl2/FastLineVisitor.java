@@ -16,24 +16,25 @@
 package org.jogamp.glg2d.impl.gl2;
 
 
-import java.awt.BasicStroke;
-import java.nio.FloatBuffer;
-
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
-
+import org.jogamp.glg2d.PathVisitor;
 import org.jogamp.glg2d.VertexBuffer;
 import org.jogamp.glg2d.impl.SimplePathVisitor;
+
+import java.awt.BasicStroke;
+import java.nio.FloatBuffer;
 
 /**
  * Draws a line using the native GL implementation of a line. This is only
  * appropriate if the width of the line is less than a certain number of pixels
  * (not coordinate units) so that the user cannot see that the join and
- * endpoints are different. See {@link #isValid(BasicStroke)} for a set of
+ * endpoints are different. See {@link #isValid(BasicStroke, float)} for a set of
  * useful criteria.
  */
 public class FastLineVisitor extends SimplePathVisitor {
   protected float[] testMatrix = new float[16];
+  protected float[] testColor = new float[4];
 
   protected VertexBuffer buffer = VertexBuffer.getSharedBuffer();
 
@@ -49,10 +50,10 @@ public class FastLineVisitor extends SimplePathVisitor {
   }
 
   @Override
-  public void setStroke(BasicStroke stroke) {
+  public void setStroke(BasicStroke stroke, float surfaceScale) {
     gl.glLineWidth(glLineWidth);
     gl.glPointSize(glLineWidth);
-    
+
     /*
      * Not perfect copy of the BasicStroke implementation, but it does get
      * decently close. The pattern is pretty much the same. I think it's pretty
@@ -99,20 +100,24 @@ public class FastLineVisitor extends SimplePathVisitor {
    * takes into account whether or not the transform will blow the line width
    * out of scale and it obvious that we aren't drawing correct corners and line
    * endings.
-   * 
+   *
    * <p>
-   * Note: This must be called before {@link #setStroke(BasicStroke)}. If this
+   * Note: This must be called before {@link PathVisitor#setStroke(BasicStroke, float)}. If this
    * returns {@code false} then this renderer should not be used.
    * </p>
    */
-  public boolean isValid(BasicStroke stroke) {
+  public boolean isValid(BasicStroke stroke, float surfaceScale) {
     // if the dash length is odd, I don't know how to handle that yet
     float[] dash = stroke.getDashArray();
     if (dash != null && (dash.length & 1) == 1) {
       return false;
     }
 
+    gl.glGetFloatv(GL2.GL_CURRENT_COLOR, testColor, 0);
+    if (testColor[3] < 1f) return false;
+
     gl.glGetFloatv(GL2.GL_MODELVIEW_MATRIX, testMatrix, 0);
+
 
     float scaleX = Math.abs(testMatrix[0]);
     float scaleY = Math.abs(testMatrix[5]);
@@ -123,9 +128,12 @@ public class FastLineVisitor extends SimplePathVisitor {
     }
 
     float strokeWidth = stroke.getLineWidth();
-
-    // gl line width is in pixels, convert to pixel width
-    glLineWidth = strokeWidth * scaleX;
+    if (strokeWidth == 0f) { // 0 means minimal supported
+      glLineWidth = 1f;
+    } else {
+      // gl line width is in pixels, convert to pixel width
+      glLineWidth = strokeWidth * scaleX * surfaceScale;
+    }
 
     // we'll only try if it's a thin line
     return glLineWidth <= 2;
@@ -162,7 +170,7 @@ public class FastLineVisitor extends SimplePathVisitor {
       buf.position(p);
       buffer.drawBuffer(gl, GL2.GL_POINTS);
     }
-    
+
     buffer.clear();
   }
 

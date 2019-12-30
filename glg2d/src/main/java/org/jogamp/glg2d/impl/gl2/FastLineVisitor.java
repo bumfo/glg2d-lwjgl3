@@ -18,6 +18,7 @@ package org.jogamp.glg2d.impl.gl2;
 
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
+import org.jogamp.glg2d.PathVisitor;
 import org.jogamp.glg2d.VertexBuffer;
 import org.jogamp.glg2d.impl.SimplePathVisitor;
 
@@ -49,7 +50,7 @@ public class FastLineVisitor extends SimplePathVisitor {
   }
 
   @Override
-  public void setStroke(BasicStroke stroke) {
+  public void setStroke(BasicStroke stroke, float surfaceScale) {
     gl.glLineWidth(glLineWidth);
     gl.glPointSize(glLineWidth);
 
@@ -101,7 +102,7 @@ public class FastLineVisitor extends SimplePathVisitor {
    * endings.
    *
    * <p>
-   * Note: This must be called before {@link #setStroke(BasicStroke)}. If this
+   * Note: This must be called before {@link PathVisitor#setStroke(BasicStroke, float)}. If this
    * returns {@code false} then this renderer should not be used.
    * </p>
    */

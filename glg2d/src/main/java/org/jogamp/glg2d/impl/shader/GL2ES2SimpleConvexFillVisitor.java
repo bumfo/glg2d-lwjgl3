@@ -58,7 +58,7 @@ public class GL2ES2SimpleConvexFillVisitor extends SimplePathVisitor implements 
   }
 
   @Override
-  public void setStroke(BasicStroke stroke) {
+  public void setStroke(BasicStroke stroke, float surfaceScale) {
     // nop
   }
 

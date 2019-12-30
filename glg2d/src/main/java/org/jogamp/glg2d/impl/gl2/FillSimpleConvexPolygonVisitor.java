@@ -39,7 +39,7 @@ public class FillSimpleConvexPolygonVisitor extends SimplePathVisitor {
   }
 
   @Override
-  public void setStroke(BasicStroke stroke) {
+  public void setStroke(BasicStroke stroke, float surfaceScale) {
     // nop
   }
 

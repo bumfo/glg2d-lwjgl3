@@ -45,7 +45,7 @@ public interface PathVisitor {
    * Sets the stroke to be used when drawing a path. It's not needed for
    * visitors that fill.
    */
-  void setStroke(BasicStroke stroke);
+  void setStroke(BasicStroke stroke, float surfaceScale);
 
   /**
    * Specifies the starting location for a new subpath.

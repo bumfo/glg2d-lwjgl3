@@ -55,8 +55,8 @@ public class GL2ES2StrokeLineVisitor extends BasicStrokeLineVisitor implements S
   }
 
   @Override
-  public void setStroke(BasicStroke stroke) {
-    super.setStroke(stroke);
+  public void setStroke(BasicStroke stroke, float surfaceScale) {
+    super.setStroke(stroke, surfaceScale);
   }
 
   @Override

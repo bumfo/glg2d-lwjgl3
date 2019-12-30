@@ -110,26 +110,13 @@ public class GL2StringDrawer extends AbstractTextDrawer {
     tmpV0[2] = 0f;
     tmpV0[3] = 1f;
 
-    // String v0 = Arrays.toString(tmpV0);
-
     FloatUtil.multMatrixVec(testMatrix, tmpV0, tmpV1);
-
-    // String v1 = Arrays.toString(tmpV1);
 
     tmpV1[0] = Math.round(tmpV1[0]);
     tmpV1[1] = Math.round(tmpV1[1]);
 
-    // System.out.println(")"+Arrays.toString(tmpV1));
-
     FloatUtil.multMatrixVec(testMatrix2, tmpV1, tmpV0);
-
-    // System.out.println(v0 + "; " +
-    //     v1 + "; " +
-    //     Arrays.toString(tmpV1) + "; " +
-    //     Arrays.toString(tmpV0));
-
-    // System.out.println(FloatUtil.matrixToString(null, "", "%f", testMatrix, 0, 4, 4, true));
-  }
+}
 
   protected TextRenderer getRenderer(Font font) {
     return cache.getRenderer(font, peek().antiAlias);

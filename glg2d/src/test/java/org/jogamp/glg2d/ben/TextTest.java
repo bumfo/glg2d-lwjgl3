@@ -29,8 +29,7 @@ public final class TextTest {
       Class<?> util = Class.forName("com.apple.eawt.FullScreenUtilities");
       Method method = util.getMethod("setWindowCanFullScreen", Window.class, Boolean.TYPE);
       method.invoke(util, frame, true);
-    } catch (Throwable ex) {
-      ex.printStackTrace();
+    } catch (Throwable ignore) {
     }
 
     frame.setBackground(Color.BLACK);

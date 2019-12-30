@@ -16,23 +16,27 @@
 package org.jogamp.glg2d.impl.gl2;
 
 
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
+import com.jogamp.opengl.math.FloatUtil;
+import com.jogamp.opengl.util.awt.TextRenderer;
+import org.jogamp.glg2d.impl.AbstractTextDrawer;
+
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.text.AttributedCharacterIterator;
+import java.util.Arrays;
 import java.util.HashMap;
-
-import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
-
-import org.jogamp.glg2d.impl.AbstractTextDrawer;
-
-import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**
  * Draws text for the {@code GLGraphics2D} class.
  */
 public class GL2StringDrawer extends AbstractTextDrawer {
+  protected final float[] testMatrix = new float[16];
+  protected final float[] testMatrix2 = new float[16];
+  protected final float[] vIn = new float[4];
+  protected final float[] vOut = new float[4];
   protected FontRenderCache cache = new FontRenderCache();
 
   @Override
@@ -41,12 +45,12 @@ public class GL2StringDrawer extends AbstractTextDrawer {
   }
 
   @Override
-  public void drawString(AttributedCharacterIterator iterator, float x, float y) {
-    drawString(iterator, (int) x, (int) y);
+  public void drawString(AttributedCharacterIterator iterator, int x, int y) {
+    drawString(iterator, (float) x, (float) y);
   }
 
   @Override
-  public void drawString(AttributedCharacterIterator iterator, int x, int y) {
+  public void drawString(AttributedCharacterIterator iterator, float x, float y) {
     StringBuilder builder = new StringBuilder(iterator.getEndIndex() - iterator.getBeginIndex());
     while (iterator.next() != AttributedCharacterIterator.DONE) {
       builder.append(iterator.current());
@@ -56,12 +60,12 @@ public class GL2StringDrawer extends AbstractTextDrawer {
   }
 
   @Override
-  public void drawString(String string, float x, float y) {
-    drawString(string, (int) x, (int) y);
+  public void drawString(String string, int x, int y) {
+    drawString(string, (float) x, (float) y);
   }
 
   @Override
-  public void drawString(String string, int x, int y) {
+  public void drawString(String string, float x, float y) {
     Font font = getFont();
     float surfaceScale = peek().surfaceScale;
     if (surfaceScale != 1f) {
@@ -70,7 +74,37 @@ public class GL2StringDrawer extends AbstractTextDrawer {
     TextRenderer renderer = getRenderer(font);
 
     begin(renderer);
-    renderer.draw3D(string, x, g2d.getSurfaceHeight() - y, 0, 1f / surfaceScale);
+
+
+    float drawX = x;
+    float drawY = g2d.getSurfaceHeight() - y;
+
+    if (peek().alignPixel) {
+      GL2 gl = g2d.getGLContext().getGL().getGL2();
+      gl.glGetFloatv(GL2.GL_MODELVIEW_MATRIX, testMatrix, 0);
+
+      vIn[0] = drawX;
+      vIn[1] = drawY;
+      vIn[2] = 0f;
+      vIn[3] = 0f;
+      FloatUtil.multMatrixVec(testMatrix, vIn, vOut);
+
+      vIn[0] = Math.round(vOut[0]);
+      vIn[1] = Math.round(vOut[1]);
+      vIn[2] = 0f;
+      vIn[3] = 0f;
+
+      FloatUtil.invertMatrix(testMatrix, testMatrix2);
+
+      FloatUtil.multMatrixVec(testMatrix2, vIn, vOut);
+
+      System.out.println(Arrays.toString(vOut));
+
+      drawX = vOut[0];
+      drawY = vOut[1];
+    }
+
+    renderer.draw3D(string, drawX, drawY, 0, 1f / surfaceScale);
     end(renderer);
   }
 

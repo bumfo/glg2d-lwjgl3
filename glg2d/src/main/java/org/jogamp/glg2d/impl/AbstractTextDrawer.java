@@ -135,6 +135,7 @@ public abstract class AbstractTextDrawer implements GLG2DTextHelper {
     public Font font = DEFAULT_FONT;
     public boolean antiAlias = true;
     public float surfaceScale = 1f;
+    public boolean alignPixel = true;
 
     @Override
     public FontState clone() {

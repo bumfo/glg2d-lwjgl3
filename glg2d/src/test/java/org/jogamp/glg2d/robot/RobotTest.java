@@ -35,7 +35,7 @@ public final class RobotTest extends JFrame {
 
     double texScale = .18;
 
-    RenderImageRegion body = atlas.findRegion("body-large").toImageRegion(robotImg, texScale);
+    RenderImageRegion body = atlas.findRegion("body-large1").toImageRegion(robotImg, texScale);
     RenderImageRegion gun = atlas.findRegion("turret9").toImageRegion(robotImg, texScale);
     RenderImageRegion radar = atlas.findRegion("radar11").toImageRegion(robotImg, texScale);
 

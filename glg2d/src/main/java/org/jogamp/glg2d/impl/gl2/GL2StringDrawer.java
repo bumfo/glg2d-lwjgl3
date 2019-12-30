@@ -35,8 +35,8 @@ import java.util.HashMap;
 public class GL2StringDrawer extends AbstractTextDrawer {
   protected final float[] testMatrix = new float[16];
   protected final float[] testMatrix2 = new float[16];
-  protected final float[] vIn = new float[4];
-  protected final float[] vOut = new float[4];
+  protected final float[] tmpV0 = new float[4];
+  protected final float[] tmpV1 = new float[4];
   protected FontRenderCache cache = new FontRenderCache();
 
   @Override
@@ -82,26 +82,33 @@ public class GL2StringDrawer extends AbstractTextDrawer {
     if (peek().alignPixel) {
       GL2 gl = g2d.getGLContext().getGL().getGL2();
       gl.glGetFloatv(GL2.GL_MODELVIEW_MATRIX, testMatrix, 0);
-
-      vIn[0] = drawX;
-      vIn[1] = drawY;
-      vIn[2] = 0f;
-      vIn[3] = 0f;
-      FloatUtil.multMatrixVec(testMatrix, vIn, vOut);
-
-      vIn[0] = Math.round(vOut[0]);
-      vIn[1] = Math.round(vOut[1]);
-      vIn[2] = 0f;
-      vIn[3] = 0f;
-
       FloatUtil.invertMatrix(testMatrix, testMatrix2);
 
-      FloatUtil.multMatrixVec(testMatrix2, vIn, vOut);
+      tmpV0[0] = drawX;
+      tmpV0[1] = drawY;
+      tmpV0[2] = 0f;
+      tmpV0[3] = 1f;
 
-      System.out.println(Arrays.toString(vOut));
+      // String v0 = Arrays.toString(tmpV0);
 
-      drawX = vOut[0];
-      drawY = vOut[1];
+      FloatUtil.multMatrixVec(testMatrix, tmpV0, tmpV1);
+
+      // String v1 = Arrays.toString(tmpV1);
+
+      tmpV1[0] = Math.round(tmpV1[0]);
+      tmpV1[1] = Math.round(tmpV1[1]);
+
+      FloatUtil.multMatrixVec(testMatrix2, tmpV1, tmpV0);
+
+      // System.out.println(v0 + "; " +
+      //     v1 + "; " +
+      //     Arrays.toString(tmpV1) + "; " +
+      //     Arrays.toString(tmpV0));
+      //
+      // System.out.println(FloatUtil.matrixToString(null, "", "%f", testMatrix, 0, 4, 4, true));
+
+      drawX = tmpV0[0];
+      drawY = tmpV0[1];
     }
 
     renderer.draw3D(string, drawX, drawY, 0, 1f / surfaceScale);

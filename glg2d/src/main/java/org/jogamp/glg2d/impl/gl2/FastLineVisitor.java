@@ -33,8 +33,8 @@ import java.nio.FloatBuffer;
  * useful criteria.
  */
 public class FastLineVisitor extends SimplePathVisitor {
-  protected float[] testMatrix = new float[16];
-  protected float[] testColor = new float[4];
+  protected final float[] testMatrix = new float[16];
+  protected final float[] testColor = new float[4];
 
   protected VertexBuffer buffer = VertexBuffer.getSharedBuffer();
 

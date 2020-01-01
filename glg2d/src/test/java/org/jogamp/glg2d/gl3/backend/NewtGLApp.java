@@ -6,7 +6,6 @@ import com.jogamp.newt.event.WindowEvent;
 import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
-import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.Animator;
 
 public final class NewtGLApp implements GLApp {
@@ -15,20 +14,7 @@ public final class NewtGLApp implements GLApp {
 
   @Override
   public void setup(GLConfig config, GLEventListener listener) {
-    GLCapabilities caps = config.glCapabilities;
-    if (caps == null) {
-      GLProfile glProfile = GLProfile.get(config.USE_GL3 ? GLProfile.GL3 : GLProfile.GL2);
-      caps = new GLCapabilities(glProfile);
-      caps.setRedBits(8);
-      caps.setGreenBits(8);
-      caps.setBlueBits(8);
-      caps.setAlphaBits(8);
-      caps.setNumSamples(4);
-      caps.setSampleBuffers(true);
-      caps.setDoubleBuffered(true);
-      caps.setHardwareAccelerated(true);
-      caps.setBackgroundOpaque(false);
-    }
+    GLCapabilities caps = Backends.getGlCapabilities(config);
 
     window = GLWindow.create(caps);
 

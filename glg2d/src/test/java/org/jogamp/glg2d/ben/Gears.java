@@ -16,6 +16,8 @@ import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.Animator;
 
+import java.awt.Dimension;
+
 /**
  * Gears.java <BR>
  * author: Brian Paul (converted to Java by Ron Cemer and Sven Gothel) <P>
@@ -40,8 +42,8 @@ public class Gears implements GLEventListener {
     // boolean firstUIActionOnProcess = 0==args.length || !args[0].equals("NotFirstUIActionOnProcess") ;
 
     java.awt.Frame frame = new java.awt.Frame("Gear Demo");
-    frame.setSize(300, 300);
-    frame.setLayout(new java.awt.BorderLayout());
+    // frame.setSize(300, 300);
+    // frame.setLayout(new java.awt.BorderLayout());
 
     final Animator animator = new Animator();
     frame.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -67,10 +69,14 @@ public class Gears implements GLEventListener {
 
     final Gears gears = new Gears();
     canvas.addGLEventListener(gears);
+    canvas.setPreferredSize(new Dimension(300, 300));
 
-    frame.add(canvas, java.awt.BorderLayout.CENTER);
+    frame.add(canvas);
+    // frame.add(canvas, java.awt.BorderLayout.CENTER);
     frame.validate();
 
+    frame.pack();
+    frame.setLocationRelativeTo(null);
     frame.setVisible(true);
     animator.start();
   }

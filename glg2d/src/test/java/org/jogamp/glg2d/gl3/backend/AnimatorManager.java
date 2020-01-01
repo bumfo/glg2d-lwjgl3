@@ -20,5 +20,6 @@ final class AnimatorManager {
 
     animator.stop();
     animator.remove(drawable);
+    animator = null;
   }
 }

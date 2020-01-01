@@ -11,7 +11,7 @@ final class GLWindowManager extends WindowAdapter {
   private volatile boolean destroyed = false;
   private GLWindow window;
 
-  AnimatorManager animatorManager;
+  private AnimatorManager animatorManager;
 
   private final boolean isAWT;
 
@@ -42,7 +42,7 @@ final class GLWindowManager extends WindowAdapter {
         if (destroyed) return;
 
         task.drainPermits();
-        animatorManager.animator.resume();
+        animatorManager.resume();
       }
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();

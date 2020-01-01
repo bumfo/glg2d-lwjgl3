@@ -5,7 +5,7 @@ import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.AnimatorBase;
 
 final class AnimatorManager {
-  AnimatorBase animator;
+  private AnimatorBase animator;
   private boolean disposed;
 
   void init(GLAutoDrawable drawable) {
@@ -22,5 +22,13 @@ final class AnimatorManager {
     animator.stop();
     animator.remove(drawable);
     animator = null;
+  }
+
+  void pause() {
+    animator.pause();
+  }
+
+  void resume() {
+    animator.resume();
   }
 }

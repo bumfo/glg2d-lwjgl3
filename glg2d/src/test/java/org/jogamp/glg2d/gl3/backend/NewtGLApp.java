@@ -17,7 +17,7 @@ public final class NewtGLApp implements GLApp {
   public void setup(GLConfig config, GLEventListener listener) {
     GLCapabilities caps = config.glCapabilities;
     if (caps == null) {
-      GLProfile glProfile = GLProfile.get(GLProfile.GL3);
+      GLProfile glProfile = GLProfile.get(config.USE_GL3 ? GLProfile.GL3 : GLProfile.GL2);
       caps = new GLCapabilities(glProfile);
       caps.setRedBits(8);
       caps.setGreenBits(8);

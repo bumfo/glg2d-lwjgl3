@@ -23,5 +23,6 @@ final class VSyncHelper implements GLEventListener {
 
   @Override
   public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+    // System.out.println("reshape " + width + ", " + height);
   }
 }

@@ -12,6 +12,7 @@ import com.jogamp.opengl.util.glsl.ShaderCode;
 import com.jogamp.opengl.util.glsl.ShaderProgram;
 import org.jogamp.glg2d.gl3.backend.GLApp;
 import org.jogamp.glg2d.gl3.backend.GLConfig;
+import org.jogamp.glg2d.gl3.backend.NewtAwtGLApp;
 import org.jogamp.glg2d.gl3.backend.NewtGLApp;
 
 import java.nio.FloatBuffer;
@@ -82,6 +83,7 @@ public class HelloTriangleSimple implements GLEventListener, KeyListener {
     config.height = 768;
 
     app = new NewtGLApp();
+    // app = new NewtAwtGLApp();
     app.setup(config, this);
     app.addKeyListener(this);
   }

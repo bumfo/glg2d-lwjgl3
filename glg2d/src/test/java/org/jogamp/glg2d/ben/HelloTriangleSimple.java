@@ -90,9 +90,9 @@ public class HelloTriangleSimple implements GLEventListener, KeyListener {
 
         window.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowDestroyed(WindowEvent e) {
+            public void windowDestroyNotify(WindowEvent e) {
                 animator.stop();
-                System.exit(1);
+                System.exit(0);
             }
         });
 

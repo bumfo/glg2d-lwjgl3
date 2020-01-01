@@ -2,15 +2,14 @@ package org.jogamp.glg2d.gl3;
 
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.KeyListener;
-import com.jogamp.newt.event.WindowAdapter;
-import com.jogamp.newt.event.WindowEvent;
-import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.math.FloatUtil;
-import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.GLBuffers;
 import com.jogamp.opengl.util.glsl.ShaderCode;
 import com.jogamp.opengl.util.glsl.ShaderProgram;
+import org.jogamp.glg2d.gl3.backend.GLApp;
+import org.jogamp.glg2d.gl3.backend.GLConfig;
+import org.jogamp.glg2d.gl3.backend.NewtGLApp;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -35,9 +34,7 @@ import static com.jogamp.opengl.GL3.GL_OUT_OF_MEMORY;
  * @author gbarbieri
  */
 public class HelloTriangleSimple implements GLEventListener, KeyListener {
-
-    private static GLWindow window;
-    private static Animator animator;
+    private GLApp app;
 
     public static void main(String[] args) {
         new HelloTriangleSimple().setup();
@@ -71,31 +68,14 @@ public class HelloTriangleSimple implements GLEventListener, KeyListener {
     private long start;
 
     private void setup() {
+        GLConfig config = new GLConfig();
+        config.title = "Hello Triangle (simple)";
+        config.width = 1024;
+        config.height = 768;
 
-        GLProfile glProfile = GLProfile.get(GLProfile.GL3);
-        GLCapabilities glCapabilities = new GLCapabilities(glProfile);
-
-        window = GLWindow.create(glCapabilities);
-
-        window.setTitle("Hello Triangle (simple)");
-        window.setSize(1024, 768);
-
-        window.setVisible(true);
-
-        window.addGLEventListener(this);
-        window.addKeyListener(this);
-
-        animator = new Animator(window);
-        animator.start();
-
-        window.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowDestroyNotify(WindowEvent e) {
-                animator.stop();
-                System.exit(0);
-            }
-        });
-
+        app = new NewtGLApp();
+        app.setup(config, this);
+        app.addKeyListener(this);
     }
 
     @Override
@@ -251,7 +231,7 @@ public class HelloTriangleSimple implements GLEventListener, KeyListener {
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             new Thread(() -> {
-                window.destroy();
+                app.destroy();
             }).start();
         }
     }

@@ -15,13 +15,22 @@ public final class NewtGLApp implements GLApp {
 
   @Override
   public void setup(GLConfig config, GLEventListener listener) {
-    GLCapabilities glCapabilities = config.glCapabilities;
-    if (glCapabilities == null) {
+    GLCapabilities caps = config.glCapabilities;
+    if (caps == null) {
       GLProfile glProfile = GLProfile.get(GLProfile.GL3);
-      glCapabilities = new GLCapabilities(glProfile);
+      caps = new GLCapabilities(glProfile);
+      caps.setRedBits(8);
+      caps.setGreenBits(8);
+      caps.setBlueBits(8);
+      caps.setAlphaBits(8);
+      caps.setNumSamples(4);
+      caps.setSampleBuffers(true);
+      caps.setDoubleBuffered(true);
+      caps.setHardwareAccelerated(true);
+      caps.setBackgroundOpaque(false);
     }
 
-    window = GLWindow.create(glCapabilities);
+    window = GLWindow.create(caps);
 
     window.setTitle(config.title);
     window.setSize(config.width, config.height);

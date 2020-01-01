@@ -2,9 +2,10 @@ package org.jogamp.glg2d.gl3.backend;
 
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.util.Animator;
+import com.jogamp.opengl.util.AnimatorBase;
 
 final class AnimatorManager {
-  private Animator animator;
+  AnimatorBase animator;
   private boolean disposed;
 
   void init(GLAutoDrawable drawable) {

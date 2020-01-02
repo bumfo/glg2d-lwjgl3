@@ -119,6 +119,7 @@ public class GLGraphics2D extends Graphics2D implements Cloneable {
    * The set of cached hints for this graphics object.
    */
   protected RenderingHints hints;
+  private boolean forcePremultipliedAlpha;
 
   public GLGraphics2D() {
     hints = new RenderingHints(Collections.<Key, Object>emptyMap());
@@ -739,5 +740,13 @@ public class GLGraphics2D extends Graphics2D implements Cloneable {
     } catch (CloneNotSupportedException exception) {
       throw new AssertionError(exception);
     }
+  }
+
+  public boolean isForcePremultipliedAlpha() {
+    return forcePremultipliedAlpha;
+  }
+
+  public void setForcePremultipliedAlpha(boolean forcePremultipliedAlpha) {
+    this.forcePremultipliedAlpha = forcePremultipliedAlpha;
   }
 }

@@ -34,6 +34,8 @@ import javax.swing.JComponent;
 public class GLG2DSimpleEventListener implements GLEventListener {
   private final float[] scale = new float[2];
 
+  private float manualScale = 1f;
+
   private int logicWidth;
   private int logicHeight;
 
@@ -55,6 +57,10 @@ public class GLG2DSimpleEventListener implements GLEventListener {
     this.comp = component;
   }
 
+  void setManualScale(float manualScale) {
+    this.manualScale = manualScale;
+  }
+
   @Override
   public void display(GLAutoDrawable drawable) {
     prePaint(drawable);
@@ -68,7 +74,7 @@ public class GLG2DSimpleEventListener implements GLEventListener {
    */
   protected void prePaint(GLAutoDrawable drawable) {
     setupViewport(drawable);
-    g2d.prePaint(drawable.getContext(), logicWidth, logicHeight, scale[0], scale[1]);
+    g2d.prePaint(drawable.getContext(), logicWidth, logicHeight, scale[0] * manualScale, scale[1] * manualScale);
 
     // clip to only the component we're painting
 
@@ -88,7 +94,11 @@ public class GLG2DSimpleEventListener implements GLEventListener {
    * Defines the viewport to paint into.
    */
   protected void setupViewport(GLAutoDrawable drawable) {
-    drawable.getGL().glViewport(0, 0, drawable.getSurfaceWidth(), drawable.getSurfaceHeight());
+    // drawable.getGL().glViewport(0, 0, drawable.getSurfaceWidth(), drawable.getSurfaceHeight());
+    // drawable.getGL().glViewport(0, 0, (int) (logicWidth * scale[0] * manualScale), (int) (logicHeight * scale[1] * manualScale));
+    drawable.getGL().glViewport(0, 0,
+        (int) (drawable.getSurfaceWidth() * manualScale + 0.5),
+        (int) (drawable.getSurfaceHeight() * manualScale + 0.5));
   }
 
   /**

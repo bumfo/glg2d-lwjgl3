@@ -19,6 +19,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.LayoutManager2;
 import java.io.Serializable;
 import java.util.logging.Logger;
@@ -341,6 +342,8 @@ public class GLG2DCanvas extends JComponent {
   @Override
   public void paint(Graphics g) {
     if (isGLDrawing() && drawableComponent != null && canvas != null) {
+      ((GLG2DSimpleEventListener) g2dglListener).setManualScale((float) ((Graphics2D) g).getTransform().getScaleX());
+
       canvas.display();
     } else {
       super.paint(g);

@@ -10,9 +10,9 @@ import com.jogamp.opengl.math.FloatUtil;
 import com.jogamp.opengl.util.GLBuffers;
 import com.jogamp.opengl.util.glsl.ShaderCode;
 import com.jogamp.opengl.util.glsl.ShaderProgram;
+import org.jogamp.glg2d.gl3.backend.AwtCanvasGLApp;
 import org.jogamp.glg2d.gl3.backend.GLApp;
 import org.jogamp.glg2d.gl3.backend.GLConfig;
-import org.jogamp.glg2d.gl3.backend.NewtAwtGLApp;
 import org.jogamp.glg2d.gl3.backend.NewtGLApp;
 
 import java.nio.FloatBuffer;
@@ -84,8 +84,13 @@ public class HelloTriangleSimple implements GLEventListener, KeyListener {
 
     app = new NewtGLApp();
     // app = new NewtAwtGLApp();
+    // app = new AwtCanvasGLApp();
     app.setup(config, this);
     app.addKeyListener(this);
+
+    if (app instanceof AwtCanvasGLApp) {
+      ((AwtCanvasGLApp) app).showAsJFrame();
+    }
   }
 
   @Override

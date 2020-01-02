@@ -1,11 +1,10 @@
 package org.jogamp.glg2d.examples;
 
-import java.awt.Dimension;
+import org.jogamp.glg2d.GLG2DPanel;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-
-import org.jogamp.glg2d.GLG2DPanel;
+import java.awt.Dimension;
 
 public class AWTExample {
   public static void main(String[] args) {
@@ -14,6 +13,11 @@ public class AWTExample {
     frame.setPreferredSize(new Dimension(300, 300));
 
     JComponent comp = Example.createComponent();
+
+    // JPanel panel = new JPanel();
+    // panel.setLayout(new BorderLayout());
+    // panel.add(comp);
+    // frame.setContentPane(panel);
 
     frame.setContentPane(new GLG2DPanel(comp));
 

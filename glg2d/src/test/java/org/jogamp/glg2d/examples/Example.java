@@ -25,12 +25,12 @@ class Example {
 
     JProgressBar bar = new JProgressBar() {
       protected void paintComponent(java.awt.Graphics g) {
-       if (g instanceof GLGraphics2D
-           ) {
+       // if (g instanceof GLGraphics2D
+       //     ) {
          super.paintComponent(g);
-       } else {
-         System.out.println(g.getClass());
-       }
+       // } else {
+       //   System.out.println(g.getClass());
+       // }
       }
     };
     bar.setIndeterminate(true);

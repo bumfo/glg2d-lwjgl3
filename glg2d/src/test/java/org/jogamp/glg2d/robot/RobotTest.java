@@ -2,6 +2,7 @@ package org.jogamp.glg2d.robot;
 
 import com.jogamp.opengl.util.Animator;
 import org.jogamp.glg2d.GLG2DCanvas;
+import org.jogamp.glg2d.GLGraphics2D;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -44,6 +45,8 @@ public final class RobotTest extends JFrame {
       public void paint(Graphics g0) {
         super.paint(g0);
         Graphics2D g = (Graphics2D) g0;
+
+        ((GLGraphics2D) g).setForcePremultipliedAlpha(true);
 
         AffineTransform at = AffineTransform.getTranslateInstance(.5 * getWidth(), .5 * getHeight());
         at.rotate(Math.PI * t / 60.);

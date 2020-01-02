@@ -32,6 +32,8 @@ import javax.swing.JComponent;
  * </p>
  */
 public class GLG2DSimpleEventListener implements GLEventListener {
+  private static final boolean LEGACY_HI_DPI = System.getProperty("java.specification.version").startsWith("1.");
+
   private final float[] scale = new float[2];
 
   private float manualScale = 1f;
@@ -74,7 +76,11 @@ public class GLG2DSimpleEventListener implements GLEventListener {
    */
   protected void prePaint(GLAutoDrawable drawable) {
     setupViewport(drawable);
-    g2d.prePaint(drawable.getContext(), logicWidth, logicHeight, scale[0] * manualScale, scale[1] * manualScale);
+    if (LEGACY_HI_DPI) {
+      g2d.prePaint(drawable.getContext(), logicWidth, logicHeight, scale[0], scale[1]);
+    } else {
+      g2d.prePaint(drawable.getContext(), logicWidth, logicHeight, manualScale, manualScale);
+    }
 
     // clip to only the component we're painting
 
@@ -94,11 +100,14 @@ public class GLG2DSimpleEventListener implements GLEventListener {
    * Defines the viewport to paint into.
    */
   protected void setupViewport(GLAutoDrawable drawable) {
-    // drawable.getGL().glViewport(0, 0, drawable.getSurfaceWidth(), drawable.getSurfaceHeight());
-    // drawable.getGL().glViewport(0, 0, (int) (logicWidth * scale[0] * manualScale), (int) (logicHeight * scale[1] * manualScale));
-    drawable.getGL().glViewport(0, 0,
-        (int) (drawable.getSurfaceWidth() * manualScale + 0.5),
-        (int) (drawable.getSurfaceHeight() * manualScale + 0.5));
+    if (LEGACY_HI_DPI) {
+      drawable.getGL().glViewport(0, 0, drawable.getSurfaceWidth(), drawable.getSurfaceHeight());
+    } else {
+      // drawable.getGL().glViewport(0, 0, (int) (logicWidth * scale[0] * manualScale), (int) (logicHeight * scale[1] * manualScale));
+      drawable.getGL().glViewport(0, 0,
+          (int) (logicWidth * manualScale + 0.5),
+          (int) (logicHeight * manualScale + 0.5));
+    }
   }
 
   /**
@@ -161,6 +170,8 @@ public class GLG2DSimpleEventListener implements GLEventListener {
     if (g2d != null) {
       g2d.glDispose();
       g2d = null;
+
+      System.exit(0);
     }
   }
 }

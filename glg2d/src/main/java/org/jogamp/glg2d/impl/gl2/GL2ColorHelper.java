@@ -85,7 +85,25 @@ public class GL2ColorHelper extends AbstractColorHelper {
 
   private void setColor(GL2 gl, Color c, float preMultiplyAlpha) {
     int rgb = c.getRGB();
-    gl.glColor4ub((byte) (rgb >> 16 & 0xFF), (byte) (rgb >> 8 & 0xFF), (byte) (rgb & 0xFF), (byte) ((rgb >> 24 & 0xFF) * preMultiplyAlpha));
+    int r = rgb >> 16 & 0xFF;
+    int g = rgb >> 8 & 0xFF;
+    int b = rgb & 0xFF;
+    int a = rgb >> 24 & 0xFF;
+
+    float rf = r / 255f;
+    float gf = g / 255f;
+    float bf = b / 255f;
+    float af = a / 255f;
+
+    af *= preMultiplyAlpha;
+
+    rf *= af;
+    gf *= af;
+    bf *= af;
+
+    // gl.glColor4ub((byte) r, (byte) g, (byte) b, (byte) (a));
+    gl.glColor4f(rf, gf, bf, af);
+    gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
   }
 
   @Override

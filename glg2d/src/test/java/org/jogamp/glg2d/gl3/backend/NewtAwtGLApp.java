@@ -52,7 +52,7 @@ public final class NewtAwtGLApp implements GLApp {
 
     frame.setVisible(true);
 
-    window.addGLEventListener(new VSyncHelper());
+    window.addGLEventListener(new GLDrawableHelper());
     window.addGLEventListener(listener);
 
     window.setDefaultCloseOperation(WindowClosingProtocol.WindowClosingMode.DO_NOTHING_ON_CLOSE);

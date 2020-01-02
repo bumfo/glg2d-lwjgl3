@@ -22,7 +22,7 @@ public final class NewtGLApp implements GLApp {
     window.setTitle(config.title);
     window.setSize(config.width, config.height);
 
-    window.addGLEventListener(new VSyncHelper());
+    window.addGLEventListener(new GLDrawableHelper());
     window.addGLEventListener(listener);
 
     window.setDefaultCloseOperation(WindowClosingProtocol.WindowClosingMode.DO_NOTHING_ON_CLOSE);

@@ -4,7 +4,7 @@ import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 
-final class VSyncHelper implements GLEventListener {
+final class GLDrawableHelper implements GLEventListener {
   @Override
   public void init(GLAutoDrawable drawable) {
     GL gl = drawable.getGL();

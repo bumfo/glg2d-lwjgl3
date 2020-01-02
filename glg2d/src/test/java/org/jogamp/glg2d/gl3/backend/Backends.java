@@ -17,7 +17,7 @@ final class Backends {
       caps.setSampleBuffers(true);
       caps.setDoubleBuffered(true);
       caps.setHardwareAccelerated(true);
-      caps.setBackgroundOpaque(false);
+      // caps.setBackgroundOpaque(false);
     }
     return caps;
   }

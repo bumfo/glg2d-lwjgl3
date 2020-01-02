@@ -8,24 +8,29 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 
 public final class CanvasTest extends JFrame {
-  private static final boolean USE_GL = false;
+  private static final boolean USE_GL = true;
 
   private double t = 0.;
 
+  private ArrayList<Path2D.Double> paths = new ArrayList<>();
+
   private Path2D.Double path = new Path2D.Double();
   private final JPanel panel;
+
+  private Point pressed = null;
 
   private CanvasTest() {
     super("Canvas Test");
@@ -34,6 +39,7 @@ public final class CanvasTest extends JFrame {
       @Override
       public void paint(Graphics g0) {
         super.paint(g0);
+
         // g0.drawRect(100, 100, 50, 50);
         Graphics2D g = (Graphics2D) g0;
 
@@ -48,11 +54,20 @@ public final class CanvasTest extends JFrame {
 
         g.setStroke(new BasicStroke(1f));
 
+        g.setColor(new Color(1f, 0f, 0f, .5f));
+        g.fill(new Rectangle2D.Double(200, 200, 50, 50));
+        g.setColor(new Color(0f, 1f, 0f, .5f));
+        g.fill(new Rectangle2D.Double(225, 200, 50, 50));
+
         g.draw(path);
+        for (Path2D.Double path : paths) {
+          g.draw(path);
+        }
 
         t += 1.;
       }
     };
+    panel.setBackground(Color.BLACK);
     panel.setPreferredSize(new Dimension(800, 600));
 
     GLG2DCanvas canvas;
@@ -75,8 +90,16 @@ public final class CanvasTest extends JFrame {
     }
 
     MouseAdapter mouseAdapter = new MyMouseMotionAdapter();
-    panel.addMouseListener(mouseAdapter);
-    panel.addMouseMotionListener(mouseAdapter);
+
+    if (USE_GL) {
+      Component comp = (Component) canvas.getGLDrawable();
+      comp.setEnabled(true);
+      comp.addMouseListener(mouseAdapter);
+      comp.addMouseMotionListener(mouseAdapter);
+    } else {
+      panel.addMouseListener(mouseAdapter);
+      panel.addMouseMotionListener(mouseAdapter);
+    }
   }
 
   public static void main(String[] args) {
@@ -86,16 +109,28 @@ public final class CanvasTest extends JFrame {
   private final class MyMouseMotionAdapter extends MouseAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
+      pressed = e.getPoint();
+      System.out.println("pressed");
       path.moveTo(e.getX(), e.getY());
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
+      path.reset();
+
+      path.moveTo(pressed.x, pressed.y);
+
       path.lineTo(e.getX(), e.getY());
 
       if (!USE_GL) {
         panel.repaint();
       }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+      paths.add(path);
+      path = new Path2D.Double();
     }
   }
 }

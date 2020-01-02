@@ -119,6 +119,13 @@ public abstract class AbstractTextDrawer implements GLG2DTextHelper {
     }
 
     @Override
+    public int charWidth(char ch) {
+      if (!(ch < 256)) return super.charWidth(ch);
+      Rectangle2D bounds = font.getStringBounds(new char[]{ch}, 0, 1, getFontRenderContext());
+      return (int) ceil(bounds.getWidth());
+    }
+
+    @Override
     public int charsWidth(char[] data, int off, int len) {
       if (len <= 0) {
         return 0;

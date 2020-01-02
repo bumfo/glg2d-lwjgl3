@@ -15,6 +15,7 @@ final class VSyncHelper implements GLEventListener {
   @Override
   public void dispose(GLAutoDrawable drawable) {
     System.out.println("dispose");
+    System.exit(0);
   }
 
   @Override

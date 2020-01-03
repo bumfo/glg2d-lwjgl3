@@ -26,8 +26,6 @@ import org.jogamp.glg2d.impl.gl2.GL2ShapeDrawer;
 import org.jogamp.glg2d.impl.gl2.GL2StringDrawer;
 import org.jogamp.glg2d.impl.gl2.GL2TransformHelper;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Font;
@@ -219,13 +217,13 @@ public class GLGraphics2D extends Graphics2D implements Cloneable {
   }
 
   protected void setDefaultState() {
-    setBackground(Color.black);
-    setColor(Color.white);
-    setFont(Font.getFont(Font.SANS_SERIF));
-    setStroke(new BasicStroke());
-    setComposite(AlphaComposite.SrcOver);
-    setClip(null);
-    setRenderingHints(null);
+    setBackground(Defaults.BACKGROUND);
+    setColor(Defaults.COLOR);
+    setFont(Defaults.FONT);
+    setStroke(Defaults.STROKE);
+    setComposite(Defaults.COMPOSITE);
+    setClip(Defaults.CLIP);
+    setRenderingHints(Defaults.RENDERING_HINTS);
     graphicsConfig = new GLGraphicsConfiguration(glDrawable);
   }
 

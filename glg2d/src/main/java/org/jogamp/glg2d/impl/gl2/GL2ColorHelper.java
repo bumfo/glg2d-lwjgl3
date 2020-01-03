@@ -15,7 +15,10 @@
  */
 package org.jogamp.glg2d.impl.gl2;
 
-import static org.jogamp.glg2d.impl.GLG2DNotImplemented.notImplemented;
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.GL2GL3;
+import org.jogamp.glg2d.GLGraphics2D;
+import org.jogamp.glg2d.impl.AbstractColorHelper;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -24,13 +27,10 @@ import java.awt.GradientPaint;
 import java.awt.MultipleGradientPaint;
 import java.awt.Paint;
 
-import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.GL2GL3;
-
-import org.jogamp.glg2d.GLGraphics2D;
-import org.jogamp.glg2d.impl.AbstractColorHelper;
+import static org.jogamp.glg2d.impl.GLG2DNotImplemented.notImplemented;
 
 public class GL2ColorHelper extends AbstractColorHelper {
+  private final float[] tmpColorComponents = new float[4];
   protected GL2 gl;
 
   @Override
@@ -84,16 +84,12 @@ public class GL2ColorHelper extends AbstractColorHelper {
   }
 
   private void setColor(GL2 gl, Color c, float preMultiplyAlpha) {
-    int rgb = c.getRGB();
-    int r = rgb >> 16 & 0xFF;
-    int g = rgb >> 8 & 0xFF;
-    int b = rgb & 0xFF;
-    int a = rgb >> 24 & 0xFF;
+    c.getRGBComponents(tmpColorComponents);
 
-    float rf = r / 255f;
-    float gf = g / 255f;
-    float bf = b / 255f;
-    float af = a / 255f;
+    float rf = tmpColorComponents[0];
+    float gf = tmpColorComponents[1];
+    float bf = tmpColorComponents[2];
+    float af = tmpColorComponents[3];
 
     af *= preMultiplyAlpha;
 

@@ -17,6 +17,7 @@ package org.jogamp.glg2d.impl.shader;
 
 
 import java.awt.BasicStroke;
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
 import com.jogamp.opengl.GL;
@@ -95,7 +96,7 @@ public class GL2GL3StrokeLineVisitor extends SimplePathVisitor implements Shader
      */
     FloatBuffer buf = buffer.getBuffer();
     if (buf.get(0) == lastV[0] && buf.get(1) == lastV[1]) {
-      buf.position(buf.position() - 2);
+      ((Buffer) buf).position(buf.position() - 2);
     }
 
     draw(true);
@@ -124,7 +125,7 @@ public class GL2GL3StrokeLineVisitor extends SimplePathVisitor implements Shader
       return;
     }
 
-    buf.flip();
+    ((Buffer) buf).flip();
     pipeline.draw(gl, buf, close);
 
     buffer.clear();

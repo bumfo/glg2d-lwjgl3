@@ -16,6 +16,7 @@
 package org.jogamp.glg2d.impl.shader;
 
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
 import com.jogamp.opengl.GL;
@@ -72,7 +73,7 @@ public class GL2ES2TesselatingVisitor extends AbstractTesselatorVisitor implemen
   @Override
   protected void endTess() {
     FloatBuffer buf = vBuffer.getBuffer();
-    buf.flip();
+    ((Buffer) buf).flip();
 
     pipeline.draw(gl, drawMode, buf);
   }

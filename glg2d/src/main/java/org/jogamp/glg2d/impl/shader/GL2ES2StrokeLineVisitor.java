@@ -17,6 +17,7 @@ package org.jogamp.glg2d.impl.shader;
 
 
 import java.awt.BasicStroke;
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
 import com.jogamp.opengl.GL;
@@ -82,7 +83,7 @@ public class GL2ES2StrokeLineVisitor extends BasicStrokeLineVisitor implements S
       return;
     }
 
-    buf.flip();
+    ((Buffer) buf).flip();
 
     pipeline.draw(gl, GL.GL_TRIANGLE_STRIP, buf);
 

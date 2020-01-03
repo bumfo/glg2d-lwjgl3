@@ -15,6 +15,7 @@
  */
 package org.jogamp.glg2d;
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
 import com.jogamp.opengl.GL;
@@ -113,10 +114,10 @@ public class VertexBuffer {
       FloatBuffer larger = Buffers.newDirectFloatBuffer(Math.max(buffer.position() * 2, buffer.position() + numNewFloats));
       deviceBufferId = -deviceBufferId;
       int position = buffer.position();
-      buffer.rewind();
+      ((Buffer) buffer).rewind();
       larger.put(buffer);
       buffer = larger;
-      buffer.position(position);
+      ((Buffer) buffer).position(position);
     }
   }
 
@@ -125,7 +126,7 @@ public class VertexBuffer {
    * already added are not needed anymore and the buffer will be reused.
    */
   public void clear() {
-    buffer.clear();
+    ((Buffer) buffer).clear();
   }
 
   public FloatBuffer getBuffer() {
@@ -146,7 +147,7 @@ public class VertexBuffer {
     }
 
     int count = buffer.position();
-    buffer.rewind();
+    ((Buffer) buffer).rewind();
 
     gl.glVertexPointer(2, GL.GL_FLOAT, 0, buffer);
 
@@ -154,6 +155,6 @@ public class VertexBuffer {
     gl.glDrawArrays(mode, 0, count / 2);
     gl.glDisableClientState(GLPointerFunc.GL_VERTEX_ARRAY);
 
-    buffer.position(count);
+    ((Buffer) buffer).position(count);
   }
 }

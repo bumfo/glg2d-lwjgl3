@@ -16,6 +16,7 @@
 package org.jogamp.glg2d.impl.shader.text;
 
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
 import com.jogamp.opengl.GL;
@@ -58,7 +59,7 @@ public class CollectingTesselator extends AbstractTesselatorVisitor {
 
   public Triangles getTesselated() {
     FloatBuffer buf = vBuffer.getBuffer();
-    buf.flip();
+    ((Buffer) buf).flip();
     return new Triangles(buf);
   }
 
@@ -71,7 +72,7 @@ public class CollectingTesselator extends AbstractTesselatorVisitor {
       triangles = Buffers.newDirectFloatBuffer(numVertices);
       triangles.put(vertexBuffer);
 
-      triangles.flip();
+      ((Buffer) triangles).flip();
     }
 
     public void draw(GL2ES2 gl) {

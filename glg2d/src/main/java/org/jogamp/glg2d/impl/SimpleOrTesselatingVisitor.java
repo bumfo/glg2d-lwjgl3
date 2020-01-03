@@ -19,6 +19,7 @@ import static java.lang.Math.acos;
 import static java.lang.Math.sqrt;
 
 import java.awt.BasicStroke;
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
 import com.jogamp.opengl.GL;
@@ -223,7 +224,7 @@ public class SimpleOrTesselatingVisitor extends SimplePathVisitor {
       float[] vertex = new float[2];
       int position = buf.position();
 
-      buf.rewind();
+      ((Buffer) buf).rewind();
       buf.get(vertex);
 
       boolean good = false;
@@ -234,7 +235,7 @@ public class SimpleOrTesselatingVisitor extends SimplePathVisitor {
         }
       }
 
-      buf.position(position);
+      ((Buffer) buf).position(position);
 
       if (!good) {
         setUseTesselator(true);
@@ -273,7 +274,7 @@ public class SimpleOrTesselatingVisitor extends SimplePathVisitor {
 
   protected void drawToVisitor(PathVisitor visitor, boolean doClose) {
     FloatBuffer buf = buffer.getBuffer();
-    buf.flip();
+    ((Buffer) buf).flip();
 
     float[] vertex = new float[2];
 

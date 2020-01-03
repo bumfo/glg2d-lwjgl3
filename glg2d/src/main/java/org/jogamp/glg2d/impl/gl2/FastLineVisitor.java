@@ -23,6 +23,7 @@ import org.jogamp.glg2d.VertexBuffer;
 import org.jogamp.glg2d.impl.SimplePathVisitor;
 
 import java.awt.BasicStroke;
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
 /**
@@ -167,7 +168,7 @@ public class FastLineVisitor extends SimplePathVisitor {
      * shouldn't be noticeable.
      */
     if (stroke.getDashArray() == null) {
-      buf.position(p);
+      ((Buffer) buf).position(p);
       buffer.drawBuffer(gl, GL2.GL_POINTS);
     }
 

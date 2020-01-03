@@ -23,6 +23,7 @@ import static java.lang.Math.sqrt;
 import static org.jogamp.glg2d.impl.GLG2DNotImplemented.notImplemented;
 
 import java.awt.BasicStroke;
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
 import org.jogamp.glg2d.VertexBuffer;
@@ -141,13 +142,13 @@ public abstract class BasicStrokeLineVisitor extends SimplePathVisitor {
         tmpBuffer = Buffers.newDirectFloatBuffer(buf.position());
       }
 
-      tmpBuffer.clear();
+      ((Buffer) tmpBuffer).clear();
 
-      buf.flip();
+      ((Buffer) buf).flip();
       tmpBuffer.put(buf);
-      tmpBuffer.flip();
+      ((Buffer) tmpBuffer).flip();
 
-      buf.clear();
+      ((Buffer) buf).clear();
       applyEndCap(firstPoint, secondPoint, true);
       buf.put(tmpBuffer);
 

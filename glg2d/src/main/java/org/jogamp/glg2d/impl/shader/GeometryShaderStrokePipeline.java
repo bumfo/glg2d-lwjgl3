@@ -17,6 +17,7 @@ package org.jogamp.glg2d.impl.shader;
 
 
 import java.awt.BasicStroke;
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
 import com.jogamp.opengl.GL;
@@ -109,7 +110,7 @@ public class GeometryShaderStrokePipeline extends AbstractShaderPipeline {
       vBuffer = Buffers.newDirectFloatBuffer(numPts * 2 + 4);
     }
 
-    vBuffer.clear();
+    ((Buffer) vBuffer).clear();
 
     if (close) {
       vBuffer.put(vertexBuffer.get(lim - 2));
@@ -127,7 +128,7 @@ public class GeometryShaderStrokePipeline extends AbstractShaderPipeline {
       vBuffer.put(0);
     }
 
-    vBuffer.flip();
+    ((Buffer) vBuffer).flip();
 
     bindBuffer(gl, vBuffer);
 

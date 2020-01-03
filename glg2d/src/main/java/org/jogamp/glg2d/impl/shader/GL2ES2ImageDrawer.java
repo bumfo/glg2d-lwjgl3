@@ -18,6 +18,7 @@ package org.jogamp.glg2d.impl.shader;
 
 import java.awt.Color;
 import java.awt.geom.AffineTransform;
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
 import com.jogamp.opengl.GL;
@@ -109,7 +110,7 @@ public class GL2ES2ImageDrawer extends AbstractImageHelper {
 
   @Override
   protected void applyTexture(Texture texture, int dx1, int dy1, int dx2, int dy2, float sx1, float sy1, float sx2, float sy2) {
-    vertTexCoords.rewind();
+    ((Buffer) vertTexCoords).rewind();
 
     // interleave vertex and texture coordinates
     vertTexCoords.put(dx1);
@@ -132,7 +133,7 @@ public class GL2ES2ImageDrawer extends AbstractImageHelper {
     vertTexCoords.put(sx2);
     vertTexCoords.put(sy2);
 
-    vertTexCoords.flip();
+    ((Buffer) vertTexCoords).flip();
     shader.draw(gl, vertTexCoords);
   }
 

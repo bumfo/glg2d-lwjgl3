@@ -17,6 +17,7 @@ package org.jogamp.glg2d.impl.shader.text;
 
 import static java.lang.Math.ceil;
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,7 +50,7 @@ public class TriangleStripTesselator extends AbstractTesselatorVisitor {
   @Override
   protected void endTess() {
     FloatBuffer buf = vBuffer.getBuffer();
-    buf.flip();
+    ((Buffer) buf).flip();
 
     triangleStrips.addAll(getStrips(drawMode, buf));
     vBuffer.clear();

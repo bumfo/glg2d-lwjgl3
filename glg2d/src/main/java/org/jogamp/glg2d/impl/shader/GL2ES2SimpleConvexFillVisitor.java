@@ -17,6 +17,7 @@ package org.jogamp.glg2d.impl.shader;
 
 
 import java.awt.BasicStroke;
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 
 import com.jogamp.opengl.GL;
@@ -103,11 +104,11 @@ public class GL2ES2SimpleConvexFillVisitor extends SimplePathVisitor implements 
   protected void draw() {
     FloatBuffer buf = vBuffer.getBuffer();
     if (buf.position() <= 2) {
-      buf.position(2);
+      ((Buffer) buf).position(2);
       return;
     }
 
-    buf.flip();
+    ((Buffer) buf).flip();
 
     setupCentroid(buf);
 
@@ -121,7 +122,7 @@ public class GL2ES2SimpleConvexFillVisitor extends SimplePathVisitor implements 
     float x = 0;
     float y = 0;
 
-    vertexBuffer.position(2);
+    ((Buffer) vertexBuffer).position(2);
     int numPts = 0;
     while (vertexBuffer.position() < vertexBuffer.limit()) {
       x += vertexBuffer.get();
@@ -129,10 +130,10 @@ public class GL2ES2SimpleConvexFillVisitor extends SimplePathVisitor implements 
       numPts++;
     }
 
-    vertexBuffer.rewind();
+    ((Buffer) vertexBuffer).rewind();
     vertexBuffer.put(x / numPts);
     vertexBuffer.put(y / numPts);
 
-    vertexBuffer.rewind();
+    ((Buffer) vertexBuffer).rewind();
   }
 }

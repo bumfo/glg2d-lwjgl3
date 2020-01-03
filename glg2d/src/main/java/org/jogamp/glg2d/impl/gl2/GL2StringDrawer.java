@@ -19,13 +19,19 @@ package org.jogamp.glg2d.impl.gl2;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.math.FloatUtil;
-import com.jogamp.opengl.util.awt.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer2;
 import org.jogamp.glg2d.impl.AbstractTextDrawer;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.geom.Rectangle2D;
 import java.text.AttributedCharacterIterator;
+import java.text.CharacterIterator;
 import java.util.HashMap;
 
 /**
@@ -83,7 +89,7 @@ public class GL2StringDrawer extends AbstractTextDrawer {
     if (toPixScale != 1f) {
       font = font.deriveFont(font.getSize() * toPixScale);
     }
-    TextRenderer renderer = getRenderer(font);
+    TextRenderer2 renderer = getRenderer(font);
 
     begin(renderer);
 
@@ -116,9 +122,9 @@ public class GL2StringDrawer extends AbstractTextDrawer {
     tmpV1[1] = Math.round(tmpV1[1]);
 
     FloatUtil.multMatrixVec(testMatrix2, tmpV1, tmpV0);
-}
+  }
 
-  protected TextRenderer getRenderer(Font font) {
+  protected TextRenderer2 getRenderer(Font font) {
     return cache.getRenderer(font, peek().antiAlias);
   }
 
@@ -126,7 +132,7 @@ public class GL2StringDrawer extends AbstractTextDrawer {
    * Sets the font color, respecting the AlphaComposite if it wants to
    * pre-multiply an alpha.
    */
-  protected void setTextColorRespectComposite(TextRenderer renderer) {
+  protected void setTextColorRespectComposite(TextRenderer2 renderer) {
     Color color = g2d.getColor();
     if (g2d.getComposite() instanceof AlphaComposite) {
       float alpha = ((AlphaComposite) g2d.getComposite()).getAlpha();
@@ -139,7 +145,7 @@ public class GL2StringDrawer extends AbstractTextDrawer {
     renderer.setColor(color);
   }
 
-  protected void begin(TextRenderer renderer) {
+  protected void begin(TextRenderer2 renderer) {
     setTextColorRespectComposite(renderer);
 
     GL2 gl = g2d.getGLContext().getGL().getGL2();
@@ -151,7 +157,7 @@ public class GL2StringDrawer extends AbstractTextDrawer {
     renderer.begin3DRendering();
   }
 
-  protected void end(TextRenderer renderer) {
+  protected void end(TextRenderer2 renderer) {
     renderer.end3DRendering();
 
     GL2 gl = g2d.getGLContext().getGL().getGL2();
@@ -159,18 +165,18 @@ public class GL2StringDrawer extends AbstractTextDrawer {
   }
 
   @SuppressWarnings("serial")
-  public static class FontRenderCache extends HashMap<Font, TextRenderer[]> {
-    public TextRenderer getRenderer(Font font, boolean antiAlias) {
-      TextRenderer[] renderers = get(font);
+  public static class FontRenderCache extends HashMap<Font, TextRenderer2[]> {
+    public TextRenderer2 getRenderer(Font font, boolean antiAlias) {
+      TextRenderer2[] renderers = get(font);
       if (renderers == null) {
-        renderers = new TextRenderer[2];
+        renderers = new TextRenderer2[2];
         put(font, renderers);
       }
 
-      TextRenderer renderer = renderers[antiAlias ? 1 : 0];
+      TextRenderer2 renderer = renderers[antiAlias ? 1 : 0];
 
       if (renderer == null) {
-        renderer = new TextRenderer(font, antiAlias, false);
+        renderer = new TextRenderer2(font, antiAlias, false);
         renderers[antiAlias ? 1 : 0] = renderer;
       }
 
@@ -178,7 +184,7 @@ public class GL2StringDrawer extends AbstractTextDrawer {
     }
 
     public void dispose() {
-      for (TextRenderer[] value : values()) {
+      for (TextRenderer2[] value : values()) {
         if (value[0] != null) {
           value[0].dispose();
         }

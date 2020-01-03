@@ -26,7 +26,8 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.text.AttributedCharacterIterator;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Draws text for the {@code GLGraphics2D} class.
@@ -186,7 +187,23 @@ public class GL2StringDrawer extends AbstractTextDrawer {
   }
 
   @SuppressWarnings("serial")
-  public static final class FontRenderCache extends HashMap<MyFont, TextRenderer[]> {
+  public static final class FontRenderCache extends LinkedHashMap<MyFont, TextRenderer[]> {
+    private static final int MAX_NUM_FONTS = 500;
+    private static final int INITIAL_CAPACITY = 512;
+    private static final float LOAD_FACTOR = 1;
+
+    public FontRenderCache() {
+      /* The "true" parameter needed for access-order:
+       * when cache fills, the least recently accessed entry is removed
+       */
+      super(INITIAL_CAPACITY, LOAD_FACTOR, true);
+    }
+
+    @Override
+    protected boolean removeEldestEntry(Map.Entry<MyFont, TextRenderer[]> eldest) {
+      return size() > MAX_NUM_FONTS;
+    }
+
     public TextRenderer getRenderer(Font font, boolean antiAlias) {
       TextRenderer[] renderers = get(new MyFont(font));
       if (renderers == null) {

@@ -25,13 +25,7 @@ import org.jogamp.glg2d.impl.AbstractTextDrawer;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
-import java.awt.geom.Rectangle2D;
 import java.text.AttributedCharacterIterator;
-import java.text.CharacterIterator;
 import java.util.HashMap;
 
 /**
@@ -87,7 +81,7 @@ public class GL2StringDrawer extends AbstractTextDrawer {
     }
 
     if (toPixScale != 1f) {
-      font = font.deriveFont(font.getSize() * toPixScale);
+      font = font.deriveFont((float) (int) (font.getSize2D() * toPixScale + .5f));
     }
     TextRenderer2 renderer = getRenderer(font);
 
@@ -164,13 +158,40 @@ public class GL2StringDrawer extends AbstractTextDrawer {
     gl.glPopMatrix();
   }
 
+  public static final class MyFont {
+    private final String name;
+    private final int style;
+    private final int size;
+
+    public MyFont(Font font) {
+      this.name = font.getName();
+      this.style = font.getStyle();
+      this.size = font.getSize();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      MyFont myFont = (MyFont) o;
+      return style == myFont.style &&
+          size == myFont.size &&
+          name.equals(myFont.name);
+    }
+
+    @Override
+    public int hashCode() {
+      return name.hashCode() ^ style ^ size;
+    }
+  }
+
   @SuppressWarnings("serial")
-  public static class FontRenderCache extends HashMap<Font, TextRenderer2[]> {
+  public static final class FontRenderCache extends HashMap<MyFont, TextRenderer2[]> {
     public TextRenderer2 getRenderer(Font font, boolean antiAlias) {
-      TextRenderer2[] renderers = get(font);
+      TextRenderer2[] renderers = get(new MyFont(font));
       if (renderers == null) {
         renderers = new TextRenderer2[2];
-        put(font, renderers);
+        put(new MyFont(font), renderers);
       }
 
       TextRenderer2 renderer = renderers[antiAlias ? 1 : 0];

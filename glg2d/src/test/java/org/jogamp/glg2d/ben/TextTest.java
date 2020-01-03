@@ -9,7 +9,7 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.Animator;
-import com.jogamp.opengl.util.awt.TextRenderer2;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -22,8 +22,8 @@ public final class TextTest {
   private void run() {
     JFrame frame = new JFrame("Hello Text");
 
-    TextRenderer2 textRenderer = new TextRenderer2(new Font("Arial", Font.PLAIN, 16), true, false);
-    TextRenderer2 textRenderer2 = new TextRenderer2(new Font("Arial", Font.PLAIN, 32), true, false);
+    TextRenderer textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 16), true, false);
+    TextRenderer textRenderer2 = new TextRenderer(new Font("Arial", Font.PLAIN, 32), true, false);
 
     try {
       Class<?> util = Class.forName("com.apple.eawt.FullScreenUtilities");

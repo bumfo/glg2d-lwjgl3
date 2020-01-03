@@ -16,6 +16,7 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -38,6 +39,10 @@ public final class CanvasTest extends JFrame {
     panel = new JPanel() {
       @Override
       public void paint(Graphics g0) {
+        float aaa = .5f * ((float) Math.sin(t / 600f * Math.PI / 2f) + 1f);
+
+        panel.setBackground(new Color(aaa, aaa, aaa));
+
         super.paint(g0);
 
         // g0.drawRect(100, 100, 50, 50);
@@ -54,6 +59,20 @@ public final class CanvasTest extends JFrame {
 
         g.setStroke(new BasicStroke(1f));
 
+        g.setColor(new Color(0f, 0f, 0f, .1f));
+        g.draw(new Line2D.Double(200, 100, 200, 150));
+        g.setColor(new Color(0f, 0f, 0f, .3f));
+        g.draw(new Line2D.Double(205, 100, 205, 150));
+        g.setColor(new Color(0f, 0f, 0f, .5f));
+        g.draw(new Line2D.Double(210, 100, 210, 150));
+        g.setColor(new Color(0f, 0f, 0f, .7f));
+        g.draw(new Line2D.Double(215, 100, 215, 150));
+        g.setColor(new Color(0f, 0f, 0f, .9f));
+        g.draw(new Line2D.Double(220, 100, 220, 150));
+        g.setColor(new Color(0f, 0f, 0f, 1f));
+        g.draw(new Line2D.Double(225, 100, 225, 150));
+
+
         g.setColor(new Color(1f, 0f, 0f, .5f));
         g.fill(new Rectangle2D.Double(200, 200, 50, 50));
         g.setColor(new Color(0f, 1f, 0f, .5f));
@@ -67,7 +86,7 @@ public final class CanvasTest extends JFrame {
         t += 1.;
       }
     };
-    panel.setBackground(Color.BLACK);
+    panel.setBackground(new Color(0f, 1f, 1f));
     panel.setPreferredSize(new Dimension(800, 600));
 
     GLG2DCanvas canvas;

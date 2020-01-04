@@ -32,6 +32,7 @@ import javax.swing.JComponent;
  * </p>
  */
 public class GLG2DSimpleEventListener implements GLEventListener {
+  private static final boolean IS_MAC_OS = System.getProperty("mrj.version") != null;
   private static final boolean LEGACY_HI_DPI = System.getProperty("java.specification.version").startsWith("1.");
 
   private final float[] scale = new float[2];
@@ -171,7 +172,9 @@ public class GLG2DSimpleEventListener implements GLEventListener {
       g2d.glDispose();
       g2d = null;
 
-      System.exit(0);
+      if (IS_MAC_OS) {
+        System.exit(0);
+      }
     }
   }
 }

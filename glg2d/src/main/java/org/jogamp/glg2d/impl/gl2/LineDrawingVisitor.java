@@ -44,7 +44,7 @@ public class LineDrawingVisitor extends BasicStrokeLineVisitor {
      */
     gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
     gl.glPushMatrix();
-    gl.glTranslatef(0.5f, 0.5f, 0);
+    // gl.glTranslatef(0.5f, 0.5f, 0);
 
     super.beginPoly(windingRule);
   }

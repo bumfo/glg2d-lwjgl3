@@ -122,6 +122,12 @@ public final class AWTHello {
         // glViewport(0, 0, WIDTH, HEIGHT);
         // glViewport(0, 0, 800, 600);
 
+        logicalWidth = getWidth();
+        logicalHeight = getHeight();
+        // System.out.println(logicalWidth + ":" + logicalHeight);
+
+        glViewport(0, 0, logicalWidth * 2, logicalHeight * 2);
+
         GL20.glMatrixMode(GL20.GL_PROJECTION);
         GL20.glLoadIdentity();
         GL20.glOrtho(0, logicalWidth, 0, logicalHeight, -1, 1);
@@ -165,7 +171,7 @@ public final class AWTHello {
       }
     };
 
-    canvas.setPreferredSize(new Dimension(WIDTH+1, HEIGHT+1));
+    canvas.setPreferredSize(new Dimension(WIDTH + 1, HEIGHT + 1));
     frame.add(canvas);
 
     // frame.setBackground(Color.BLACK);

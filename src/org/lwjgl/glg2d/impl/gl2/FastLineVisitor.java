@@ -129,7 +129,7 @@ public class FastLineVisitor extends SimplePathVisitor {
     glLineWidth = strokeWidth * scaleX;
 
     // we'll only try if it's a thin line
-    return glLineWidth <= 2;
+    return false; // glLineWidth <= 2;
   }
 
   @Override

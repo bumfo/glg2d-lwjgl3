@@ -51,6 +51,19 @@ public class VisualTest {
   }
 
   @Test
+  public void drawFillTest() throws Exception {
+    tester.setPainter(new Painter() {
+      @Override
+      public void paint(Graphics2D g2d) {
+        g2d.fill(new Ellipse2D.Double(10, 10, 20, 20));
+        g2d.draw(new Ellipse2D.Double(10, 10, 20, 20));
+      }
+    });
+
+    tester.assertSame();
+  }
+
+  @Test
   public void lineTest() throws Exception {
     tester.setPainter(new Painter() {
       @Override

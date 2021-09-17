@@ -42,8 +42,8 @@ public class LineDrawingVisitor extends BasicStrokeLineVisitor {
     /*
      * pen hangs down and to the right. See java.awt.Graphics
      */
-    gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
-    gl.glPushMatrix();
+    // gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+    // gl.glPushMatrix();
     // gl.glTranslatef(0.5f, 0.5f, 0);
 
     super.beginPoly(windingRule);
@@ -53,8 +53,8 @@ public class LineDrawingVisitor extends BasicStrokeLineVisitor {
   public void endPoly() {
     super.endPoly();
 
-    gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
-    gl.glPopMatrix();
+    // gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+    // gl.glPopMatrix();
   }
 
   @Override

@@ -15,11 +15,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -27,13 +29,22 @@ import java.awt.event.MouseEvent;
  * @author Xor
  */
 public final class UIDemo extends JPanel {
+
+	public static final boolean ENABLE_GL = true;
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		g.setColor(Color.BLACK);
+		Graphics2D g2d = (Graphics2D) g;
 
-		g.fillRect(0, 0, 400, 400);
+		g2d.setStroke(new BasicStroke(2));
+
+		g.setColor(Color.BLACK);
+		g.fillRect(50, 50, 400, 400);
+
+
+
 
 		g.setColor(Color.RED);
 
@@ -46,7 +57,7 @@ public final class UIDemo extends JPanel {
 
 	public static void main(String[] args) throws Exception {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		final JFrame frame = new JFrame("Swing Demo");
+		final JFrame frame = new JFrame("Swing Demo, GL: " + ENABLE_GL);
 
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
@@ -56,7 +67,7 @@ public final class UIDemo extends JPanel {
 		panel.setLayout(new BorderLayout());
 
 		GLG2DCanvas canvas = new GLG2DCanvas(demo);
-		// canvas.setGLDrawing(false);
+		canvas.setGLDrawing(ENABLE_GL);
 		Component component = (Component) canvas.getGLDrawable();
 		component.setEnabled(true);
 

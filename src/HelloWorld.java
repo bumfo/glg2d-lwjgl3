@@ -15,6 +15,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
@@ -44,11 +45,23 @@ import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
+import static org.lwjgl.glg2d.bridge.GL20.GL_ARRAY_BUFFER;
+import static org.lwjgl.glg2d.bridge.GL20.GL_FLOAT;
+import static org.lwjgl.glg2d.bridge.GL20.GL_STATIC_DRAW;
+import static org.lwjgl.glg2d.bridge.GL20.GL_TRIANGLES;
+import static org.lwjgl.glg2d.bridge.GL20.GL_VERTEX_ARRAY;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glEnableClientState;
+import static org.lwjgl.opengl.GL11.glVertexPointer;
 import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.opengl.GL11C.glDrawArrays;
+import static org.lwjgl.opengl.GL15C.glBindBuffer;
+import static org.lwjgl.opengl.GL15C.glBufferData;
+import static org.lwjgl.opengl.GL15C.glGenBuffers;
+import static org.lwjgl.system.MemoryStack.stackMallocFloat;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -168,41 +181,43 @@ public class HelloWorld {
     double dx = 0.;
     double angle = 0.;
 
-    GLFW.glfwGetFramebufferSize(window, tmpBuffer, tmpBuffer2);
-    int backBufferWidth = tmpBuffer.get(0);
-    int backBufferHeight = tmpBuffer2.get(0);
-
-    GLFW.glfwGetWindowSize(window, tmpBuffer, tmpBuffer2);
-    logicalWidth = tmpBuffer.get(0);
-    logicalHeight = tmpBuffer2.get(0);
-
-    glViewport(0, 0, backBufferWidth, backBufferHeight);
-
-    GL20.glMatrixMode(GL20.GL_PROJECTION);
-    GL20.glLoadIdentity();
-    GL20.glOrtho(0, logicalWidth, 0, logicalHeight, -1, 1);
-
     // Run the rendering loop until the user has attempted to close
     // the window or has pressed the ESCAPE key.
     while (!glfwWindowShouldClose(window)) {
+
+      GLFW.glfwGetFramebufferSize(window, tmpBuffer, tmpBuffer2);
+      int backBufferWidth = tmpBuffer.get(0);
+      int backBufferHeight = tmpBuffer2.get(0);
+
+      GLFW.glfwGetWindowSize(window, tmpBuffer, tmpBuffer2);
+      logicalWidth = tmpBuffer.get(0);
+      logicalHeight = tmpBuffer2.get(0);
+
+      glViewport(0, 0, backBufferWidth, backBufferHeight);
+
+      GL20.glMatrixMode(GL20.GL_PROJECTION);
+      GL20.glLoadIdentity();
+      GL20.glOrtho(0, logicalWidth, 0, logicalHeight, -1, 1);
+
+
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
 
-      // try (MemoryStack ignore = stackPush()) {
-      //   FloatBuffer buffer = stackMallocFloat(3 * 2);
-      //   buffer.put(-0.5f).put(-0.5f);
-      //   buffer.put(+0.5f).put(-0.5f);
-      //   buffer.put(+0.0f).put(+0.5f);
-      //   buffer.flip();
-      //   int vbo = glGenBuffers();
-      //   glBindBuffer(GL_ARRAY_BUFFER, vbo);
-      //   glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
-      // }
-      //
-      // glEnableClientState(GL_VERTEX_ARRAY);
-      // glVertexPointer(2, GL_FLOAT, 0, 0L);
-      //
-      // glDrawArrays(GL_TRIANGLES, 0, 3);
+      try (MemoryStack ignore = stackPush()) {
+        FloatBuffer buffer = stackMallocFloat(3 * 2);
+        buffer.put(-0.5f).put(-0.5f);
+        buffer.put(+0.5f).put(-0.5f);
+        buffer.put(+0.0f).put(+0.5f);
+        buffer.flip();
+        int vbo = glGenBuffers();
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
+      }
+
+      glEnableClientState(GL_VERTEX_ARRAY);
+      glVertexPointer(2, GL_FLOAT, 0, 0L);
+
+      glDrawArrays(GL_TRIANGLES, 0, 3);
 
 
       drawRotatedRectangle(angle, 100, 100, 50, 50);

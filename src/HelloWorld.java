@@ -189,6 +189,8 @@ public class HelloWorld {
       int backBufferWidth = tmpBuffer.get(0);
       int backBufferHeight = tmpBuffer2.get(0);
 
+      System.out.println(backBufferWidth + ", " + backBufferHeight);
+
       GLFW.glfwGetWindowSize(window, tmpBuffer, tmpBuffer2);
       logicalWidth = tmpBuffer.get(0);
       logicalHeight = tmpBuffer2.get(0);

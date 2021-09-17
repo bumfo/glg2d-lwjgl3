@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL15C;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.awt.AWTGLCanvas;
 import org.lwjgl.opengl.awt.GLData;
+import org.lwjgl.opengl.awt.MyPlatformMacOSXGLCanvas;
 import org.lwjgl.system.MemoryStack;
 
 import javax.swing.JFrame;
@@ -55,14 +56,20 @@ public final class AWTHello {
   private void run() {
     JFrame frame = new JFrame("AWT test");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     frame.setLayout(new BorderLayout());
     GLData data = new GLData();
     // data.majorVersion = 2;
     // data.minorVersion = 0;
+    data.swapInterval = 1;
     data.profile = GLData.Profile.COMPATIBILITY;
     data.samples = 4;
 
     AWTGLCanvas canvas = new AWTGLCanvas(data) {
+      {
+        platformCanvas = new MyPlatformMacOSXGLCanvas();
+      }
+
       double dx = 0.;
       double angle = 0.;
       Stroke stroke = new BasicStroke(3);
@@ -107,9 +114,14 @@ public final class AWTHello {
         // logicalWidth = tmpBuffer.get(0);
         // logicalHeight = tmpBuffer2.get(0);
 
-        // glViewport(0, 0, backBufferWidth, backBufferHeight);
-        // glViewport(0, 0, WIDTH, HEIGHT);
+        // int backBufferWidth = 1600;
+        // int backBufferHeight = 1200;
         //
+        // glViewport(0, 0, backBufferWidth, backBufferHeight);
+        // glViewport(0, 0, 400, 300);
+        // glViewport(0, 0, WIDTH, HEIGHT);
+        // glViewport(0, 0, 800, 600);
+
         GL20.glMatrixMode(GL20.GL_PROJECTION);
         GL20.glLoadIdentity();
         GL20.glOrtho(0, logicalWidth, 0, logicalHeight, -1, 1);
@@ -153,8 +165,7 @@ public final class AWTHello {
       }
     };
 
-
-    canvas.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+    canvas.setPreferredSize(new Dimension(WIDTH+1, HEIGHT+1));
     frame.add(canvas);
 
     // frame.setBackground(Color.BLACK);
@@ -162,6 +173,9 @@ public final class AWTHello {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+    canvas.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+    frame.pack();
+    // frame.setLocationRelativeTo(null);
 
     while (true) {
       canvas.render();

@@ -17,6 +17,13 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Stroke;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
@@ -68,6 +75,21 @@ public final class AWTHello {
     AWTGLCanvas canvas = new AWTGLCanvas(data) {
       {
         platformCanvas = new MyPlatformMacOSXGLCanvas();
+
+        // frame.addKeyListener(new KeyAdapter() {
+        //   @Override
+        //   public void keyPressed(KeyEvent e) {
+        //     context = 0;
+        //     initCalled = false;
+        //   }
+        // });
+
+        frame.addComponentListener(new ComponentAdapter() {
+          @Override
+          public void componentResized(ComponentEvent e) {
+            // context = 0;
+          }
+        });
       }
 
       double dx = 0.;
@@ -182,6 +204,8 @@ public final class AWTHello {
     canvas.setPreferredSize(new Dimension(WIDTH, HEIGHT));
     frame.pack();
     // frame.setLocationRelativeTo(null);
+
+
 
     while (true) {
       canvas.render();

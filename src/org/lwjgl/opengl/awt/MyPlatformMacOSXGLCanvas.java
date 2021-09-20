@@ -91,6 +91,7 @@ public class MyPlatformMacOSXGLCanvas implements PlatformGLCanvas {
   private long view;
   private int width;
   private int height;
+  private Canvas canvas;
 
   // core animation flush
   private static void caFlush() {
@@ -109,6 +110,7 @@ public class MyPlatformMacOSXGLCanvas implements PlatformGLCanvas {
 
   @Override
   public long create(Canvas canvas, GLData attribs, GLData effective) throws AWTException {
+    this.canvas = canvas;
     this.ds = JAWT_GetDrawingSurface(canvas, awt.GetDrawingSurface());
     JAWTDrawingSurface ds = JAWT_GetDrawingSurface(canvas, awt.GetDrawingSurface());
     try {
@@ -248,6 +250,17 @@ public class MyPlatformMacOSXGLCanvas implements PlatformGLCanvas {
   public boolean makeCurrent(long context) {
     CGLSetCurrentContext(context);
     if (context != 0L) {
+      // dispose();
+      // ds = JAWT_GetDrawingSurface(canvas, awt.GetDrawingSurface());
+      // long pixelFormat = invokePPP(NSOpenGLPixelFormat, sel_getUid("alloc"), objc_msgSend);
+      // invokePPPP(pixelFormat, sel_getUid("initWithAttributes:"), MemoryUtil.memAddress(attribsArray), objc_msgSend);
+      //
+      // view = createView(dsi.platformInfo(), pixelFormat, dsi.bounds().x(), dsi.bounds().y(), width, height);
+      //
+      // caFlush();
+      // long openGLContext = invokePPP(view, sel_getUid("openGLContext"), objc_msgSend);
+      // invokePPP(openGLContext, sel_getUid("CGLContextObj"), objc_msgSend);
+
       JAWTDrawingSurfaceInfo dsi = JAWT_DrawingSurface_GetDrawingSurfaceInfo(ds, ds.GetDrawingSurfaceInfo());
       try {
         int width = dsi.bounds().width();
@@ -263,8 +276,8 @@ public class MyPlatformMacOSXGLCanvas implements PlatformGLCanvas {
           System.out.println(width+ ", " + height);
 
           // [NSOpenGLCotext update] seems bugged. Updating renderer context with CGL works.
-          CGLSetParameter(context, kCGLCPSurfaceBackingSize, new int[]{width, height});
-          CGLEnable(context, kCGLCESurfaceBackingSize);
+          // CGLSetParameter(context, kCGLCPSurfaceBackingSize, new int[]{width, height});
+          // CGLEnable(context, kCGLCESurfaceBackingSize);
           this.width = width;
           this.height = height;
         }
@@ -297,6 +310,7 @@ public class MyPlatformMacOSXGLCanvas implements PlatformGLCanvas {
   @Override
   public void unlock() throws AWTException {
     JAWT_DrawingSurface_Unlock(ds, ds.Unlock());
+    // caFlush();
   }
 
   @Override

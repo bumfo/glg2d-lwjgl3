@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.system.MemoryStack;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
@@ -224,6 +225,8 @@ public class HelloWorld {
 
       drawRotatedRectangle(angle, 100, 100, 50, 50);
       angle += 1f / 60f;
+
+      g.setColor(Color.CYAN);
 
       g.setStroke(stroke);
       // g.drawRect(100 + (int) dx, 100, 50, 50);

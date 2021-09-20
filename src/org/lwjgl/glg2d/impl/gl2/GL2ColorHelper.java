@@ -16,6 +16,7 @@
 package org.lwjgl.glg2d.impl.gl2;
 
 import org.lwjgl.glg2d.GLGraphics2D;
+import org.lwjgl.glg2d.bridge.GL;
 import org.lwjgl.glg2d.bridge.GL2;
 import org.lwjgl.glg2d.impl.AbstractColorHelper;
 
@@ -96,6 +97,8 @@ public class GL2ColorHelper extends AbstractColorHelper {
     rf *= af;
     gf *= af;
     bf *= af;
+
+    gl.glEnable(GL.GL_BLEND);
 
     // gl.glColor4ub((byte) r, (byte) g, (byte) b, (byte) (a));
     gl.glColor4f(rf, gf, bf, af);

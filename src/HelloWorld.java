@@ -206,6 +206,9 @@ public class HelloWorld {
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
 
+      g.setColor(Color.CYAN);
+
+
       try (MemoryStack ignore = stackPush()) {
         FloatBuffer buffer = stackMallocFloat(3 * 2);
         buffer.put(-0.5f).put(-0.5f);
@@ -226,7 +229,7 @@ public class HelloWorld {
       drawRotatedRectangle(angle, 100, 100, 50, 50);
       angle += 1f / 60f;
 
-      g.setColor(Color.CYAN);
+      g.setColor(new Color(255, 255, 255, 64));
 
       g.setStroke(stroke);
       // g.drawRect(100 + (int) dx, 100, 50, 50);

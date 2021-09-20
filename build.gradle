@@ -11,7 +11,7 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
-        maven { url 'http://repo.maven.apache.org/maven2' }
+        maven { url 'https://repo.maven.apache.org/maven2' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         maven { url 'https://jitpack.io' }
         jcenter()
@@ -46,6 +46,14 @@ sourceSets.main.resources.srcDirs = ["assets/"]
 project.ext.mainClassName = "HelloWorld"
 project.ext.assetsDir = new File("assets/")
 
+import org.gradle.internal.os.OperatingSystem
+
+switch (OperatingSystem.current()) {
+    case OperatingSystem.MAC_OS:
+        project.ext.lwjglNatives = System.getProperty("os.arch").startsWith("aarch64") ? "natives-macos-arm64" : "natives-macos"
+        break
+}
+
 dependencies {
     implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 
@@ -63,48 +71,21 @@ dependencies {
     runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
     implementation "org.lwjglx:lwjgl3-awt:${lwjgl3_awtVersion}"
 
-    // compile "org.lwjgl:lwjgl:${lwjgl3Version}"
-    // compile "org.lwjgl:lwjgl:${lwjgl3Version}:natives-linux"
-    // compile "org.lwjgl:lwjgl:${lwjgl3Version}:natives-linux-arm32"
-    // compile "org.lwjgl:lwjgl:${lwjgl3Version}:natives-linux-arm64"
-    // compile "org.lwjgl:lwjgl:${lwjgl3Version}:natives-macos"
-    // compile "org.lwjgl:lwjgl:${lwjgl3Version}:natives-windows"
-    // compile "org.lwjgl:lwjgl:${lwjgl3Version}:natives-windows-x86"
-    // compile "org.lwjgl:lwjgl-glfw:${lwjgl3Version}"
-    // compile "org.lwjgl:lwjgl-glfw:${lwjgl3Version}:natives-linux"
-    // compile "org.lwjgl:lwjgl-glfw:${lwjgl3Version}:natives-linux-arm32"
-    // compile "org.lwjgl:lwjgl-glfw:${lwjgl3Version}:natives-linux-arm64"
-    // compile "org.lwjgl:lwjgl-glfw:${lwjgl3Version}:natives-macos"
-    // compile "org.lwjgl:lwjgl-glfw:${lwjgl3Version}:natives-windows"
-    // compile "org.lwjgl:lwjgl-glfw:${lwjgl3Version}:natives-windows-x86"
-    // compile "org.lwjgl:lwjgl-jemalloc:${lwjgl3Version}"
-    // compile "org.lwjgl:lwjgl-jemalloc:${lwjgl3Version}:natives-linux"
-    // compile "org.lwjgl:lwjgl-jemalloc:${lwjgl3Version}:natives-linux-arm32"
-    // compile "org.lwjgl:lwjgl-jemalloc:${lwjgl3Version}:natives-linux-arm64"
-    // compile "org.lwjgl:lwjgl-jemalloc:${lwjgl3Version}:natives-macos"
-    // compile "org.lwjgl:lwjgl-jemalloc:${lwjgl3Version}:natives-windows"
-    // compile "org.lwjgl:lwjgl-jemalloc:${lwjgl3Version}:natives-windows-x86"
-    // compile "org.lwjgl:lwjgl-openal:${lwjgl3Version}"
-    // compile "org.lwjgl:lwjgl-openal:${lwjgl3Version}:natives-linux"
-    // compile "org.lwjgl:lwjgl-openal:${lwjgl3Version}:natives-linux-arm32"
-    // compile "org.lwjgl:lwjgl-openal:${lwjgl3Version}:natives-linux-arm64"
-    // compile "org.lwjgl:lwjgl-openal:${lwjgl3Version}:natives-macos"
-    // compile "org.lwjgl:lwjgl-openal:${lwjgl3Version}:natives-windows"
-    // compile "org.lwjgl:lwjgl-openal:${lwjgl3Version}:natives-windows-x86"
-    // compile "org.lwjgl:lwjgl-opengl:${lwjgl3Version}"
-    // compile "org.lwjgl:lwjgl-opengl:${lwjgl3Version}:natives-linux"
-    // compile "org.lwjgl:lwjgl-opengl:${lwjgl3Version}:natives-linux-arm32"
-    // compile "org.lwjgl:lwjgl-opengl:${lwjgl3Version}:natives-linux-arm64"
-    // compile "org.lwjgl:lwjgl-opengl:${lwjgl3Version}:natives-macos"
-    // compile "org.lwjgl:lwjgl-opengl:${lwjgl3Version}:natives-windows"
-    // compile "org.lwjgl:lwjgl-opengl:${lwjgl3Version}:natives-windows-x86"
-    // compile "org.lwjgl:lwjgl-stb:${lwjgl3Version}"
-    // compile "org.lwjgl:lwjgl-stb:${lwjgl3Version}:natives-linux"
-    // compile "org.lwjgl:lwjgl-stb:${lwjgl3Version}:natives-linux-arm32"
-    // compile "org.lwjgl:lwjgl-stb:${lwjgl3Version}:natives-linux-arm64"
-    // compile "org.lwjgl:lwjgl-stb:${lwjgl3Version}:natives-macos"
-    // compile "org.lwjgl:lwjgl-stb:${lwjgl3Version}:natives-windows"
-    // compile "org.lwjgl:lwjgl-stb:${lwjgl3Version}:natives-windows-x86"
+    // implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
+    //
+    // implementation "org.lwjgl:lwjgl"
+    // implementation "org.lwjgl:lwjgl-assimp"
+    // implementation "org.lwjgl:lwjgl-glfw"
+    // implementation "org.lwjgl:lwjgl-openal"
+    // implementation "org.lwjgl:lwjgl-opengl"
+    // implementation "org.lwjgl:lwjgl-stb"
+    // runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
+    // runtimeOnly "org.lwjgl:lwjgl-assimp::$lwjglNatives"
+    // runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+    // runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
+    // runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+    // runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
+    // implementation "org.lwjglx:lwjgl3-awt:${lwjgl3_awtVersion}"
 }
 
 task run(dependsOn: classes, type: JavaExec) {

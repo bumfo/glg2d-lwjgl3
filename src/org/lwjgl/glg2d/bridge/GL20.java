@@ -22,7 +22,7 @@ import java.nio.IntBuffer;
 
 /** Interface wrapping all the methods of OpenGL ES 2.0
  * @author mzechner */
-public interface GL20 {
+public interface GL20 extends GLPointerFunc {
 	int GL_ES_VERSION_2_0 = 1;
 	int GL_DEPTH_BUFFER_BIT = 0x00000100;
 	int GL_STENCIL_BUFFER_BIT = 0x00000400;

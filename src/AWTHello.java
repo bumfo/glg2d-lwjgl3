@@ -1,53 +1,30 @@
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glg2d.GLGraphics2D;
-import org.lwjgl.glg2d.Lwjgl3GL20;
+import org.lwjgl.glg2d.bridge.Lwjgl3GL2;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11C;
-import org.lwjgl.opengl.GL15C;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.awt.AWTGLCanvas;
 import org.lwjgl.opengl.awt.GLData;
 import org.lwjgl.opengl.awt.MyPlatformMacOSXGLCanvas;
-import org.lwjgl.system.MemoryStack;
 
 import javax.swing.JFrame;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Stroke;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
-import java.nio.FloatBuffer;
 
-import static org.lwjgl.glg2d.bridge.GL20.GL_ARRAY_BUFFER;
-import static org.lwjgl.glg2d.bridge.GL20.GL_FLOAT;
-import static org.lwjgl.glg2d.bridge.GL20.GL_STATIC_DRAW;
-import static org.lwjgl.glg2d.bridge.GL20.GL_TRIANGLES;
-import static org.lwjgl.glg2d.bridge.GL20.GL_VERTEX_ARRAY;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL11.glEnableClientState;
 import static org.lwjgl.opengl.GL11.glVertexPointer;
 import static org.lwjgl.opengl.GL11.glViewport;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
-import static org.lwjgl.system.MemoryStack.stackMallocFloat;
-import static org.lwjgl.system.MemoryStack.stackPush;
 
 public final class AWTHello {
   private static final int WIDTH = 800;
@@ -58,7 +35,7 @@ public final class AWTHello {
   private int logicalHeight = 600;
 
   private GLGraphics2D g;
-  private Lwjgl3GL20 gl;
+  private Lwjgl3GL2 gl;
 
   private void run() {
     JFrame frame = new JFrame("AWT test");
@@ -99,7 +76,7 @@ public final class AWTHello {
       public void initGL() {
         System.out.println("initGL");
 
-        gl = new Lwjgl3GL20();
+        gl = new Lwjgl3GL2();
         g = new GLGraphics2D(gl, WIDTH, HEIGHT);
         g.setDefaultState();
 

@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2011 See AUTHORS file.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -804,7 +804,7 @@ class Lwjgl3GL20 implements org.lwjgl.glg2d.bridge.GL20 {
 
 	public void glVertexAttribPointer (int indx, int size, int type, boolean normalized, int stride, Buffer buffer) {
 		if (buffer instanceof ByteBuffer) {
-			if (type == GL_BYTE)				
+			if (type == GL_BYTE)
 				GL20.glVertexAttribPointer(indx, size, type, normalized, stride, (ByteBuffer)buffer);
 			else if (type == GL_UNSIGNED_BYTE)
 				GL20.glVertexAttribPointer(indx, size, type, normalized, stride, (ByteBuffer)buffer);
@@ -842,5 +842,49 @@ class Lwjgl3GL20 implements org.lwjgl.glg2d.bridge.GL20 {
 
 	public void glVertexAttribPointer (int indx, int size, int type, boolean normalized, int stride, int ptr) {
 		GL20.glVertexAttribPointer(indx, size, type, normalized, stride, ptr);
+	}
+
+	public void glEnableClientState(int arrayName) {
+		GL20.glEnableClientState(arrayName);
+	}
+
+	public void glDisableClientState(int arrayName) {
+		GL20.glDisableClientState(arrayName);
+	}
+
+	// public void glVertexPointer(int size, int type, int stride, Buffer pointer) {
+	// 	GL20.glVertexPointer(size, type, stride, pointer);
+	// }
+
+	public void glVertexPointer(int size, int type, int stride, long pointer_buffer_offset) {
+		GL20.glVertexPointer(size, type, stride, pointer_buffer_offset);
+	}
+
+	// public void glColorPointer(int size, int type, int stride, Buffer pointer) {
+	// 	GL20.glColorPointer(size, type, stride, pointer);
+	// }
+
+	public void glColorPointer(int size, int type, int stride, long pointer_buffer_offset) {
+		GL20.glColorPointer(size, type, stride, pointer_buffer_offset);
+	}
+
+	public void glColor4f(float red, float green, float blue, float alpha) {
+		GL20.glColor4f(red, green, blue, alpha);
+	}
+
+	// public void glNormalPointer(int type, int stride, Buffer pointer) {
+	// 	GL20.glNormalPointer(type, stride, pointer);
+	// }
+
+	public void glNormalPointer(int type, int stride, long pointer_buffer_offset) {
+		GL20.glNormalPointer(type, stride, pointer_buffer_offset);
+	}
+
+	// public void glTexCoordPointer(int size, int type, int stride, Buffer pointer) {
+	// 	GL20.glTexCoordPointer(size, type, stride, pointer);
+	// }
+
+	public void glTexCoordPointer(int size, int type, int stride, long pointer_buffer_offset) {
+		GL20.glTexCoordPointer(size, type, stride, pointer_buffer_offset);
 	}
 }

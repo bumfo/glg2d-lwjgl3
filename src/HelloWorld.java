@@ -4,7 +4,7 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glg2d.GLGraphics2D;
-import org.lwjgl.glg2d.Lwjgl3GL20;
+import org.lwjgl.glg2d.bridge.Lwjgl3GL2;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.system.MemoryStack;
@@ -72,7 +72,7 @@ public class HelloWorld {
   // The window handle
   private long window;
   private GLGraphics2D g;
-  private Lwjgl3GL20 gl;
+  private Lwjgl3GL2 gl;
 
   private int logicalWidth;
   private int logicalHeight;
@@ -85,7 +85,7 @@ public class HelloWorld {
   private void run() {
     System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 
-    gl = new Lwjgl3GL20();
+    gl = new Lwjgl3GL2();
 
     g = new GLGraphics2D(gl, WIDTH, HEIGHT);
 
@@ -189,7 +189,7 @@ public class HelloWorld {
       int backBufferWidth = tmpBuffer.get(0);
       int backBufferHeight = tmpBuffer2.get(0);
 
-      System.out.println(backBufferWidth + ", " + backBufferHeight);
+      // System.out.println(backBufferWidth + ", " + backBufferHeight);
 
       GLFW.glfwGetWindowSize(window, tmpBuffer, tmpBuffer2);
       logicalWidth = tmpBuffer.get(0);

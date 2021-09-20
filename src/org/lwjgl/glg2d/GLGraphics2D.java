@@ -122,7 +122,7 @@ public class GLGraphics2D extends Graphics2D {
     // addG2DDrawingHelper(stringHelper);
     addG2DDrawingHelper(shapeHelper);
     // addG2DDrawingHelper(matrixHelper);
-    // addG2DDrawingHelper(colorHelper);
+    addG2DDrawingHelper(colorHelper);
   }
 
   public void active() {
@@ -271,20 +271,17 @@ public class GLGraphics2D extends Graphics2D {
 
   @Override
   public Composite getComposite() {
-    // return colorHelper.getComposite();
-    throw new UnsupportedOperationException();
+    return colorHelper.getComposite();
   }
 
   @Override
   public void setComposite(Composite comp) {
-    // colorHelper.setComposite(comp);
-    throw new UnsupportedOperationException();
+    colorHelper.setComposite(comp);
   }
 
   @Override
   public void setPaint(Paint paint) {
-    // colorHelper.setPaint(paint);
-    throw new UnsupportedOperationException();
+    colorHelper.setPaint(paint);
   }
 
   @Override
@@ -389,32 +386,27 @@ public class GLGraphics2D extends Graphics2D {
 
   @Override
   public Paint getPaint() {
-    // return colorHelper.getPaint();
-    throw new UnsupportedOperationException();
+    return colorHelper.getPaint();
   }
 
   @Override
   public Color getColor() {
-    // return colorHelper.getColor();
-    throw new UnsupportedOperationException();
+    return colorHelper.getColor();
   }
 
   @Override
   public void setColor(Color c) {
-    // colorHelper.setColor(c);
-    throw new UnsupportedOperationException();
+    colorHelper.setColor(c);
   }
 
   @Override
   public void setBackground(Color color) {
-    // colorHelper.setBackground(color);
-    throw new UnsupportedOperationException();
+    colorHelper.setBackground(color);
   }
 
   @Override
   public Color getBackground() {
-    // return colorHelper.getBackground();
-    throw new UnsupportedOperationException();
+    return colorHelper.getBackground();
   }
 
   @Override
@@ -429,14 +421,12 @@ public class GLGraphics2D extends Graphics2D {
 
   @Override
   public void setPaintMode() {
-    // colorHelper.setPaintMode();
-    throw new UnsupportedOperationException();
+    colorHelper.setPaintMode();
   }
 
   @Override
   public void setXORMode(Color c) {
-    // colorHelper.setXORMode(c);
-    throw new UnsupportedOperationException();
+    colorHelper.setXORMode(c);
   }
 
   @Override
@@ -552,8 +542,7 @@ public class GLGraphics2D extends Graphics2D {
 
   @Override
   public void copyArea(int x, int y, int width, int height, int dx, int dy) {
-    // colorHelper.copyArea(x, y, width, height, dx, dy);
-    throw new UnsupportedOperationException();
+    colorHelper.copyArea(x, y, width, height, dx, dy);
   }
 
   @Override
@@ -569,10 +558,9 @@ public class GLGraphics2D extends Graphics2D {
   @Override
   public void clearRect(int x, int y, int width, int height) {
     Color c = getColor();
-    // colorHelper.setColorNoRespectComposite(getBackground());
-    throw new UnsupportedOperationException();
-    // fillRect(x, y, width, height);
-    // colorHelper.setColorRespectComposite(c);
+    colorHelper.setColorNoRespectComposite(getBackground());
+    fillRect(x, y, width, height);
+    colorHelper.setColorRespectComposite(c);
   }
 
   @Override

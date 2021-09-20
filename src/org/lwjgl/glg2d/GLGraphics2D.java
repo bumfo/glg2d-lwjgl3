@@ -19,6 +19,7 @@ import org.lwjgl.glg2d.bridge.GL;
 import org.lwjgl.glg2d.impl.gl2.GL2ShapeDrawer;
 import org.lwjgl.glg2d.impl.gl2.GL2ColorHelper;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
@@ -187,13 +188,13 @@ public class GLGraphics2D extends Graphics2D {
   }
 
   public void setDefaultState() {
-    // setBackground(Color.black);
-    // setColor(Color.white);
+    setBackground(Color.black);
+    setColor(Color.white);
     // setFont(Font.getFont(Font.SANS_SERIF));
     setStroke(new BasicStroke());
-    // setComposite(AlphaComposite.SrcOver);
-    // setClip(null);
-    // setRenderingHints(null);
+    setComposite(AlphaComposite.SrcOver);
+
+    setRenderingHints(null);
     // graphicsConfig = new GLGraphicsConfiguration(glDrawable);
   }
 

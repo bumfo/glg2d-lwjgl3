@@ -90,7 +90,6 @@ public class HelloWorld {
 
     g = new GLGraphics2D(gl, WIDTH, HEIGHT);
 
-    g.setDefaultState();
 
     init();
     loop();
@@ -173,6 +172,7 @@ public class HelloWorld {
     GL.createCapabilities();
 
     g.active();
+    g.setDefaultState();
 
     // Set the clear color
     glClearColor(0.0f, 0f, 0f, 0.0f);
@@ -206,6 +206,7 @@ public class HelloWorld {
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
 
+      g.setDefaultState();
       g.setColor(Color.CYAN);
 
 
@@ -230,9 +231,8 @@ public class HelloWorld {
       angle += 1f / 60f;
 
       g.setColor(new Color(255, 255, 255, 64));
-
       g.setStroke(stroke);
-      // g.drawRect(100 + (int) dx, 100, 50, 50);
+      g.fillRect(100 + (int) dx, 100, 50, 50);
       g.draw(new Rectangle2D.Double(75 + dx, 75, 50, 50));
       dx += 1f / 60f * 8;
       // g.fillRect(100, 100, 50, 50);

@@ -129,7 +129,7 @@ public class FastLineVisitor extends SimplePathVisitor {
     glLineWidth = strokeWidth * scaleX;
 
     // we'll only try if it's a thin line
-    return false; // glLineWidth <= 2;
+    return false; // glLineWidth <= 1;
   }
 
   @Override
@@ -159,10 +159,10 @@ public class FastLineVisitor extends SimplePathVisitor {
      * a point there. Since our line should be very thin, pixel-wise, it
      * shouldn't be noticeable.
      */
-    if (stroke.getDashArray() == null) {
-      buf.position(p);
-      buffer.drawBuffer(gl, GL2.GL_POINTS);
-    }
+    // if (stroke.getDashArray() == null) {
+    //   buf.position(p);
+    //   buffer.drawBuffer(gl, GL2.GL_POINTS);
+    // }
 
     buffer.clear();
   }

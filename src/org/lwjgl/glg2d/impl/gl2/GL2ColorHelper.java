@@ -98,7 +98,7 @@ public class GL2ColorHelper extends AbstractColorHelper {
     gf *= af;
     bf *= af;
 
-    gl.glEnable(GL.GL_BLEND);
+    // gl.glEnable(GL.GL_BLEND);
 
     // gl.glColor4ub((byte) r, (byte) g, (byte) b, (byte) (a));
     gl.glColor4f(rf, gf, bf, af);

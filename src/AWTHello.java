@@ -76,13 +76,12 @@ public final class AWTHello {
       public void initGL() {
         System.out.println("initGL");
 
-        gl = new Lwjgl3GL2();
-        g = new GLGraphics2D(gl, WIDTH, HEIGHT);
-        g.setDefaultState();
-
         GL.createCapabilities();
 
+        gl = new Lwjgl3GL2();
+        g = new GLGraphics2D(gl, WIDTH, HEIGHT);
         g.active();
+        g.setDefaultState();
 
         // Set the clear color
         // glClearColor(0.0f, 0f, 0f, 0.0f);

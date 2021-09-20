@@ -17,6 +17,7 @@ package org.lwjgl.glg2d;
 
 import org.lwjgl.glg2d.bridge.GL;
 import org.lwjgl.glg2d.impl.gl2.GL2ShapeDrawer;
+import org.lwjgl.glg2d.impl.gl2.GL2ColorHelper;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -58,10 +59,14 @@ import java.util.logging.Logger;
 public class GLGraphics2D extends Graphics2D {
   private final GL gl;
 
-
+  // logical
   private final int canvasWidth;
   private final int canvasHeight;
 
+  /**
+   * Keeps the current viewport height for things like painting text.
+   */
+  private int surfaceHeight;
 
   /**
    * Ensures we only dispose() once.
@@ -81,7 +86,7 @@ public class GLGraphics2D extends Graphics2D {
   // protected GLG2DImageHelper imageHelper;
   // protected GLG2DTextHelper stringHelper;
   // protected GLG2DTransformHelper matrixHelper;
-  // protected GLG2DColorHelper colorHelper;
+  protected GLG2DColorHelper colorHelper;
 
   /**
    * The current clip rectangle. This implementation supports only rectangular
@@ -110,7 +115,7 @@ public class GLGraphics2D extends Graphics2D {
     // imageHelper = createImageHelper();
     // stringHelper = createTextHelper();
     // matrixHelper = createTransformHelper();
-    // colorHelper = createColorHelper();
+    colorHelper = createColorHelper();
     shapeHelper = createShapeHelper();
 
     // addG2DDrawingHelper(imageHelper);
@@ -142,9 +147,9 @@ public class GLGraphics2D extends Graphics2D {
   //   return new GL2TransformHelper();
   // }
 
-  // protected GLG2DColorHelper createColorHelper() {
-  //   return new GL2ColorHelper();
-  // }
+  protected GLG2DColorHelper createColorHelper() {
+    return new GL2ColorHelper();
+  }
 
   public void addG2DDrawingHelper(G2DDrawingHelper helper) {
     /*
@@ -176,10 +181,10 @@ public class GLGraphics2D extends Graphics2D {
   // public GLG2DTransformHelper getMatrixHelper() {
   //   return matrixHelper;
   // }
-  //
-  // public GLG2DColorHelper getColorHelper() {
-  // //   return colorHelper;
-  // throw new UnsupportedOperationException};
+
+  public GLG2DColorHelper getColorHelper() {
+    return colorHelper;
+  }
 
   public void setDefaultState() {
     // setBackground(Color.black);
@@ -695,5 +700,13 @@ public class GLGraphics2D extends Graphics2D {
 
   public GL getGL() {
     return gl;
+  }
+
+  public GLGraphics2D getGLContext() {
+    return this;
+  }
+
+  public int getSurfaceHeight() {
+    return surfaceHeight;
   }
 }

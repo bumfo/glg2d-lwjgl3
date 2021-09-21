@@ -273,11 +273,11 @@ public class MyPlatformMacOSXGLCanvas implements PlatformGLCanvas {
         // CGLEnable(context, kCGLCESurfaceBackingSize);
 
         if (width != this.width || height != this.height) {
-          System.out.println(width+ ", " + height);
+          // System.out.println(width+ ", " + height);
 
           // [NSOpenGLCotext update] seems bugged. Updating renderer context with CGL works.
-          // CGLSetParameter(context, kCGLCPSurfaceBackingSize, new int[]{width, height});
-          // CGLEnable(context, kCGLCESurfaceBackingSize);
+          CGLSetParameter(context, kCGLCPSurfaceBackingSize, new int[]{width, height});
+          CGLEnable(context, kCGLCESurfaceBackingSize);
           this.width = width;
           this.height = height;
         }

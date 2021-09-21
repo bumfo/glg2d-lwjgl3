@@ -6,6 +6,8 @@ import org.lwjgl.opengl.awt.AWTGLCanvas;
 import org.lwjgl.opengl.awt.GLData;
 import org.lwjgl.opengl.awt.MyPlatformMacOSXGLCanvas;
 
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -36,9 +38,11 @@ public final class AWTHello {
   private GLGraphics2D g;
   private Lwjgl3GL2 gl;
 
+  private boolean shown;
+
   private void run() {
-    Frame frame = new Frame("AWT test");
-    // frame.setDefaultCloseOperation(Frame.EXIT_ON_CLOSE);
+    JFrame frame = new JFrame("AWT test");
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     // frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     frame.setLayout(new BorderLayout());
     GLData data = new GLData();
@@ -61,19 +65,20 @@ public final class AWTHello {
       //   canvas.render();
       // }
 
-      @Override
-      public void windowStateChanged(WindowEvent e) {
-        System.out.println(e);
-        canvas.reset();
-      }
+      // @Override
+      // public void windowStateChanged(WindowEvent e) {
+      //   System.out.println(e);
+      //   canvas.reset();
+      // }
 
-      @Override
-      public void windowClosing(WindowEvent e) {
-        System.exit(0);
-      }
+      // @Override
+      // public void windowClosing(WindowEvent e) {
+      //   // System.exit(0);
+      // }
     });
 
     frame.addComponentListener(new ComponentAdapter() {
+
       @Override
       public void componentResized(ComponentEvent e) {
         canvas.render();
@@ -82,6 +87,13 @@ public final class AWTHello {
       @Override
       public void componentShown(ComponentEvent e) {
         canvas.render();
+
+        System.out.println("componentShown " + Thread.currentThread().getId());
+      }
+
+      @Override
+      public void componentHidden(ComponentEvent e) {
+        shown = false;
       }
     });
 
@@ -90,10 +102,23 @@ public final class AWTHello {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+    frame.transferFocus();
     // canvas.setPreferredSize(new Dimension(WIDTH, HEIGHT));
     // frame.pack();
     // frame.setLocationRelativeTo(null);
 
+    System.out.println("main " + Thread.currentThread().getId());
+
+    Runnable renderLoop = new Runnable() {
+      public void run() {
+        if (!canvas.isValid()) {
+          return;
+        }
+        canvas.render();
+        SwingUtilities.invokeLater(this);
+      }
+    };
+    SwingUtilities.invokeLater(renderLoop);
 
     // while (true) {
     //   canvas.render();

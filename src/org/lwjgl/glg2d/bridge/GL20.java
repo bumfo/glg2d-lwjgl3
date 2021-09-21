@@ -22,7 +22,7 @@ import java.nio.IntBuffer;
 
 /** Interface wrapping all the methods of OpenGL ES 2.0
  * @author mzechner */
-public interface GL20 extends GLPointerFunc {
+public interface GL20 extends GLPointerFunc, GL11 {
 	int GL_ES_VERSION_2_0 = 1;
 	int GL_DEPTH_BUFFER_BIT = 0x00000100;
 	int GL_STENCIL_BUFFER_BIT = 0x00000400;
@@ -555,6 +555,8 @@ public interface GL20 extends GLPointerFunc {
 	void glGetBufferParameteriv(int target, int pname, IntBuffer params);
 
 	void glGetFloatv(int pname, FloatBuffer params);
+
+	void glGetFloatv(int pname, float[] data, int data_offset);
 
 	void glGetFramebufferAttachmentParameteriv(int target, int attachment, int pname, IntBuffer params);
 

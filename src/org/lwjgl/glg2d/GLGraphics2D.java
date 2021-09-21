@@ -18,6 +18,7 @@ package org.lwjgl.glg2d;
 import org.lwjgl.glg2d.bridge.GL;
 import org.lwjgl.glg2d.impl.gl2.GL2ShapeDrawer;
 import org.lwjgl.glg2d.impl.gl2.GL2ColorHelper;
+import org.lwjgl.glg2d.impl.gl2.GL2StringDrawer;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
@@ -61,8 +62,8 @@ public class GLGraphics2D extends Graphics2D {
   private final GL gl;
 
   // logical
-  private final int canvasWidth;
-  private final int canvasHeight;
+  private final int logicalWidth;
+  private final int logicalHeight;
 
   /**
    * Keeps the current viewport height for things like painting text.
@@ -85,7 +86,7 @@ public class GLGraphics2D extends Graphics2D {
 
   protected GLG2DShapeHelper shapeHelper;
   // protected GLG2DImageHelper imageHelper;
-  // protected GLG2DTextHelper stringHelper;
+  protected GLG2DTextHelper stringHelper;
   // protected GLG2DTransformHelper matrixHelper;
   protected GLG2DColorHelper colorHelper;
 
@@ -103,10 +104,10 @@ public class GLGraphics2D extends Graphics2D {
    */
   protected RenderingHints hints;
 
-  public GLGraphics2D(GL gl, int canvasWidth, int canvasHeight) {
+  public GLGraphics2D(GL gl, int logicalWidth, int logicalHeight) {
     this.gl = gl;
-    this.canvasWidth = canvasWidth;
-    this.canvasHeight = canvasHeight;
+    this.logicalWidth = logicalWidth;
+    this.logicalHeight = logicalHeight;
 
     hints = new RenderingHints(Collections.emptyMap());
     createDrawingHelpers();
@@ -114,13 +115,13 @@ public class GLGraphics2D extends Graphics2D {
 
   protected void createDrawingHelpers() {
     // imageHelper = createImageHelper();
-    // stringHelper = createTextHelper();
+    stringHelper = createTextHelper();
     // matrixHelper = createTransformHelper();
     colorHelper = createColorHelper();
     shapeHelper = createShapeHelper();
 
     // addG2DDrawingHelper(imageHelper);
-    // addG2DDrawingHelper(stringHelper);
+    addG2DDrawingHelper(stringHelper);
     addG2DDrawingHelper(shapeHelper);
     // addG2DDrawingHelper(matrixHelper);
     addG2DDrawingHelper(colorHelper);
@@ -136,10 +137,10 @@ public class GLGraphics2D extends Graphics2D {
     return new GL2ShapeDrawer();
   }
 
-  // protected GLG2DTextHelper createTextHelper() {
-  //   return new GL2StringDrawer();
-  // }
-  //
+  protected GLG2DTextHelper createTextHelper() {
+    return new GL2StringDrawer();
+  }
+
   // protected GLG2DImageHelper createImageHelper() {
   //   return new GL2ImageDrawer();
   // }
@@ -175,10 +176,10 @@ public class GLGraphics2D extends Graphics2D {
     return shapeHelper;
   }
 
-  // public GLG2DTextHelper getStringHelper() {
-  // //   return stringHelper;
-  // throw new UnsupportedOperationException};
-  //
+  public GLG2DTextHelper getStringHelper() {
+    return stringHelper;
+  }
+
   // public GLG2DTransformHelper getMatrixHelper() {
   //   return matrixHelper;
   // }
@@ -198,10 +199,6 @@ public class GLGraphics2D extends Graphics2D {
     // graphicsConfig = new GLGraphicsConfiguration(glDrawable);
   }
 
-  public int getCanvasHeight() {
-    return canvasHeight;
-  }
-
   public void glDispose() {
     for (G2DDrawingHelper helper : helpers) {
       helper.dispose();
@@ -215,26 +212,22 @@ public class GLGraphics2D extends Graphics2D {
 
   @Override
   public void drawString(String str, int x, int y) {
-    // stringHelper.drawString(str, x, y);
-    throw new UnsupportedOperationException();
+    stringHelper.drawString(str, x, y);
   }
 
   @Override
   public void drawString(String str, float x, float y) {
-    // stringHelper.drawString(str, x, y);
-    throw new UnsupportedOperationException();
+    stringHelper.drawString(str, x, y);
   }
 
   @Override
   public void drawString(AttributedCharacterIterator iterator, int x, int y) {
-    // stringHelper.drawString(iterator, x, y);
-    throw new UnsupportedOperationException();
+    stringHelper.drawString(iterator, x, y);
   }
 
   @Override
   public void drawString(AttributedCharacterIterator iterator, float x, float y) {
-    // stringHelper.drawString(iterator, x, y);
-    throw new UnsupportedOperationException();
+    stringHelper.drawString(iterator, x, y);
   }
 
   @Override
@@ -432,26 +425,22 @@ public class GLGraphics2D extends Graphics2D {
 
   @Override
   public Font getFont() {
-    // return stringHelper.getFont();
-    throw new UnsupportedOperationException();
+    return stringHelper.getFont();
   }
 
   @Override
   public void setFont(Font font) {
-    // stringHelper.setFont(font);
-    throw new UnsupportedOperationException();
+    stringHelper.setFont(font);
   }
 
   @Override
   public FontMetrics getFontMetrics(Font f) {
-    // return stringHelper.getFontMetrics(f);
-    throw new UnsupportedOperationException();
+    return stringHelper.getFontMetrics(f);
   }
 
   @Override
   public FontRenderContext getFontRenderContext() {
-    // return stringHelper.getFontRenderContext();
-    throw new UnsupportedOperationException();
+    return stringHelper.getFontRenderContext();
   }
 
   @Override
@@ -693,6 +682,10 @@ public class GLGraphics2D extends Graphics2D {
 
   public GLGraphics2D getGLContext() {
     return this;
+  }
+
+  public int getLogicalHeight() {
+    return logicalHeight;
   }
 
   public int getSurfaceHeight() {

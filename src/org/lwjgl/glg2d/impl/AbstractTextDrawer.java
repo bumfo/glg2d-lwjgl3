@@ -147,5 +147,15 @@ public abstract class AbstractTextDrawer implements GLG2DTextHelper {
         throw new AssertionError(e);
       }
     }
+
+    @Override
+    public String toString() {
+      return "FontState{" +
+          "font=" + font +
+          ", antiAlias=" + antiAlias +
+          ", surfaceScale=" + surfaceScale +
+          ", alignPixel=" + alignPixel +
+          '}';
+    }
   }
 }

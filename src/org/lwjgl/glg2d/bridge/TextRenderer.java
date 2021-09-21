@@ -1,5 +1,6 @@
 package org.lwjgl.glg2d.bridge;
 
+import javax.swing.JLabel;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
@@ -79,7 +80,7 @@ public class TextRenderer {
     if (cachedGraphics == null) {
       // cachedGraphics = renderer.createGraphics();
 
-      cachedGraphics = (Graphics2D) new Frame().getGraphics();
+      cachedGraphics = (Graphics2D) new JLabel().getGraphics();
 
       // Set up composite, font and rendering hints
       cachedGraphics.setComposite(AlphaComposite.Src);

@@ -241,6 +241,8 @@ public class HelloWorld {
 
       drawRotatedRectangle(angle * 2., 100 + dx, 100, 200, 200);
 
+      g.drawString("Hello OpenGL", 100, 100);
+
       glfwSwapBuffers(window); // swap the color buffers
 
       // Poll for window events. The key callback above will only be

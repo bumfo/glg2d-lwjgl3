@@ -189,13 +189,13 @@ public class GLGraphics2D extends Graphics2D {
   }
 
   public void setDefaultState() {
-    setBackground(Color.black);
-    setColor(Color.white);
-    setFont(Font.getFont(Font.SANS_SERIF));
-    setStroke(new BasicStroke());
-    setComposite(AlphaComposite.SrcOver);
-
-    setRenderingHints(null);
+    setBackground(Defaults.BACKGROUND);
+    setColor(Defaults.COLOR);
+    setFont(Defaults.FONT);
+    setStroke(Defaults.STROKE);
+    setComposite(Defaults.COMPOSITE);
+    // setClip(Defaults.CLIP);
+    setRenderingHints(Defaults.RENDERING_HINTS);
     // graphicsConfig = new GLGraphicsConfiguration(glDrawable);
   }
 

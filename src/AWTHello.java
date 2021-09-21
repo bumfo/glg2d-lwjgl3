@@ -2,6 +2,7 @@ import org.lwjgl.glg2d.GLGraphics2D;
 import org.lwjgl.glg2d.bridge.Lwjgl3GL2;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GLCapabilities;
 import org.lwjgl.opengl.awt.AWTGLCanvas;
 import org.lwjgl.opengl.awt.GLData;
 import org.lwjgl.opengl.awt.MyPlatformMacOSXGLCanvas;
@@ -179,7 +180,6 @@ public final class AWTHello {
 
     public void initGL() {
       System.out.println("initGL");
-
       GL.createCapabilities();
 
       gl = new Lwjgl3GL2();

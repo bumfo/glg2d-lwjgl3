@@ -191,7 +191,7 @@ public class GLGraphics2D extends Graphics2D {
   public void setDefaultState() {
     setBackground(Color.black);
     setColor(Color.white);
-    // setFont(Font.getFont(Font.SANS_SERIF));
+    setFont(Font.getFont(Font.SANS_SERIF));
     setStroke(new BasicStroke());
     setComposite(AlphaComposite.SrcOver);
 

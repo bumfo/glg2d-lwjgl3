@@ -80,7 +80,7 @@ public class TextRenderer {
     if (cachedGraphics == null) {
       // cachedGraphics = renderer.createGraphics();
 
-      cachedGraphics = (Graphics2D) new JLabel().getGraphics();
+      cachedGraphics = new NilGraphics2D();
 
       // Set up composite, font and rendering hints
       cachedGraphics.setComposite(AlphaComposite.Src);

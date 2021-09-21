@@ -11,7 +11,7 @@ import java.util.Map;
 public final class Defaults {
   public static final Color BACKGROUND = Color.black;
   public static final Color COLOR = Color.white;
-  public static final Font FONT = getDefaultFont();
+  // public static final Font FONT = getDefaultFont();
   public static final BasicStroke STROKE = new BasicStroke();
   public static final AlphaComposite COMPOSITE = AlphaComposite.SrcOver;
   public static final Shape CLIP = null;

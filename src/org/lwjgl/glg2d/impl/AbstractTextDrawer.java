@@ -72,7 +72,10 @@ public abstract class AbstractTextDrawer implements GLG2DTextHelper {
 
   @Override
   public void setFont(Font font) {
-    if (font == null) return;
+    if (font == null) {
+      System.err.println("WARNING: setFont(null)");
+      return;
+    }
     peek().font = font;
   }
 

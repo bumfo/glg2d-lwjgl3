@@ -11,6 +11,7 @@ import org.lwjgl.system.MemoryStack;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
@@ -85,6 +86,15 @@ public class HelloWorld {
 
   private void run() {
     System.out.println("Hello LWJGL " + Version.getVersion() + "!");
+
+    // new Thread(() -> {
+    //   try {
+    //     Thread.sleep(1000);
+    //   } catch (InterruptedException e) {
+    //     Thread.currentThread().interrupt();
+    //   }
+    //   System.out.println(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
+    // }).start();
 
     gl = new Lwjgl3GL2();
 

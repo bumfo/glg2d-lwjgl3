@@ -193,7 +193,7 @@ public class GLGraphics2D extends Graphics2D {
     // setFont(Defaults.FONT);
     setStroke(Defaults.STROKE);
     setComposite(Defaults.COMPOSITE);
-    setClip(Defaults.CLIP);
+    // setClip(Defaults.CLIP);
     setRenderingHints(Defaults.RENDERING_HINTS);
     // graphicsConfig = new GLGraphicsConfiguration(glDrawable);
   }

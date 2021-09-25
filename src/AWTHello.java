@@ -1,7 +1,7 @@
 import org.lwjgl.glg2d.GLGraphics2D;
+import org.lwjgl.glg2d.GLUtils;
 import org.lwjgl.glg2d.bridge.Lwjgl3GL2;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.awt.AWTGLCanvas;
 import org.lwjgl.opengl.awt.GLData;
 import org.lwjgl.opengl.awt.MyPlatformMacOSXGLCanvas;
@@ -11,10 +11,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.Frame;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Stroke;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -24,7 +21,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
-import java.lang.reflect.Method;
 
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
@@ -193,34 +189,9 @@ public final class AWTHello {
       gl = new Lwjgl3GL2();
       g = new GLGraphics2D(gl, WIDTH, HEIGHT);
 
-      // --add-opens=java.desktop/sun.awt=ALL-UNNAMED
-
-      final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-      final Class<?> gdClass = gd.getClass();
-      Method getScaleFactorMethod = null;
-      try {
-        getScaleFactorMethod = gdClass.getDeclaredMethod("getScaleFactor");
-        getScaleFactorMethod.setAccessible(true);
-      } catch (NoSuchMethodException e) {
-        e.printStackTrace();
-      }
-
-      if (null != getScaleFactorMethod) {
-        // Generic (?)
-        try {
-          final Object res = getScaleFactorMethod.invoke(gd);
-          if (res instanceof Integer) {
-            scaleX = ((Integer) res).floatValue();
-          } else if (res instanceof Double) {
-            scaleX = ((Double) res).floatValue();
-          }
-          scaleY = scaleX;
-        } catch (final Throwable ignored) {
-        }
-      }
-
-      System.out.println(scaleX + ", " + scaleY);
-
+      float[] scale = GLUtils.getScale(new float[2]);
+      scaleX = scale[0];
+      scaleY = scale[1];
 
       // Set the clear color
       // glClearColor(0.0f, 0f, 0f, 0.0f);

@@ -61,8 +61,8 @@ public class GLGraphics2D extends Graphics2D {
   private final GL gl;
 
   // logical
-  private final int logicalWidth;
-  private final int logicalHeight;
+  private int logicalWidth;
+  private int logicalHeight;
 
   /**
    * Keeps the current viewport height for things like painting text.
@@ -193,7 +193,7 @@ public class GLGraphics2D extends Graphics2D {
     // setFont(Defaults.FONT);
     setStroke(Defaults.STROKE);
     setComposite(Defaults.COMPOSITE);
-    // setClip(Defaults.CLIP);
+    setClip(Defaults.CLIP);
     setRenderingHints(Defaults.RENDERING_HINTS);
     // graphicsConfig = new GLGraphicsConfiguration(glDrawable);
   }
@@ -660,6 +660,9 @@ public class GLGraphics2D extends Graphics2D {
 
   @Override
   public void dispose() {
+    System.out.println("GLGraphics2D.dispose()");
+    // System.exit(0);
+
     if (!isDisposed) {
       isDisposed = true;
     }
@@ -679,6 +682,12 @@ public class GLGraphics2D extends Graphics2D {
 
   public int getLogicalHeight() {
     return logicalHeight;
+  }
+
+  public void setSize(int width, int height) {
+    logicalWidth = width;
+    logicalHeight = height;
+    surfaceHeight = GLUtils.getViewportHeight(getGLContext().getGL());
   }
 
   public int getSurfaceHeight() {

@@ -13,6 +13,8 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Stroke;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -22,6 +24,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import java.lang.reflect.Method;
 
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
@@ -32,6 +35,8 @@ public final class AWTHello {
   private static final int WIDTH = 800;
   private static final int HEIGHT = 600;
 
+  private float scaleX = 1f;
+  private float scaleY = 1f;
 
   private int logicalWidth = 800;
   private int logicalHeight = 600;
@@ -76,7 +81,8 @@ public final class AWTHello {
 
       @Override
       public void windowClosing(WindowEvent e) {
-        System.exit(0);
+        frame.dispose();
+        // System.exit(0);
       }
     });
 
@@ -186,8 +192,33 @@ public final class AWTHello {
 
       gl = new Lwjgl3GL2();
       g = new GLGraphics2D(gl, WIDTH, HEIGHT);
-      g.active();
-      g.setDefaultState();
+
+      final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+      final Class<?> gdClass = gd.getClass();
+      Method getScaleFactorMethod = null;
+      try {
+        getScaleFactorMethod = gdClass.getDeclaredMethod("getScaleFactor");
+        getScaleFactorMethod.setAccessible(true);
+      } catch (NoSuchMethodException e) {
+        e.printStackTrace();
+      }
+
+      if (null != getScaleFactorMethod) {
+        // Generic (?)
+        try {
+          final Object res = getScaleFactorMethod.invoke(gd);
+          if (res instanceof Integer) {
+            scaleX = ((Integer) res).floatValue();
+          } else if (res instanceof Double) {
+            scaleX = ((Double) res).floatValue();
+          }
+          scaleY = scaleX;
+        } catch (final Throwable ignored) {
+        }
+      }
+
+      System.out.println(scaleX + ", " + scaleY);
+
 
       // Set the clear color
       // glClearColor(0.0f, 0f, 0f, 0.0f);
@@ -230,11 +261,16 @@ public final class AWTHello {
       logicalHeight = getHeight();
       // System.out.println(logicalWidth + ":" + logicalHeight);
 
-      glViewport(0, 0, logicalWidth * 2, logicalHeight * 2);
+      glViewport(0, 0, (int) (logicalWidth * scaleX + 0.5), (int) (logicalHeight * scaleY + 0.5));
+      g.setSize(logicalWidth, logicalHeight);
+      g.active();
+      g.setDefaultState();
 
-      GL20.glMatrixMode(GL20.GL_PROJECTION);
-      GL20.glLoadIdentity();
-      GL20.glOrtho(0, logicalWidth, 0, logicalHeight, -1, 1);
+      // glViewport(0, 0, logicalWidth, logicalHeight);
+
+      // GL20.glMatrixMode(GL20.GL_PROJECTION);
+      // GL20.glLoadIdentity();
+      // GL20.glOrtho(0, logicalWidth, 0, logicalHeight, -1, 1);
 
 
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer

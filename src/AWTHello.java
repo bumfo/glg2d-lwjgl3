@@ -193,6 +193,8 @@ public final class AWTHello {
       gl = new Lwjgl3GL2();
       g = new GLGraphics2D(gl, WIDTH, HEIGHT);
 
+      // --add-opens=java.desktop/sun.awt=ALL-UNNAMED
+
       final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
       final Class<?> gdClass = gd.getClass();
       Method getScaleFactorMethod = null;

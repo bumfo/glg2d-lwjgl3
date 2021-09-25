@@ -2,16 +2,15 @@ import org.lwjgl.glg2d.GLGraphics2D;
 import org.lwjgl.glg2d.bridge.Lwjgl3GL2;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GLCapabilities;
 import org.lwjgl.opengl.awt.AWTGLCanvas;
 import org.lwjgl.opengl.awt.GLData;
 import org.lwjgl.opengl.awt.MyPlatformMacOSXGLCanvas;
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Stroke;
 import java.awt.event.ComponentAdapter;
@@ -42,8 +41,8 @@ public final class AWTHello {
   private boolean shown;
 
   private void run() {
-    JFrame frame = new JFrame("AWT test");
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    Frame frame = new Frame("AWT test");
+    // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     // frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     frame.setLayout(new BorderLayout());
     GLData data = new GLData();
@@ -61,10 +60,12 @@ public final class AWTHello {
 
 
     frame.addWindowListener(new WindowAdapter() {
-      // @Override
-      // public void windowOpened(WindowEvent e) {
-      //   canvas.render();
-      // }
+      @Override
+      public void windowOpened(WindowEvent e) {
+        // System.out.println("windowOpened " + Thread.currentThread().getId());
+
+        canvas.render();
+      }
 
       // @Override
       // public void windowStateChanged(WindowEvent e) {
@@ -72,10 +73,10 @@ public final class AWTHello {
       //   canvas.reset();
       // }
 
-      // @Override
-      // public void windowClosing(WindowEvent e) {
-      //   // System.exit(0);
-      // }
+      @Override
+      public void windowClosing(WindowEvent e) {
+        System.exit(0);
+      }
     });
 
     frame.addComponentListener(new ComponentAdapter() {
@@ -87,9 +88,9 @@ public final class AWTHello {
 
       @Override
       public void componentShown(ComponentEvent e) {
-        canvas.render();
-
         System.out.println("componentShown " + Thread.currentThread().getId());
+
+        canvas.render();
       }
 
       @Override
@@ -98,7 +99,7 @@ public final class AWTHello {
       }
     });
 
-    // frame.setBackground(Color.BLACK);
+    frame.setBackground(Color.BLACK);
 
     frame.pack();
     frame.setLocationRelativeTo(null);
@@ -116,10 +117,10 @@ public final class AWTHello {
           return;
         }
         canvas.render();
-        SwingUtilities.invokeLater(this);
+        EventQueue.invokeLater(this);
       }
     };
-    SwingUtilities.invokeLater(renderLoop);
+    EventQueue.invokeLater(renderLoop);
 
     // while (true) {
     //   canvas.render();

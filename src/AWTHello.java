@@ -157,6 +157,13 @@ public final class AWTHello {
 
       platformCanvas = new MyPlatformMacOSXGLCanvas();
 
+      float[] scale = GLUtils.getScale(new float[2]);
+      scaleX = scale[0];
+      scaleY = scale[1];
+
+      MyPlatformMacOSXGLCanvas.scaleX = scaleX;
+      MyPlatformMacOSXGLCanvas.scaleY = scaleY;
+
       // frame.addKeyListener(new KeyAdapter() {
       //   @Override
       //   public void keyPressed(KeyEvent e) {
@@ -188,10 +195,6 @@ public final class AWTHello {
 
       gl = new Lwjgl3GL2();
       g = new GLGraphics2D(gl, WIDTH, HEIGHT);
-
-      float[] scale = GLUtils.getScale(new float[2]);
-      scaleX = scale[0];
-      scaleY = scale[1];
 
       // Set the clear color
       // glClearColor(0.0f, 0f, 0f, 0.0f);

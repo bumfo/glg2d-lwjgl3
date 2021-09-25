@@ -75,6 +75,9 @@ public class MyPlatformMacOSXGLCanvas implements PlatformGLCanvas {
   private static final long CATransaction;
   private static final long NSOpenGLPixelFormat;
 
+  public static float scaleX = 1f;
+  public static float scaleY = 1f;
+
   static {
     awt = JAWT.calloc();
     awt.version(JAWT_VERSION_1_7);
@@ -132,8 +135,8 @@ public class MyPlatformMacOSXGLCanvas implements PlatformGLCanvas {
           height = dsi.bounds().height();
 
           // System.out.println(width + ", " + height);
-          width *= 2;
-          height *= 2;
+          width *= scaleX;
+          height *= scaleY;
 
           long pixelFormat = invokePPP(NSOpenGLPixelFormat, sel_getUid("alloc"), objc_msgSend);
 
@@ -266,8 +269,8 @@ public class MyPlatformMacOSXGLCanvas implements PlatformGLCanvas {
         int width = dsi.bounds().width();
         int height = dsi.bounds().height();
 
-        width *= 2;
-        height *= 2;
+        width *= scaleX;
+        height *= scaleY;
 
         // CGLSetParameter(context, kCGLCPSurfaceBackingSize, new int[]{width, height});
         // CGLEnable(context, kCGLCESurfaceBackingSize);

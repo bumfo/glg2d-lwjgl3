@@ -409,6 +409,11 @@ class Lwjgl3GL20 implements org.lwjgl.glg2d.bridge.GL20 {
     GL11.glGetIntegerv(pname, params);
   }
 
+  @Override
+  public void glGetIntegerv(int pname, int[] params, int params_offset) {
+
+  }
+
   public String glGetProgramInfoLog(int program) {
     ByteBuffer buffer = ByteBuffer.allocateDirect(1024 * 10);
     buffer.order(ByteOrder.nativeOrder());
@@ -916,11 +921,53 @@ class Lwjgl3GL20 implements org.lwjgl.glg2d.bridge.GL20 {
     GL11.glPopMatrix();
   }
 
+  @Override
+  public void glLoadIdentity() {
+    GL20.glLoadIdentity();
+  }
+
+  @Override
+  public void glLoadMatrixf(FloatBuffer m) {
+    GL20.glLoadMatrixf(m);
+  }
+
+  @Override
+  public void glLoadMatrixf(float[] m, int m_offset) {
+    if (m_offset != 0) throw new IllegalArgumentException("m_offset must be 0");
+    GL20.glLoadMatrixf(m);
+  }
+
+  @Override
+  public void glMultMatrixf(FloatBuffer m) {
+    GL20.glMultMatrixf(m);
+  }
+
+  @Override
+  public void glMultMatrixf(float[] m, int m_offset) {
+    if (m_offset != 0) throw new IllegalArgumentException("m_offset must be 0");
+    GL20.glMultMatrixf(m);
+  }
+
   public void glScalef(float x, float y, float z) {
     GL11.glScalef(x, y, z);
   }
 
+  @Override
+  public void glOrthof(float left, float right, float bottom, float top, float zNear, float zFar) {
+    GL11.glOrtho(left, right, bottom, top, zNear, zFar);
+  }
+
+  @Override
+  public void glFrustumf(float left, float right, float bottom, float top, float zNear, float zFar) {
+    GL11.glFrustum(left, right, bottom, top, zNear, zFar);
+  }
+
   public void glTranslatef(float x, float y, float z) {
     GL11.glTranslatef(x, y, z);
+  }
+
+  @Override
+  public void glRotatef(float angle, float x, float y, float z) {
+    GL20.glRotatef(angle, x, y, z);
   }
 }

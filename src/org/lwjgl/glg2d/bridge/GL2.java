@@ -125,4 +125,6 @@ public interface GL2 extends GL20 {
   // /** Entry point to C language function: <code> void {@native glRasterPos4sv}(const GLshort *  v) </code> <br>Part of <code>GL_VERSION_1_0</code><br>   */
   // public void glRasterPos4sv(short[] v, int v_offset);
 
+  void glOrtho(double left, double right, double bottom, double top, double near_val, double far_val);
+
 }

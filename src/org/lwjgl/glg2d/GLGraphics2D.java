@@ -16,12 +16,11 @@
 package org.lwjgl.glg2d;
 
 import org.lwjgl.glg2d.bridge.GL;
-import org.lwjgl.glg2d.impl.gl2.GL2ShapeDrawer;
 import org.lwjgl.glg2d.impl.gl2.GL2ColorHelper;
+import org.lwjgl.glg2d.impl.gl2.GL2ShapeDrawer;
 import org.lwjgl.glg2d.impl.gl2.GL2StringDrawer;
+import org.lwjgl.glg2d.impl.gl2.GL2TransformHelper;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Font;
@@ -87,7 +86,7 @@ public class GLGraphics2D extends Graphics2D {
   protected GLG2DShapeHelper shapeHelper;
   // protected GLG2DImageHelper imageHelper;
   protected GLG2DTextHelper stringHelper;
-  // protected GLG2DTransformHelper matrixHelper;
+  protected GLG2DTransformHelper matrixHelper;
   protected GLG2DColorHelper colorHelper;
 
   /**
@@ -116,14 +115,14 @@ public class GLGraphics2D extends Graphics2D {
   protected void createDrawingHelpers() {
     // imageHelper = createImageHelper();
     stringHelper = createTextHelper();
-    // matrixHelper = createTransformHelper();
+    matrixHelper = createTransformHelper();
     colorHelper = createColorHelper();
     shapeHelper = createShapeHelper();
 
     // addG2DDrawingHelper(imageHelper);
     addG2DDrawingHelper(stringHelper);
     addG2DDrawingHelper(shapeHelper);
-    // addG2DDrawingHelper(matrixHelper);
+    addG2DDrawingHelper(matrixHelper);
     addG2DDrawingHelper(colorHelper);
   }
 
@@ -145,9 +144,9 @@ public class GLGraphics2D extends Graphics2D {
   //   return new GL2ImageDrawer();
   // }
 
-  // protected GLG2DTransformHelper createTransformHelper() {
-  //   return new GL2TransformHelper();
-  // }
+  protected GLG2DTransformHelper createTransformHelper() {
+    return new GL2TransformHelper();
+  }
 
   protected GLG2DColorHelper createColorHelper() {
     return new GL2ColorHelper();
@@ -180,9 +179,9 @@ public class GLGraphics2D extends Graphics2D {
     return stringHelper;
   }
 
-  // public GLG2DTransformHelper getMatrixHelper() {
-  //   return matrixHelper;
-  // }
+  public GLG2DTransformHelper getMatrixHelper() {
+    return matrixHelper;
+  }
 
   public GLG2DColorHelper getColorHelper() {
     return colorHelper;
@@ -194,7 +193,7 @@ public class GLGraphics2D extends Graphics2D {
     // setFont(Defaults.FONT);
     setStroke(Defaults.STROKE);
     setComposite(Defaults.COMPOSITE);
-    // setClip(Defaults.CLIP);
+    setClip(Defaults.CLIP);
     setRenderingHints(Defaults.RENDERING_HINTS);
     // graphicsConfig = new GLGraphicsConfiguration(glDrawable);
   }
@@ -326,56 +325,47 @@ public class GLGraphics2D extends Graphics2D {
 
   @Override
   public void translate(int x, int y) {
-    // matrixHelper.translate(x, y);
-    throw new UnsupportedOperationException();
+    matrixHelper.translate(x, y);
   }
 
   @Override
   public void translate(double x, double y) {
-    // matrixHelper.translate(x, y);
-    throw new UnsupportedOperationException();
+    matrixHelper.translate(x, y);
   }
 
   @Override
   public void rotate(double theta) {
-    // matrixHelper.rotate(theta);
-    throw new UnsupportedOperationException();
+    matrixHelper.rotate(theta);
   }
 
   @Override
   public void rotate(double theta, double x, double y) {
-    // matrixHelper.rotate(theta, x, y);
-    throw new UnsupportedOperationException();
+    matrixHelper.rotate(theta, x, y);
   }
 
   @Override
   public void scale(double sx, double sy) {
-    // matrixHelper.scale(sx, sy);
-    throw new UnsupportedOperationException();
+    matrixHelper.scale(sx, sy);
   }
 
   @Override
   public void shear(double shx, double shy) {
-    // matrixHelper.shear(shx, shy);
-    throw new UnsupportedOperationException();
+    matrixHelper.shear(shx, shy);
   }
 
   @Override
   public void transform(AffineTransform Tx) {
-    // matrixHelper.transform(Tx);
-    throw new UnsupportedOperationException();
+    matrixHelper.transform(Tx);
   }
 
   @Override
   public void setTransform(AffineTransform transform) {
-    // matrixHelper.setTransform(transform);
-    throw new UnsupportedOperationException();
+    matrixHelper.setTransform(transform);
   }
 
   @Override
   public AffineTransform getTransform() {
-    // return matrixHelper.getTransform();
-    throw new UnsupportedOperationException();
+    return matrixHelper.getTransform();
   }
 
   @Override
@@ -519,15 +509,14 @@ public class GLGraphics2D extends Graphics2D {
   }
 
   protected void scissor(boolean enable) {
-    throw new UnsupportedOperationException();
-    // GL gl = getGLContext().getGL();
-    // if (enable) {
-    //   gl.glScissor(clip.x, canvasHeight - clip.y - clip.height, Math.max(clip.width, 0), Math.max(clip.height, 0));
-    //   gl.glEnable(GL.GL_SCISSOR_TEST);
-    // } else {
-    //   clip = null;
-    //   gl.glDisable(GL.GL_SCISSOR_TEST);
-    // }
+    GL gl = getGLContext().getGL();
+    if (enable) {
+      gl.glScissor(clip.x, logicalHeight - clip.y - clip.height, Math.max(clip.width, 0), Math.max(clip.height, 0));
+      gl.glEnable(GL.GL_SCISSOR_TEST);
+    } else {
+      clip = null;
+      gl.glDisable(GL.GL_SCISSOR_TEST);
+    }
   }
 
   @Override
@@ -682,6 +671,10 @@ public class GLGraphics2D extends Graphics2D {
 
   public GLGraphics2D getGLContext() {
     return this;
+  }
+
+  public int getLogicalWidth() {
+    return logicalWidth;
   }
 
   public int getLogicalHeight() {

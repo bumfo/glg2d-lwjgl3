@@ -21,6 +21,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import java.lang.reflect.InvocationTargetException;
 
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
@@ -28,8 +29,8 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glViewport;
 
 public final class AWTHello {
-  private static final int WIDTH = 800;
-  private static final int HEIGHT = 600;
+  private static final int InitialWidth = 800;
+  private static final int InitialHeight = 600;
 
   private float scaleX = 1f;
   private float scaleY = 1f;
@@ -56,7 +57,7 @@ public final class AWTHello {
 
     MyAWTGLCanvas canvas = new MyAWTGLCanvas(data);
 
-    canvas.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+    canvas.setPreferredSize(new Dimension(InitialWidth, InitialHeight));
     // canvas.setPreferredSize(new Dimension(WIDTH + 1, HEIGHT + 1));
     frame.add(canvas);
 
@@ -106,7 +107,15 @@ public final class AWTHello {
 
     frame.pack();
     frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
+
+    try {
+      EventQueue.invokeAndWait(() -> {
+        frame.setVisible(true);
+      });
+    } catch (InterruptedException | InvocationTargetException e) {
+      e.printStackTrace();
+      System.exit(-1);
+    }
     frame.transferFocus();
     // canvas.setPreferredSize(new Dimension(WIDTH, HEIGHT));
     // frame.pack();

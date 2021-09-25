@@ -64,6 +64,7 @@ public class GLGraphics2D extends Graphics2D {
   private int logicalWidth;
   private int logicalHeight;
 
+  private int surfaceWidth;
   /**
    * Keeps the current viewport height for things like painting text.
    */
@@ -130,6 +131,31 @@ public class GLGraphics2D extends Graphics2D {
     for (G2DDrawingHelper helper : helpers) {
       helper.setG2D(this);
     }
+  }
+
+  public int getSurfaceWidth() {
+    return surfaceWidth;
+  }
+
+  public int getSurfaceHeight() {
+    return surfaceHeight;
+  }
+
+  public int getLogicalWidth() {
+    return logicalWidth;
+  }
+
+  public int getLogicalHeight() {
+    return logicalHeight;
+  }
+
+  public void setSize(int width, int height, int surfaceWidth, int surfaceHeight) {
+    logicalWidth = width;
+    logicalHeight = height;
+    this.surfaceWidth = surfaceWidth;
+    this.surfaceHeight = surfaceHeight;
+    // surfaceHeight = GLUtils.getViewportHeight(getGLContext().getGL());
+    // System.out.println("width=" + logicalWidth + ", height=" + logicalHeight + ", surfaceHeight=" + surfaceHeight);
   }
 
   protected GLG2DShapeHelper createShapeHelper() {
@@ -676,21 +702,4 @@ public class GLGraphics2D extends Graphics2D {
     return this;
   }
 
-  public int getLogicalWidth() {
-    return logicalWidth;
-  }
-
-  public int getLogicalHeight() {
-    return logicalHeight;
-  }
-
-  public void setSize(int width, int height) {
-    logicalWidth = width;
-    logicalHeight = height;
-    surfaceHeight = GLUtils.getViewportHeight(getGLContext().getGL());
-  }
-
-  public int getSurfaceHeight() {
-    return surfaceHeight;
-  }
 }

@@ -234,8 +234,11 @@ public final class AWTHello {
       logicalHeight = getHeight();
       // System.out.println(logicalWidth + ":" + logicalHeight);
 
-      glViewport(0, 0, (int) (logicalWidth * scaleX + 0.5), (int) (logicalHeight * scaleY + 0.5));
-      g.setSize(logicalWidth, logicalHeight);
+      int surfaceWidth = (int) (logicalWidth * scaleX + 0.5);
+      int surfaceHeight = (int) (logicalHeight * scaleY + 0.5);
+      glViewport(0, 0, surfaceWidth, surfaceHeight);
+
+      g.setSize(logicalWidth, logicalHeight, surfaceWidth, surfaceHeight);
       g.active();
       g.setDefaultState();
 

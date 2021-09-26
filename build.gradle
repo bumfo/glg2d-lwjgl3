@@ -55,6 +55,10 @@ switch (OperatingSystem.current()) {
 }
 
 dependencies {
+    // implementation "org.jfree:org.jfree.svg:5.0.1"
+    // https://mvnrepository.com/artifact/com.kitfox.svg/svg-salamander
+    implementation 'com.kitfox.svg:svg-salamander:1.0'
+
     implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 
     implementation "org.lwjgl:lwjgl"
@@ -70,6 +74,7 @@ dependencies {
     runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
     implementation "org.lwjglx:lwjgl3-awt:${lwjgl3_awtVersion}"
+    implementation "org.joml:joml:${jomlVersion}"
 
     // implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
     //

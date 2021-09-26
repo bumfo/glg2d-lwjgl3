@@ -92,7 +92,7 @@ public class GL2ShapeDrawer extends AbstractShapeHelper {
     if (forceSimple) {
       traceShape(shape, simpleFillVisitor);
     } else {
-      traceShape(shape, complexFillVisitor);
+      // traceShape(shape, complexFillVisitor);
     }
   }
 }

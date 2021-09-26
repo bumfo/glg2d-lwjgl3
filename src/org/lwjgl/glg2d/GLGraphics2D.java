@@ -537,7 +537,9 @@ public class GLGraphics2D extends Graphics2D {
   protected void scissor(boolean enable) {
     GL gl = getGLContext().getGL();
     if (enable) {
-      gl.glScissor(clip.x, logicalHeight - clip.y - clip.height, Math.max(clip.width, 0), Math.max(clip.height, 0));
+      int scale = surfaceHeight / logicalHeight;
+
+      gl.glScissor(scale * clip.x, scale * (logicalHeight - clip.y - clip.height), scale * Math.max(clip.width, 0), scale * Math.max(clip.height, 0));
       gl.glEnable(GL.GL_SCISSOR_TEST);
     } else {
       clip = null;

@@ -1,3 +1,5 @@
+#version 330
+
 uniform mat4 u_transform;
 
 in vec2 a_vertCoord;

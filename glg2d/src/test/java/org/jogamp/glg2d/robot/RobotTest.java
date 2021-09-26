@@ -1,5 +1,7 @@
 package org.jogamp.glg2d.robot;
 
+import com.jogamp.opengl.GLCapabilities;
+import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.Animator;
 import org.jogamp.glg2d.GLG2DCanvas;
 import org.jogamp.glg2d.GLGraphics2D;
@@ -46,6 +48,8 @@ public final class RobotTest extends JFrame {
         super.paint(g0);
         Graphics2D g = (Graphics2D) g0;
 
+        g.clearRect(0, 0, 800, 600);
+
         ((GLGraphics2D) g).setForcePremultipliedAlpha(true);
 
         AffineTransform at = AffineTransform.getTranslateInstance(.5 * getWidth(), .5 * getHeight());
@@ -69,7 +73,8 @@ public final class RobotTest extends JFrame {
     panel.setBackground(Color.BLACK);
 
     panel.setPreferredSize(new Dimension(800, 600));
-    GLG2DCanvas canvas = new GLG2DCanvas(panel);
+    GLG2DCanvas canvas = new GLG2DCanvas(new GLCapabilities(GLProfile.get(GLProfile.GL3)), panel);
+    // GLG2DCanvas canvas = new GLG2DCanvas(panel);
     canvas.setGLDrawing(true);
 
     this.add(canvas);

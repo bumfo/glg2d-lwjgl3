@@ -8,6 +8,8 @@
  */
 package org.jogamp.glg2d.ben;
 
+import com.jogamp.opengl.GLCapabilities;
+import com.jogamp.opengl.GLProfile;
 import org.jogamp.glg2d.GLG2DCanvas;
 
 import javax.swing.JComponent;
@@ -66,7 +68,7 @@ public final class UIDemo extends JPanel {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 
-		GLG2DCanvas canvas = new GLG2DCanvas(demo);
+		GLG2DCanvas canvas = new GLG2DCanvas(new GLCapabilities(GLProfile.get(GLProfile.GL3)), demo);
 		canvas.setGLDrawing(ENABLE_GL);
 		Component component = (Component) canvas.getGLDrawable();
 		component.setEnabled(true);

@@ -89,7 +89,11 @@ public class GL2ES2TransformHelper extends AbstractMatrixHelper implements Trans
 
     float invWidth = 1f / (x2 - x1);
     float invHeight = 1f / (y2 - y1);
-    
+
+    int scale = g2d.getSurfaceHeight() / g2d.getLogicalHeight();
+    invWidth *= scale;
+    invHeight *= scale;
+
     glMatrix[0] = ((float) (2 * xform.getScaleX() * invWidth));
     glMatrix[1] = ((float) (-2 * xform.getShearY() * invHeight));
     // glMatrix[2] = 0;

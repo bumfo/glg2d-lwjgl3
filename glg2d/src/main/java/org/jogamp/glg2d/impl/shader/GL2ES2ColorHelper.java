@@ -19,10 +19,21 @@ package org.jogamp.glg2d.impl.shader;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
+import java.awt.GradientPaint;
+import java.awt.MultipleGradientPaint;
+import java.awt.Paint;
+import java.nio.FloatBuffer;
 
+import com.jogamp.common.nio.Buffers;
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GL2ES2;
+import com.kitfox.svg.batik.LinearGradientPaint;
+import com.kitfox.svg.batik.RadialGradientPaint;
 import org.jogamp.glg2d.GLGraphics2D;
 import org.jogamp.glg2d.impl.AbstractColorHelper;
 import org.jogamp.glg2d.impl.shader.UniformBufferObject.ColorHook;
+
+import static org.jogamp.glg2d.impl.GLG2DNotImplemented.notImplemented;
 
 public class GL2ES2ColorHelper extends AbstractColorHelper implements ColorHook {
   protected float[] foregroundRGBA = new float[4];
@@ -47,6 +58,32 @@ public class GL2ES2ColorHelper extends AbstractColorHelper implements ColorHook 
     }
 
     super.setG2D(g2d);
+  }
+
+  @Override
+  public void setPaint(Paint paint) {
+    if (paint instanceof Color) {
+      setColor((Color) paint);
+    } else if (paint instanceof GradientPaint) {
+      setColor(((GradientPaint) paint).getColor1());
+      notImplemented("setPaint(Paint) with GradientPaint");
+    } else if (paint instanceof com.kitfox.svg.batik.LinearGradientPaint) {
+      Color[] colors = ((LinearGradientPaint) paint).getColors();
+      setColor(colors[colors.length - 1]);
+      notImplemented("setPaint(Paint) with com.kitfox.svg.batik.LinearGradientPaint");
+    } else if (paint instanceof com.kitfox.svg.batik.RadialGradientPaint) {
+      Color[] colors = ((RadialGradientPaint) paint).getColors();
+      setColor(colors[colors.length - 1]);
+      notImplemented("setPaint(Paint) with com.kitfox.svg.batik.RadialGradientPaint");
+    } else if (paint instanceof MultipleGradientPaint) {
+      setColor(((MultipleGradientPaint) paint).getColors()[0]);
+      notImplemented("setPaint(Paint) with MultipleGradientPaint");
+    } else {
+      notImplemented("setPaint(Paint) with other " + paint.getClass());
+      // This will probably be easier to handle with a fragment shader
+      // in the shader pipeline, not sure how to handle it in the fixed-
+      // function pipeline.
+    }
   }
 
   @Override
@@ -78,99 +115,99 @@ public class GL2ES2ColorHelper extends AbstractColorHelper implements ColorHook 
 
   @Override
   public void copyArea(int x, int y, int width, int height, int dx, int dy) {
-//    GL2ES2 gl = g2d.getGLContext().getGL().getGL2ES2();
-//
-//    if (!pipeline.isSetup()) {
-//      pipeline.setup(gl);
-//    }
-//
-//    pipeline.use(gl, true);
-//
-//    float[] glMatrix = new float[16];
-//    glMatrix[0] = 1;
-//    // glMatrix[1] = 0;
-//    // glMatrix[2] = 0;
-//    // glMatrix[3] = 0;
-//
-//    // glMatrix[4] = 0;
-//    glMatrix[5] = 1;
-//    // glMatrix[6] = 0;
-//    // glMatrix[7] = 0;
-//
-//    // glMatrix[8] = 0;
-//    // glMatrix[9] = 0;
-//    glMatrix[10] = 1;
-//    // glMatrix[11] = 0;
-//
-//    // glMatrix[12] = 0;
-//    // glMatrix[13] = 0;
-//    // glMatrix[14] = 0;
-//    glMatrix[15] = 1;
-//
-//    pipeline.setColor(gl, new float[] { 1, 1, 1, 1 });
-//    pipeline.setTextureUnit(gl, GL.GL_TEXTURE0);
-//    pipeline.setTransform(gl, glMatrix);
-//
-//    int numPixels = width * height;
-//    FloatBuffer data = Buffers.newDirectFloatBuffer(numPixels);
-//
-//    int glX = x;
-//    int glY = g2d.getCanvasHeight() - (y + height);
-//
-//    gl.glReadPixels(glX, glY, width, height, GL.GL_RGBA, GL.GL_FLOAT, data);
-//
-//    gl.glEnable(GL.GL_TEXTURE_2D);
-//    gl.glActiveTexture(GL.GL_TEXTURE0);
-//
-//    int[] ids = new int[1];
-//    gl.glGenTextures(1, ids, 0);
-//
-//    gl.glBindTexture(GL.GL_TEXTURE_2D, ids[0]);
-//
-//    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
-//    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
-//
-//    /*
-//     * TODO This will need to be power-of-2
-//     */
-//    gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, width, height, 0, GL.GL_RGBA, GL.GL_FLOAT, data);
-//
-//    data.clear();
-//
-//    // translate to new location
-//    glX += dx;
-//    glY -= dy;
-//
-//    // interleave vertex and texture coordinates
-//    data.put(glX);
-//    data.put(glY);
-//    data.put(0);
-//    data.put(0);
-//
-//    data.put(glX + width);
-//    data.put(glY);
-//    data.put(1);
-//    data.put(0);
-//
-//    data.put(glX + width);
-//    data.put(glY + height);
-//    data.put(1);
-//    data.put(1);
-//
-//    data.put(glX);
-//    data.put(glY + height);
-//    data.put(0);
-//    data.put(1);
-//
-//    data.flip();
-//
-//    pipeline.draw(gl, data);
-//
-//    gl.glDeleteTextures(1, ids, 0);
-//
-//    gl.glDisable(GL.GL_TEXTURE_2D);
-//
-//    pipeline.use(gl, false);
+    GL2ES2 gl = g2d.getGLContext().getGL().getGL2ES2();
+
+    if (!pipeline.isSetup()) {
+      pipeline.setup(gl);
+    }
+
+    pipeline.use(gl, true);
+
+    float[] glMatrix = new float[16];
+    glMatrix[0] = 1;
+    // glMatrix[1] = 0;
+    // glMatrix[2] = 0;
+    // glMatrix[3] = 0;
+
+    // glMatrix[4] = 0;
+    glMatrix[5] = 1;
+    // glMatrix[6] = 0;
+    // glMatrix[7] = 0;
+
+    // glMatrix[8] = 0;
+    // glMatrix[9] = 0;
+    glMatrix[10] = 1;
+    // glMatrix[11] = 0;
+
+    // glMatrix[12] = 0;
+    // glMatrix[13] = 0;
+    // glMatrix[14] = 0;
+    glMatrix[15] = 1;
+
+    pipeline.setColor(gl, new float[]{1, 1, 1, 1});
+    pipeline.setTextureUnit(gl, GL.GL_TEXTURE0);
+    pipeline.setTransform(gl, glMatrix);
+
+    int numPixels = width * height;
+    FloatBuffer data = Buffers.newDirectFloatBuffer(numPixels);
+
+    int glX = x;
+    int glY = g2d.getLogicalHeight() - (y + height);
+
+    gl.glReadPixels(glX, glY, width, height, GL.GL_RGBA, GL.GL_FLOAT, data);
+
+    gl.glEnable(GL.GL_TEXTURE_2D);
+    gl.glActiveTexture(GL.GL_TEXTURE0);
+
+    int[] ids = new int[1];
+    gl.glGenTextures(1, ids, 0);
+
+    gl.glBindTexture(GL.GL_TEXTURE_2D, ids[0]);
+
+    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+
+    /*
+     * TODO This will need to be power-of-2
+     */
+    gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, width, height, 0, GL.GL_RGBA, GL.GL_FLOAT, data);
+
+    data.clear();
+
+    // translate to new location
+    glX += dx;
+    glY -= dy;
+
+    // interleave vertex and texture coordinates
+    data.put(glX);
+    data.put(glY);
+    data.put(0);
+    data.put(0);
+
+    data.put(glX + width);
+    data.put(glY);
+    data.put(1);
+    data.put(0);
+
+    data.put(glX + width);
+    data.put(glY + height);
+    data.put(1);
+    data.put(1);
+
+    data.put(glX);
+    data.put(glY + height);
+    data.put(0);
+    data.put(1);
+
+    data.flip();
+
+    pipeline.draw(gl, data);
+
+    gl.glDeleteTextures(1, ids, 0);
+
+    gl.glDisable(GL.GL_TEXTURE_2D);
+
+    pipeline.use(gl, false);
   }
 
   @Override

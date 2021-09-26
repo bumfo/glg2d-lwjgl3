@@ -22,6 +22,8 @@ project(':glg2d') {
     apply plugin: 'java'
 
     dependencies {
+        implementation 'com.kitfox.svg:svg-salamander:1.0'
+
         implementation "org.jogamp.gluegen:gluegen-rt-main:$joglVersion"
         implementation "org.jogamp.jogl:jogl-all-main:$joglVersion"
         testImplementation 'junit:junit:4.11'

@@ -327,7 +327,7 @@ public class UIDemo extends JPanel {
 
     JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
-//     frame.setContentPane(new UIDemo());
+    // frame.setContentPane(new UIDemo());
     frame.setContentPane(new GLG2DPanel(new UIDemo()));
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setPreferredSize(new Dimension(1024, 768));
